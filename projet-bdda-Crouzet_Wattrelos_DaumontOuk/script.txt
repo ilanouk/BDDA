@@ -1,0 +1,2 @@
+javac -d Code/IDE_PROJET_Tigran_Oriane_Ilan/bin Code/IDE_PROJET_Tigran_Oriane_Ilan/src/*.java
+java -cp Code/IDE_PROJET_Tigran_Oriane_Ilan/bin Main DB
