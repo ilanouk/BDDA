@@ -1,7 +1,7 @@
 
 public class PageId {
 	
-	private FileIdx;
-	private PageIdx;
+	private int FileIdx;
+	private int PageIdx;
 	
 }
