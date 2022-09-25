@@ -54,6 +54,7 @@ public class DiskManager {
 	
 	//Désalloue une page
 	public static void DeallocPage(PageId pageId) {
+		tabPageLibre.add(pageId);
 		
 	}
 	
