@@ -70,7 +70,7 @@ public class DiskManager {
 		while(exist){
 				String nomFichier = "F"+numFichier+".bdda"; //Fourni le numéro du fichier
 				File fichier = new File("../../DB/"+nomFichier); // Il faut trouver un moyen de ranger le fichier dans le dossier DB
-				if (!fichier.exists()){ 
+				if (fichier.exists()){ 
 					nbPageLibre +=1;
 				}
 				else{
