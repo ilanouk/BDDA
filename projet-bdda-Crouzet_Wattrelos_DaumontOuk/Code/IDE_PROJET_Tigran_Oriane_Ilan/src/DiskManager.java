@@ -57,5 +57,4 @@ public class DiskManager {
 	public static int getCurrentAllocPages() {
 		
 	}
-	//TEST
 }
