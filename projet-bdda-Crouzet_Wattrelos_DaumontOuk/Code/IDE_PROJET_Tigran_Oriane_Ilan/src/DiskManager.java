@@ -8,7 +8,7 @@ public class DiskManager {
 	static ArrayList<PageId> tabPageLibre = new ArrayList<PageId>(); //tableau qui stock la liste des pages libres
 	
 	//Allouer une page
-	public static PageId AllocPage() {
+	public static PageId allocPage() {
 		
 		
 		boolean isAllouee = false;
@@ -16,7 +16,7 @@ public class DiskManager {
 		
 		if (tabPageLibre.size() == 0) { // si le tableau des page Libre est vide alors on crée un nouveau fichier
 			String nomFichier = "F"+numFichier+".bdda";
-			//File fichier = new File(nomFichier); // Il faut trouver un moyen de ranger le fichier dans le dossier DB
+			File fichier = new File("../../DB/"+nomFichier); // Il faut trouver un moyen de ranger le fichier dans le dossier DB
 			
 			tabPageLibre.add( new PageId(numFichier,2));
 			tabPageLibre.add( new PageId(numFichier,3));
@@ -32,24 +32,24 @@ public class DiskManager {
 	}
 	
 	//Remplire la page avec l'argument buff
-	public static void ReadPage(PageId pageId, ByteBuffer buff) {
+	public static void readPage(PageId pageId, ByteBuffer buff) {
 		String nomFichier = DBParams.DBPath+"F"+pageId.getFile()+".bdda";
 		file.read(nomFichier*(pageId.getPage()-1)*DBParams.pageSize);
 	}
 	
 	//Ecrit le contenu de l'argument buff dans le fichier
-	public static void WritePage(PageId pageId, ByteBuffer buff) {
+	public static void writePage(PageId pageId, ByteBuffer buff) {
 		
 	}
 	
 	//Désalloue une page
-	public static void DeallocPage(PageId pageId) {
+	public static void deallocPage(PageId pageId) {
 		tabPageLibre.add(pageId);
 		
 	}
 	
 	//Retourne le nb de pages allouées au disk manager
-	public static int GetCurrentAllocPages() {
+	public static int getCurrentAllocPages() {
 		
 	}
 }
