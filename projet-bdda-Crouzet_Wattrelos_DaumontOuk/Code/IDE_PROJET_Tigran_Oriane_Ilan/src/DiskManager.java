@@ -10,15 +10,15 @@ public class DiskManager {
 	//Allouer une page
 	public static PageId allocPage() {
 		
-		boolean isAllouee = false
+		boolean isAllouee = false;
 		if (tabPageLibre.size() == 0) { // si le tableau des page Libre est vide alors on crée un nouveau fichier
 			while(!isAllouee){
 				String nomFichier = "F"+numFichier+".bdda";
 				File fichier = new File("../../DB/"+nomFichier); // Il faut trouver un moyen de ranger le fichier dans le dossier DB
-				if (!fichier.exist()){
+				if (!fichier.exists()){
 					tabPageLibre.add( new PageId(numFichier,2));
 					tabPageLibre.add( new PageId(numFichier,3));
-					numFichier +=1;
+					tabPageLibre.add( new PageId(numFichier,4));
 					
 					return new PageId(numFichier,1);
 				}
