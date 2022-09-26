@@ -1,10 +1,10 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.nio.*;
+import java.nio.ByteBuffer;
 public class DiskManager {
 	
 	static int numFichier=1;
-	static Bytebuffer buff;
+	static ByteBuffer buff;
 	static ArrayList<PageId> tabPageLibre = new ArrayList<PageId>(); //tableau qui stock la liste des pages libres
 	
 	//Allouer une page
@@ -22,9 +22,8 @@ public class DiskManager {
 					
 					return new PageId(numFichier,1);
 				}
-				else{
-					numFichier +=1 ;
-				}
+				numFichier+=1;
+				
 				
 				
 			}
@@ -34,20 +33,21 @@ public class DiskManager {
 		else {
 			return tabPageLibre.remove(0); 
 		}
+		return null;
 				
 	}
 
 			
 	
 	//Remplire la page avec l'argument buff
-	public static void readPage(PageId pageId,buff) {
+	public static void readPage(PageId pageId, ByteBuffer buff) {
 		String nomFichier = DBParams.DBPath+"F"+pageId.getFile()+".bdda";
 		File file = new File("../../DB/"+nomFichier);
 		file.read((pageId.getPage()-1,buff)*DBParams.pageSize);
 	}
 	
 	//Ecrit le contenu de l'argument buff dans le fichier
-	public static void writePage(PageId pageId, buff) {
+	public static void writePage(PageId pageId,ByteBuffer buff) {
 		
 	}
 	
