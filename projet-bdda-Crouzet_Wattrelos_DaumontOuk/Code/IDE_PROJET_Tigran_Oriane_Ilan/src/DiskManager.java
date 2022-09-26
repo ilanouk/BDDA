@@ -41,9 +41,9 @@ public class DiskManager {
 	
 	//Remplire la page avec l'argument buff
 	public static void readPage(PageId pageId, ByteBuffer buff) {
+
 		String nomFichier = DBParams.DBPath+"F"+pageId.getFile()+".bdda";
 		File file = new File("../../DB/"+nomFichier);
-		file.read((pageId.getPage()-1*DBParams.pageSize, buff.get());
 	}
 	
 	//Ecrit le contenu de l'argument buff dans le fichier
@@ -59,6 +59,20 @@ public class DiskManager {
 	
 	//Retourne le nb de pages allouées au disk manager
 	public static int getCurrentAllocPages() {
-		
+		boolean exist = true;
+		int nbPageLibre = 0;
+		while(exist){
+				String nomFichier = "F"+numFichier+".bdda";
+				File fichier = new File("../../DB/"+nomFichier); // Il faut trouver un moyen de ranger le fichier dans le dossier DB
+				if (!fichier.exists()){
+					nbPageLibre +=1;
+				}
+				else{
+					exist = false;
+				}
+		}
+		nbPageLibre *= DBParams.maxPagesPerFile;
+		nbPageLibre -= tabPageLibre.size();
+		return nbPageLibre;
 	}
 }
