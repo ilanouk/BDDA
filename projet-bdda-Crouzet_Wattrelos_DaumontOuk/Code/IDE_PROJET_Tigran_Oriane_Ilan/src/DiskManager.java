@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.nio.*;
 public class DiskManager {
 	
-
-	static int numFichier = 0;
+	static int numFichier=1;
+	static Bytebuffer buff;
 	static ArrayList<PageId> tabPageLibre = new ArrayList<PageId>(); //tableau qui stock la liste des pages libres
 	
 	//Allouer une page
@@ -22,6 +22,9 @@ public class DiskManager {
 					
 					return new PageId(numFichier,1);
 				}
+				else{
+					numFichier +=1 ;
+				}
 				
 				
 			}
@@ -37,13 +40,14 @@ public class DiskManager {
 			
 	
 	//Remplire la page avec l'argument buff
-	public static void readPage(PageId pageId, ByteBuffer buff) {
+	public static void readPage(PageId pageId,buff) {
 		String nomFichier = DBParams.DBPath+"F"+pageId.getFile()+".bdda";
-		file.read(nomFichier*(pageId.getPage()-1)*DBParams.pageSize);
+		File file = new File("../../DB/"+nomFichier);
+		file.read((pageId.getPage()-1,buff)*DBParams.pageSize);
 	}
 	
 	//Ecrit le contenu de l'argument buff dans le fichier
-	public static void writePage(PageId pageId, ByteBuffer buff) {
+	public static void writePage(PageId pageId, buff) {
 		
 	}
 	
