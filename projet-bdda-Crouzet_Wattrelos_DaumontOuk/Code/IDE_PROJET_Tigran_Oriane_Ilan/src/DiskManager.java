@@ -44,6 +44,7 @@ public class DiskManager {
 
 		String nomFichier = DBParams.DBPath+"F"+pageId.getFile()+".bdda";
 		File file = new File("../../DB/"+nomFichier);
+		buff = file.read((pageId.getPage()-1*DBParams.pageSize, buff);
 	}
 	
 	//Ecrit le contenu de l'argument buff dans le fichier
