@@ -43,12 +43,12 @@ public class DiskManager {
 		
 		
 	//Remplire la page avec l'argument buff
-	public static void ReadPage(PageId pageId, buff) {
+	public static void ReadPage(PageId pageId, ByteBuffer buff) {
 		
 	}
 	
 	//Ecrit le contenu de l'argument buff dans le fichier
-	public static void WritePage(PageId pageId, buff) {
+	public static void WritePage(PageId pageId, ByteBuffer buff) {
 		
 	}
 	
