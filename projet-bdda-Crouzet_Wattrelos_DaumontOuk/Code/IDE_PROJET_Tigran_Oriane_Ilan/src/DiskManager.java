@@ -7,7 +7,7 @@ public class DiskManager {
 	static ArrayList<PageId> tabPageLibre = new ArrayList<PageId>(); //tableau qui stock la liste des pages libres
 	
 	//Allouer une page
-	public static PageId allocPage() {
+	public static PageId allocPage() throws IOException {
 		
 		boolean isAllouee = false;
 		if (tabPageLibre.size() == 0) { // si le tableau des page Libre est vide alors on crée un nouveau fichier
