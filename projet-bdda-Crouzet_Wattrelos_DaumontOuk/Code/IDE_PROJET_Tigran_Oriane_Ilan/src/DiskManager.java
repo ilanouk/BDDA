@@ -15,6 +15,8 @@ public class DiskManager {
 				String nomFichier = "F"+numFichier+".bdda";
 				File fichier = new File("../../DB/"+nomFichier); 
 				if (!fichier.exists()){ //On crée 4 pages, et on alloue la 1ère, les autres sont indiquées comme page libres
+					fichier.createNewFile();
+
 					tabPageLibre.add( new PageId(numFichier,2));
 					tabPageLibre.add( new PageId(numFichier,3));
 					tabPageLibre.add( new PageId(numFichier,4));
