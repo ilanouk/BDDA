@@ -11,6 +11,10 @@ public class DiskManagerTests {
 		}
 			
 	public static void main(String[] args) throws IOException {
+		DBParams.DBpath =" ../../DB";
+		DBParams.maxPagesPerFile = 4;
+		DBParams.pageSize = 4096;
+		
 		System.out.println(allocTest());
 	}
 }

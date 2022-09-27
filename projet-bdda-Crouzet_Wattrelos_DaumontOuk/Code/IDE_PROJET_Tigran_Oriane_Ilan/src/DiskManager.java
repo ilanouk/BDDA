@@ -13,8 +13,9 @@ public class DiskManager {
 		if (tabPageLibre.size() == 0) { // si le tableau des page Libre est vide alors on crée un nouveau fichier
 			while(!isAllouee){
 				String nomFichier = "F"+numFichier+".bdda";
-				File fichier = new File("../../../DB/"+nomFichier); 
+				File fichier = new File("../../DB/"+nomFichier); 
 				if (!fichier.exists()){ //On crée 4 pages, et on alloue la 1ère, les autres sont indiquées comme page libres
+					
 					fichier.createNewFile();
 
 					tabPageLibre.add( new PageId(numFichier,2));
@@ -74,11 +75,13 @@ public class DiskManager {
 				File fichier = new File("../../DB/"+nomFichier); // Il faut trouver un moyen de ranger le fichier dans le dossier DB
 				if (fichier.exists()){ 
 					nbPageLibre +=1;
+					numFichier+=1;
 				}
 				else{
 					exist = false;
 				}
 		}
+		
 		nbPageLibre *= DBParams.maxPagesPerFile; //On multiplie le nb de fichiers fois le nb de pages par fichiers
 		nbPageLibre -= tabPageLibre.size(); //On enlève les pages libres existantes
 		return nbPageLibre; //Retourne le nb de pages libres
