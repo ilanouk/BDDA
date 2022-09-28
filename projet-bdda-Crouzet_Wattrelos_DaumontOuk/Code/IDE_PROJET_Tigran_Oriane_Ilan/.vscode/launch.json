@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch DiskManagerTests",
+            "request": "launch",
+            "mainClass": "DiskManagerTests",
+            "projectName": "IDE_PROJET_Tigran_Oriane_Ilan"
+        },
+        {
+            "type": "java",
             "name": "Debug (Launch) - Current File",
             "request": "launch",
             "mainClass": "${file}"

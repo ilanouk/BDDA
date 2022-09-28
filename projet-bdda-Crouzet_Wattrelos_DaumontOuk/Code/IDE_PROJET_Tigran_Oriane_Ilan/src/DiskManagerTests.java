@@ -8,6 +8,16 @@ public class DiskManagerTests {
 			DiskManager.deallocPage(p1);
 			return(DiskManager.getCurrentAllocPages());
 		}
+		public static void TestLireEcrire()  throws IOException{
+			byte[] buff ;
+			byte[] fin = new byte[100];
+			buff = "coucoue".getBytes();
+			PageId p1 = DiskManager.allocPage();
+			DiskManager.writePage(p1, buff);
+			DiskManager.readPage(p1, fin);
+			String message=fin.toString();
+			System.out.println(message);
+		}
 			
 	public static void main(String[] args) throws IOException {
 		DBParams.DBpath ="../../DB";
@@ -15,5 +25,6 @@ public class DiskManagerTests {
 		DBParams.pageSize = 4096;
 		
 		System.out.println(allocTest());
+		TestLireEcrire();
 	}
 }

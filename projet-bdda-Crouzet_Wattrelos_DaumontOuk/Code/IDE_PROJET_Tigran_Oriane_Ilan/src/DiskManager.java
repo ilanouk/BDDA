@@ -2,23 +2,21 @@ import java.io.*;
 import java.util.ArrayList;
 public class DiskManager {
 	
-	static int numFichier=1;
 	static byte[] buff;
 	static ArrayList<PageId> tabPageLibre = new ArrayList<PageId>(); //tableau qui stock la liste des pages libres
 	
 	//Allouer une page
 	public static PageId allocPage() throws IOException {
 		
-		boolean isAllouee = false;
-		// INT NUMFICHIER = 1;
+		int numFichier=1;
 		if (tabPageLibre.size() == 0) { // si le tableau des page Libre est vide alors on crée un nouveau fichier
-			while(!isAllouee){
+			while(true){
 				String nomFichier = "F"+numFichier+".bdda";
 				File fichier = new File("../../DB/"+nomFichier); 
 				if (!fichier.exists()){ //On crée 4 pages, et on alloue la 1ère, les autres sont indiquées comme page libres
 					
 					fichier.createNewFile();
-
+					System.out.println(numFichier);
 					tabPageLibre.add( new PageId(numFichier,2));
 					tabPageLibre.add( new PageId(numFichier,3));
 					tabPageLibre.add( new PageId(numFichier,4));
@@ -36,7 +34,7 @@ public class DiskManager {
 		else {
 			return tabPageLibre.remove(0); 
 		}
-		return null;
+		
 				
 	}
 
@@ -45,7 +43,7 @@ public class DiskManager {
 	//Remplire la page avec l'argument buff
 	public static void readPage(PageId pageId, byte[] buff) throws IOException{
 
-		String nomFichier = DBParams.DBpath+"F"+pageId.getFile()+".bdda"; //Donne le chemin du fichier
+		String nomFichier = DBParams.DBpath+"/"+"F"+pageId.getFile()+".bdda"; //Donne le chemin du fichier
 		RandomAccessFile file =  new RandomAccessFile(nomFichier, "r"); //Défini file en lecture r
 		file.read(buff); //Le fichier lit le tampon en argument
 		file.close();
@@ -55,8 +53,8 @@ public class DiskManager {
 	//Ecrit le contenu de l'argument buff dans le fichier
 	public static void writePage(PageId pageId,byte[] buff) throws IOException{
 		
-		String nomFichier = DBParams.DBpath+"F"+pageId.getFile()+".bdda";
-		RandomAccessFile file =  new RandomAccessFile(nomFichier, "w");
+		String nomFichier = DBParams.DBpath+"/"+"F"+pageId.getFile()+".bdda";
+		RandomAccessFile file =  new RandomAccessFile(nomFichier, "rw");
 		file.write(buff);
 		file.close();
 	}
@@ -71,7 +69,7 @@ public class DiskManager {
 	public static int getCurrentAllocPages() {
 		boolean exist = true;
 		int nbPageLibre = 0;
-		// INT NUMFICHIER =1;
+		int numFichier=1;
 		File fichier;
 		while(exist){
 				String nomFichier = "F"+numFichier+".bdda"; //Fourni le numéro du fichier
