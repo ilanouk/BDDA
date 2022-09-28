@@ -10,6 +10,7 @@ public class DiskManager {
 	public static PageId allocPage() throws IOException {
 		
 		boolean isAllouee = false;
+		// INT NUMFICHIER = 1;
 		if (tabPageLibre.size() == 0) { // si le tableau des page Libre est vide alors on crée un nouveau fichier
 			while(!isAllouee){
 				String nomFichier = "F"+numFichier+".bdda";
@@ -70,6 +71,7 @@ public class DiskManager {
 	public static int getCurrentAllocPages() {
 		boolean exist = true;
 		int nbPageLibre = 0;
+		// INT NUMFICHIER =1;
 		File fichier;
 		while(exist){
 				String nomFichier = "F"+numFichier+".bdda"; //Fourni le numéro du fichier
