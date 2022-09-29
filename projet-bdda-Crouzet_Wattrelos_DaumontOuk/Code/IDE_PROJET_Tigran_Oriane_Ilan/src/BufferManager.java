@@ -5,8 +5,7 @@ public class BufferManager {
     
     private int pin_count=0; //Nb d'utilisateurs sur la page
     private boolean valdirty=false; //Vaut true si page modifiée
-    //%%%%%%%%%%%%
-    private byte[] buff = DiskManager.getBuffer(); 
+    // CREER private byte[] buff = DiskManager.getBuffer(); 
 
     //Retourne un des buffers associés à une frame
     public byte[] GetPage(PageId pageId){
@@ -18,7 +17,7 @@ public class BufferManager {
         for(int i=0;i<DBParams.maxPagesPerFile;i++){ //On parcoure toutes les pages
             for(int j=0;j<DBParams.pageSize;j++){ // On parcoure tous les fichiers de chaque pages
                 //%%%%%%%%%%%%
-                if( !DiskManager.pageIdExiste(pageId) && pin_count==0){ //Si la page n'existe pas et aucun utilisateur dessus
+                if( /*CREER !DiskManager.pageIdExiste(pageId) && */pin_count==0){ //Si la page n'existe pas et aucun utilisateur dessus
                     if(valdirty==true){
                         //ecrire contenu sur disque
                         //valdirty=false;
@@ -31,12 +30,14 @@ public class BufferManager {
                 //pin_count++;
             }
         }
-        return buff;
+        return null; // DOIT RETOURNER LE BUFFER
     }
 
     //Décrémente pin_count et actualise flag dirty de la page
     public void FreePage(PageId pageId, boolean valdirty){
         //Peut aussi actualiser infos sur la politique de remplacement
+        pageId.setPin_Count(0);
+        pageId.setValDirty(false);
     }
 
     //Ecriture des pages modifiées et remise a 0 des flags/contenus dans buffers
