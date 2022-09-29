@@ -25,26 +25,35 @@ public class DiskManager {
 					
 					fichier.createNewFile();
 					System.out.println("num fichier actuelle : " +numFichier);
-					tabPageLibre.add( new PageId(numFichier,2));
-					tabPageLibre.add( new PageId(numFichier,3));
-					tabPageLibre.add( new PageId(numFichier,4));
+					for (int i =0;i<DBParams.maxPagesPerFile;i++){
+						tabPageLibre.add( new PageId(numFichier,i));
+					}
 					
 					return new PageId(numFichier,1);
 				}
+				
 				numFichier+=1;
-				
-				
-				
 			}
-		}
+			
 
+		}
 
 		else {
+			
 			return tabPageLibre.remove(0); 
+			
 		}
+	}
+	public String afficherTab(){
+		String tab="";
+		for (int i=0; i<tabPageLibre.size();i++){
+			tab += (tabPageLibre.get(i).getFile()+" "+ tabPageLibre.get(i).getPage()+"\n");
+
+		}
+		return tab;
+	}
 		
 				
-	}
 
 			
 	
@@ -54,7 +63,7 @@ public class DiskManager {
 		String nomFichier = DBParams.DBpath+"/"+"F"+pageId.getFile()+".bdda"; //Donne le chemin du fichier
 		RandomAccessFile file =  new RandomAccessFile(nomFichier, "r"); //Défini file en lecture r
 		int debutPage = DBParams.pageSize*pageId.getPage();
-		//file.readFully(buff,debutPage,debutPage+DBParams.pageSize-1);
+		//file.readFully(buff,debutPage,DBParams.pageSize-1);
 		file.read(buff); //Le fichier lit le tampon en argument
 		file.close();
 	}
@@ -71,7 +80,7 @@ public class DiskManager {
 	
 	//Désalloue une page
 	public  void deallocPage(PageId pageId) {
-		
+
 		tabPageLibre.add(pageId); //Ajoute la page qu'on veut désallouer aux pages libres
 	}
 	
@@ -97,20 +106,23 @@ public class DiskManager {
 		nbPageLibre -= tabPageLibre.size(); //On enlève les pages libres existantes
 		return nbPageLibre; //Retourne le nb de pages libres
 	}
+
+	// Sauvegarde le tableau de page libre
 	public static void sauvegardeTabPageLibre() throws IOException{
+		
 		File fichierSauvegardePageLibre = new File("../../DB/fichierSauvegardePageLibre.bdda");
 		fichierSauvegardePageLibre.createNewFile();
 		RandomAccessFile file =  new RandomAccessFile("../../DB/fichierSauvegardePageLibre.bdda", "rw");
 
-		for( int i=0;i<tabPageLibre.size()+1;i++){
-			file.write((tabPageLibre.get(i).getFile() + " ").getBytes());
-			file.write((tabPageLibre.get(i).getPage() + " ").getBytes());
-			System.out.println("file : "+tabPageLibre.get(i).getFile());
-			System.out.println("Page : "+tabPageLibre.get(i).getPage());
+		for( int i=0;i<tabPageLibre.size();i++){
+			file.write((" "+tabPageLibre.get(i).getFile() + " ").getBytes());
+			file.write(((tabPageLibre.get(i).getPage())+"").getBytes());
+		
 		}
 		file.close();
 			
 	}
+	// Recupere le Tableau de Page libre sauvegarder precedemment
 	public static void recupTabPageLibre() throws IOException{
 		File fichier = new File("../../DB/fichierSauvegardePageLibre.bdda");
 		
@@ -124,13 +136,14 @@ public class DiskManager {
 			String texteFichier = new String(b);
 			StringTokenizer texte= new StringTokenizer(texteFichier); 
 
+			
 			while (texte.hasMoreTokens()){
-				strFileIdx= texte.nextToken() ;
-				System.out.println(strFileIdx);
-				strPageIdx = texte.nextToken();
-
-				pageIdx = Integer.parseInt(strPageIdx);
-				fileIdx = Integer.parseInt(strFileIdx);
+				strFileIdx= texte.nextToken(" ") ;
+				
+				strPageIdx = texte.nextToken(" ");
+				
+				pageIdx = Integer.parseInt(strPageIdx.trim());
+				fileIdx = Integer.parseInt(strFileIdx.trim());
 
 				tabPageLibre.add(new PageId(fileIdx,pageIdx));
 			}
