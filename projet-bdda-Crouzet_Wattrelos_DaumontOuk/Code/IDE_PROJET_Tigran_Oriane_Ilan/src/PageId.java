@@ -21,4 +21,20 @@ public class PageId {
 	public int getPage(){
 		return PageIdx;
 	}
+
+	public int getPin_Count(){
+		return pin_count;
+	}
+
+	public void setPin_Count(int pin_count){
+		this.pin_count=pin_count;
+	}
+
+	public boolean getValDirty(){
+		return valdirty;
+	}
+
+	public void setValDirty(boolean valdirty){
+		this.valdirty=valdirty;
+	}
 }
