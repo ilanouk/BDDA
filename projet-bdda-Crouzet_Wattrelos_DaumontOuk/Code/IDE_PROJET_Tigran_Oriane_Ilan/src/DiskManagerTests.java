@@ -7,7 +7,8 @@ public class DiskManagerTests {
 			PageId p1 = DiskManager.getLeDiskManager().allocPage();
 			//PageId p2 = DiskManager.getLeDiskManager().allocPage();
 			//PageId p3 = DiskManager.getLeDiskManager().allocPage();
-			//DiskManager.getLeDiskManager().deallocPage(p1);
+			DiskManager.getLeDiskManager().deallocPage(p1);
+
 			return(DiskManager.getLeDiskManager().getCurrentAllocPages());
 		}
 
@@ -21,18 +22,19 @@ public class DiskManagerTests {
 			DiskManager.getLeDiskManager().readPage(p1, fin);
 
 			String message=new String(fin);
-			System.out.println("LireEcrire : " +message);
+			System.out.println("Doit afficher coucou : " +message);
 		}
 			
 	public static void main(String[] args) throws IOException {
 		DiskManager.recupTabPageLibre();
-		System.out.println(DiskManager.getLeDiskManager().afficherTab());
+		
 		DBParams.DBpath ="../../DB";
 		DBParams.maxPagesPerFile = 4;
 		DBParams.pageSize = 4096;
 		
 		System.out.println("current page alloc : "+allocTest());
 		TestLireEcrire();
+		System.out.println("tableau : "+DiskManager.getLeDiskManager().afficherTab());
 		DiskManager.sauvegardeTabPageLibre();
 	}
 }

@@ -7,6 +7,7 @@ public class DiskManager {
 	private static DiskManager LeDiskManager = new DiskManager();
 	private static byte[] buff;
 	public static ArrayList<PageId> tabPageLibre = new ArrayList<PageId>(); //tableau qui stock la liste des pages libres
+	PageId page;
 
 	public static  DiskManager getLeDiskManager(){
 		return LeDiskManager;
@@ -28,8 +29,8 @@ public class DiskManager {
 					for (int i =0;i<DBParams.maxPagesPerFile;i++){
 						tabPageLibre.add( new PageId(numFichier,i));
 					}
-					
-					return new PageId(numFichier,1);
+					page = tabPageLibre.remove(0);
+					return page;
 				}
 				
 				numFichier+=1;
@@ -39,11 +40,13 @@ public class DiskManager {
 		}
 
 		else {
-			
-			return tabPageLibre.remove(0); 
+			page = tabPageLibre.remove(0);
+			return  page;
 			
 		}
 	}
+
+
 	public String afficherTab(){
 		String tab="";
 		for (int i=0; i<tabPageLibre.size();i++){
@@ -103,14 +106,18 @@ public class DiskManager {
 		}
 		
 		nbPageLibre *= DBParams.maxPagesPerFile; //On multiplie le nb de fichiers fois le nb de pages par fichiers
-		nbPageLibre -= tabPageLibre.size(); //On enlève les pages libres existantes
+		nbPageLibre -= tabPageLibre.size() - 1; //On enlève les pages libres existantes
 		return nbPageLibre; //Retourne le nb de pages libres
 	}
+
 
 	// Sauvegarde le tableau de page libre
 	public static void sauvegardeTabPageLibre() throws IOException{
 		
 		File fichierSauvegardePageLibre = new File("../../DB/fichierSauvegardePageLibre.bdda");
+		if (fichierSauvegardePageLibre.exists()){
+			fichierSauvegardePageLibre.delete();
+		}
 		fichierSauvegardePageLibre.createNewFile();
 		RandomAccessFile file =  new RandomAccessFile("../../DB/fichierSauvegardePageLibre.bdda", "rw");
 
@@ -122,6 +129,8 @@ public class DiskManager {
 		file.close();
 			
 	}
+
+
 	// Recupere le Tableau de Page libre sauvegarder precedemment
 	public static void recupTabPageLibre() throws IOException{
 		File fichier = new File("../../DB/fichierSauvegardePageLibre.bdda");
@@ -133,21 +142,25 @@ public class DiskManager {
 			String strPageIdx , strFileIdx;
 			byte[] b = new byte[1000];
 			file.read(b);
+			
 			String texteFichier = new String(b);
 			StringTokenizer texte= new StringTokenizer(texteFichier); 
+			if (!texteFichier.equals(" ")){
+				System.out.println("nbr Token "+ texte.countTokens());
+				while (texte.hasMoreTokens()){
+					strFileIdx= texte.nextToken(" ") ;
+					
+					strPageIdx = texte.nextToken(" ");
+					
+					pageIdx = Integer.parseInt(strPageIdx.trim());
+					fileIdx = Integer.parseInt(strFileIdx.trim());
+
+					tabPageLibre.add(new PageId(fileIdx,pageIdx));
+				}
+				file.close();
+				}
 
 			
-			while (texte.hasMoreTokens()){
-				strFileIdx= texte.nextToken(" ") ;
-				
-				strPageIdx = texte.nextToken(" ");
-				
-				pageIdx = Integer.parseInt(strPageIdx.trim());
-				fileIdx = Integer.parseInt(strFileIdx.trim());
-
-				tabPageLibre.add(new PageId(fileIdx,pageIdx));
-			}
-			file.close();
 		}
 		
 	
