@@ -1,32 +1,36 @@
 import java.io.IOException;
 
 public class DiskManagerTests {
+
 	public static int allocTest() throws IOException {
 		// Alloue 2 pages et désalloue une page. La fonction doit retourner 1
-			PageId p1 = DiskManager.allocPage();
-			DiskManager.allocPage();
-			DiskManager.deallocPage(p1);
-			return(DiskManager.getCurrentAllocPages());
+			PageId p1 = DiskManager.getLeDiskManager().allocPage();
+			DiskManager.getLeDiskManager().allocPage();
+			DiskManager.getLeDiskManager().deallocPage(p1);
+			return(DiskManager.getLeDiskManager().getCurrentAllocPages());
 		}
+		
 		public static void TestLireEcrire()  throws IOException{
 			byte[] buff ;
 			byte[] fin = new byte[100];
-			buff = "coucoue".getBytes();
-			PageId p1 = DiskManager.allocPage();
+			buff = "coucou".getBytes();
+			PageId p1 = DiskManager.getLeDiskManager().allocPage();
 
-			DiskManager.writePage(p1, buff);
-			DiskManager.readPage(p1, fin);
-			
-			String message=fin.toString();
+			DiskManager.getLeDiskManager().writePage(p1, buff);
+			DiskManager.getLeDiskManager().readPage(p1, fin);
+
+			String message=new String(fin);
 			System.out.println("LireEcrire : " +message);
 		}
 			
 	public static void main(String[] args) throws IOException {
+		DiskManager.recupTabPageLibre();
 		DBParams.DBpath ="../../DB";
 		DBParams.maxPagesPerFile = 4;
 		DBParams.pageSize = 4096;
 		
-		System.out.println(allocTest());
+		System.out.println("current page alloc : "+allocTest());
 		TestLireEcrire();
+		DiskManager.sauvegardeTabPageLibre();
 	}
 }
