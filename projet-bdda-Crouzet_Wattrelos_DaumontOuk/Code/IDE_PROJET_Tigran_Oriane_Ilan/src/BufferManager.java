@@ -24,7 +24,7 @@ public class BufferManager {
                     }
                 }
                 else{
-                    //choisir fichier libre
+                    //choisir fichier libre donc algo LRU/clock
                     //lire contenu page demandée dans le fichier
                 }
                 //pin_count++;
@@ -50,6 +50,7 @@ public class BufferManager {
                 /*if(pageId.getValDirty()==true){
                     ECRITURE DES PAGES Où DIRTY=TRUE
                 }*/
+
             }
         }
     }
