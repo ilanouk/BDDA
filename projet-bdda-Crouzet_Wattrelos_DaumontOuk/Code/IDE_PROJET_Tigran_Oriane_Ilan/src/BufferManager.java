@@ -3,7 +3,7 @@ import java.nio.Buffer;
 
 public class BufferManager {
     
-    private int pin_count=0; //Nb d'utilisateurs sur la page
+   
     private boolean valdirty=false; //Vaut true si page modifiée
     // CREER private byte[] buff = DiskManager.getBuffer(); 
 
@@ -17,7 +17,7 @@ public class BufferManager {
         for(int i=0;i<DBParams.maxPagesPerFile;i++){ //On parcoure toutes les pages
             for(int j=0;j<DBParams.pageSize;j++){ // On parcoure tous les fichiers de chaque pages
                 //%%%%%%%%%%%%
-                if( /*CREER !DiskManager.pageIdExiste(pageId) && */pin_count==0){ //Si la page n'existe pas et aucun utilisateur dessus
+                if( /*CREER !DiskManager.pageIdExiste(pageId) && */pageId.getPin_Count()!=0){ //Si la page n'existe pas et aucun utilisateur dessus
                     if(valdirty==true){
                         //ecrire contenu sur disque
                         //valdirty=false;
@@ -45,7 +45,13 @@ public class BufferManager {
         //Ecriture des pages où flag dirty=true sur disque
         //Remise à 0 de tous les flags/infos et contenus des buffers
         //Rajouter un appel a la methode, dans la méthode Finish du DBManager
-        
+        for(int i=0;i<DBParams.maxPagesPerFile;i++){ //On parcoure toutes les pages
+            for(int j=0;j<DBParams.pageSize;j++){ // On parcoure tous les fichiers de chaque pages
+                /*if(pageId.getValDirty()==true){
+                    ECRITURE DES PAGES Où DIRTY=TRUE
+                }*/
+            }
+        }
     }
-
 }
+
