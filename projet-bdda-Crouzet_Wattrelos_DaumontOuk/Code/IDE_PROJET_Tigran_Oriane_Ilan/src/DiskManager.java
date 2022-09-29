@@ -2,9 +2,15 @@ import java.io.*;
 import java.util.ArrayList;
 public class DiskManager {
 	
-	static byte[] buff;
-	static ArrayList<PageId> tabPageLibre = new ArrayList<PageId>(); //tableau qui stock la liste des pages libres
-	
+	private static DiskManager LeDiskManager = new DiskManager();
+	private static byte[] buff;
+	public static ArrayList<PageId> tabPageLibre = new ArrayList<PageId>(); //tableau qui stock la liste des pages libres
+
+	public static  DiskManager getLeDiskManager(){
+		return LeDiskManager;
+	}
+
+
 	//Allouer une page
 	public static PageId allocPage() throws IOException {
 		

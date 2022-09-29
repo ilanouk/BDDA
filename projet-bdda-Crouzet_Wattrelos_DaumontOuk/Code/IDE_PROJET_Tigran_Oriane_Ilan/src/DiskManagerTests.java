@@ -13,10 +13,12 @@ public class DiskManagerTests {
 			byte[] fin = new byte[100];
 			buff = "coucoue".getBytes();
 			PageId p1 = DiskManager.allocPage();
+
 			DiskManager.writePage(p1, buff);
 			DiskManager.readPage(p1, fin);
+			
 			String message=fin.toString();
-			System.out.println(message);
+			System.out.println("LireEcrire : " +message);
 		}
 			
 	public static void main(String[] args) throws IOException {
