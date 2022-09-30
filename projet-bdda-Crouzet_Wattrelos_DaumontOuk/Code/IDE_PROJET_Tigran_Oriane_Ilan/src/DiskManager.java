@@ -66,7 +66,8 @@ public class DiskManager {
 		String nomFichier = DBParams.DBpath+"/"+"F"+pageId.getFile()+".bdda"; //Donne le chemin du fichier
 		RandomAccessFile file =  new RandomAccessFile(nomFichier, "r"); //Défini file en lecture r
 		int debutPage = DBParams.pageSize*pageId.getPage();
-		//file.readFully(buff,debutPage,DBParams.pageSize-1);
+		//file.read(buff,debutPage,DBParams.pageSize-1);
+		file.seek(debutPage);
 		file.read(buff); //Le fichier lit le tampon en argument
 		file.close();
 	}
@@ -77,6 +78,8 @@ public class DiskManager {
 		
 		String nomFichier = DBParams.DBpath+"/"+"F"+pageId.getFile()+".bdda";
 		RandomAccessFile file =  new RandomAccessFile(nomFichier, "rw");
+
+		file.seek(DBParams.pageSize*pageId.getPage());
 		file.write(buff);
 		file.close();
 	}
