@@ -106,7 +106,7 @@ public class DiskManager {
 		}
 		
 		nbPageLibre *= DBParams.maxPagesPerFile; //On multiplie le nb de fichiers fois le nb de pages par fichiers
-		nbPageLibre -= tabPageLibre.size() - 1; //On enlève les pages libres existantes
+		nbPageLibre -= tabPageLibre.size() ; //On enlève les pages libres existantes
 		return nbPageLibre; //Retourne le nb de pages libres
 	}
 
@@ -115,16 +115,17 @@ public class DiskManager {
 	public static void sauvegardeTabPageLibre() throws IOException{
 		
 		File fichierSauvegardePageLibre = new File("../../DB/fichierSauvegardePageLibre.bdda");
+
 		if (fichierSauvegardePageLibre.exists()){
 			fichierSauvegardePageLibre.delete();
 		}
+
 		fichierSauvegardePageLibre.createNewFile();
 		RandomAccessFile file =  new RandomAccessFile("../../DB/fichierSauvegardePageLibre.bdda", "rw");
 
 		for( int i=0;i<tabPageLibre.size();i++){
-			file.write((" "+tabPageLibre.get(i).getFile() + " ").getBytes());
-			file.write(((tabPageLibre.get(i).getPage())+"").getBytes());
-		
+			file.write((tabPageLibre.get(i).getFile() + " ").getBytes());
+			file.write(((tabPageLibre.get(i).getPage()+" ").getBytes()));
 		}
 		file.close();
 			
@@ -145,25 +146,23 @@ public class DiskManager {
 			
 			String texteFichier = new String(b);
 			StringTokenizer texte= new StringTokenizer(texteFichier); 
+
 			if (!texteFichier.equals(" ")){
-				System.out.println("nbr Token "+ texte.countTokens());
-				while (texte.hasMoreTokens()){
+	
+				while (texte.hasMoreTokens()&& texte.countTokens() !=1){
 					strFileIdx= texte.nextToken(" ") ;
-					
-					strPageIdx = texte.nextToken(" ");
+					strPageIdx = texte.nextToken();
 					
 					pageIdx = Integer.parseInt(strPageIdx.trim());
 					fileIdx = Integer.parseInt(strFileIdx.trim());
 
 					tabPageLibre.add(new PageId(fileIdx,pageIdx));
+					
 				}
 				file.close();
-				}
 
-			
+			}
 		}
 		
-	
-	
 	}
 }

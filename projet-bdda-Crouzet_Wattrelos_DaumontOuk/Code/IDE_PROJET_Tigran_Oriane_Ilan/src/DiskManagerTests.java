@@ -5,7 +5,7 @@ public class DiskManagerTests {
 	public static int allocTest() throws IOException {
 		// Alloue 2 pages et désalloue une page. La fonction doit retourner 1
 			PageId p1 = DiskManager.getLeDiskManager().allocPage();
-			//PageId p2 = DiskManager.getLeDiskManager().allocPage();
+			PageId p2 = DiskManager.getLeDiskManager().allocPage();
 			//PageId p3 = DiskManager.getLeDiskManager().allocPage();
 			DiskManager.getLeDiskManager().deallocPage(p1);
 
@@ -33,8 +33,8 @@ public class DiskManagerTests {
 		DBParams.pageSize = 4096;
 		
 		System.out.println("current page alloc : "+allocTest());
-		TestLireEcrire();
-		System.out.println("tableau : "+DiskManager.getLeDiskManager().afficherTab());
+		//TestLireEcrire();
+		//System.out.println("tableau : "+DiskManager.getLeDiskManager().afficherTab());
 		DiskManager.sauvegardeTabPageLibre();
 	}
 }
