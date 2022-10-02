@@ -117,16 +117,16 @@ public class DiskManager {
 	// Sauvegarde le tableau de page libre
 	public static void sauvegardeTabPageLibre() throws IOException{
 		
-		File fichierSauvegardePageLibre = new File("../../DB/fichierSauvegardePageLibre.bdda");
+		File fichierSauvegardePageLibre = new File("../../DB/fichierSauvegardePageLibre.bdda");  // Chemin du fichier à créer
 
-		if (fichierSauvegardePageLibre.exists()){
+		if (fichierSauvegardePageLibre.exists()){ //On supprime le fichier pour le mettre a jour en le créant par la suite
 			fichierSauvegardePageLibre.delete();
 		}
 
 		fichierSauvegardePageLibre.createNewFile();
 		RandomAccessFile file =  new RandomAccessFile("../../DB/fichierSauvegardePageLibre.bdda", "rw");
 
-		for( int i=0;i<tabPageLibre.size();i++){
+		for( int i=0;i<tabPageLibre.size();i++){	// On écrit les num de fichier et les num de page de sorte ou l'élement i = num fichier et i+1 = num page où i+=2
 			file.write((tabPageLibre.get(i).getFile() + " ").getBytes());
 			file.write(((tabPageLibre.get(i).getPage()+" ").getBytes()));
 		}
