@@ -3,12 +3,12 @@ import java.nio.Buffer;
 
 public class BufferManager {
     
-   
-    private boolean valdirty=false; //Vaut true si page modifiée
-    // CREER private byte[] buff = DiskManager.getBuffer(); 
+    // CRRER 2 METHODES DANS DM, PAGEEXISTE ET SETBUFFER/GETBUFFER
+
+    private byte[] buff; 
 
     //Retourne un des buffers associés à une frame
-    public byte[] GetPage(PageId pageId){
+    public byte[] getPage(PageId pageId){
         //Buffer = contenu page désignée par pageId
         // recuperer le buffer de diskmanager
         //S'occuper du remplacement (LRU,clock) du contenu d'une frame
@@ -18,10 +18,8 @@ public class BufferManager {
             for(int j=0;j<DBParams.pageSize;j++){ // On parcoure tous les fichiers de chaque pages
                 //%%%%%%%%%%%%
                 if( /*CREER !DiskManager.pageIdExiste(pageId) && */pageId.getPin_Count()!=0){ //Si la page n'existe pas et aucun utilisateur dessus
-                    if(valdirty==true){
-                        //ecrire contenu sur disque
-                        //valdirty=false;
-                    }
+                    //%%%%%%%%%%%%
+                    // buff=DiskManager.setBuffer(pageId);
                 }
                 else{
                     //choisir fichier libre donc algo LRU/clock
@@ -30,25 +28,27 @@ public class BufferManager {
                 //pin_count++;
             }
         }
-        return null; // DOIT RETOURNER LE BUFFER
+        return buff; // Retourne le buffer avec le contenu de la page
     }
 
     //Décrémente pin_count et actualise flag dirty de la page
-    public void FreePage(PageId pageId, boolean valdirty){
-        //Peut aussi actualiser infos sur la politique de remplacement
+    public void freePage(PageId pageId, boolean valdirty){
+        
         pageId.setPin_Count(0);
         pageId.setValDirty(false);
     }
 
     //Ecriture des pages modifiées et remise a 0 des flags/contenus dans buffers
-    public void FlushAll(){
+    public void flushAll(){
         //Ecriture des pages où flag dirty=true sur disque
         //Remise à 0 de tous les flags/infos et contenus des buffers
         //Rajouter un appel a la methode, dans la méthode Finish du DBManager
+        
         for(int i=0;i<DBParams.maxPagesPerFile;i++){ //On parcoure toutes les pages
             for(int j=0;j<DBParams.pageSize;j++){ // On parcoure tous les fichiers de chaque pages
                 /*if(pageId.getValDirty()==true){
                     ECRITURE DES PAGES Où DIRTY=TRUE
+                    Faire un freePage?
                 }*/
 
             }
