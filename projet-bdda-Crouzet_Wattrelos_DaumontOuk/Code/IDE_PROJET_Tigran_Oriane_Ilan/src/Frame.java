@@ -1,67 +1,69 @@
 
 public class Frame {
-    private PageId pageId;
+    private PageId pageIdx;
     private int pinCount;
     private boolean flagDirty;
-    private byte[] buffer;
+    private byte[] buff;
 
-    public Frame()
-    {
-        pageId = new PageId(-1, 0);
+    public Frame(){
+        pageIdx = new PageId(-1, 0);
         pinCount = 0;
         flagDirty = false;
-        //Initaliser buff?
+        //Allouer taille d'une page au buffer
     }
 
-    // Getter of the pinCount property
-    public int getPinCount()
-    {
+    //Retourne le pin count
+    public int getPinCount(){
         return this.pinCount;
     }
 
-    // Getter of the flagDirty property
-    public boolean getFlagDirty()
-    {
+    //Retourne le numéro de page
+	public PageId getPage(){
+		return pageIdx;
+	}
+
+    //Retourne le flag dirty (page modifiée)
+    public boolean getFlagDirty(){
         return this.flagDirty;
     }
 
-    // Getter of the buffer property
-    public byte[] getBuffer()
-    {
-        return this.buffer;
+    //Retourne le buffer
+    public byte[] getBuffer(){
+        return this.buff;
     }
 
-    // Setter of the pinCount property
-    public void setPinCount(int pinCount)
-    {
+    //Modifier le pin count
+    public void setPinCount(int pinCount){
         this.pinCount = pinCount;
     }
 
-    // Setter of the flagDirty property
-    public void setFlagDirty(boolean flagDirty)
-    {
+    //Modifier le flag dirty
+    public void setFlagDirty(boolean flagDirty){
         this.flagDirty = flagDirty;
     }
 
-    // Setter of the buffer property
-    public void setBuffer(byte[] buffer)
-    {
-        this.buffer = buffer;
+    //Modifier le buffer
+    public void setBuffer(byte[] buff){
+        this.buff = buff;
     }
 
-    public void incrementPinCount()
-    {
+    //Modifier la page
+	public void setPage(PageId pageIdx){
+		this.pageIdx=pageIdx;
+	}
+
+    public void incrementPinCount(){
         this.pinCount++;
     }
 
-    public void decrementPinCount()
-    {
+    public void decrementPinCount(){
         this.pinCount--;
     }
 
+    //Savoir si la frame est vide (true)
     public boolean isEmpty()
     {
-        if (pageId.getFile() == -1)
+        if (pageIdx.getFile() == -1)
             return (true);
         return (false);
     }
