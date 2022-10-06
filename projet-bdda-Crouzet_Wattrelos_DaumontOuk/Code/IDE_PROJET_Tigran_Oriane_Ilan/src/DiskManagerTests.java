@@ -37,8 +37,6 @@ public class DiskManagerTests {
 		DBParams.maxPagesPerFile = 4;
 		DBParams.pageSize = 4096;
 		
-		//System.out.println("current page alloc : "+allocTest());
-		TestLireEcrire();
 		System.out.println(" current alloc page : " + DiskManager.getLeDiskManager().getCurrentAllocPages());
 		//System.out.println("tableau : "+DiskManager.getLeDiskManager().afficherTab());
 		DiskManager.sauvegardeTabPageLibre();

@@ -34,5 +34,16 @@ public class BufferManagerTest {
         return allPages;
     }
 
+    public static void main(String[] args) throws IOException {
+		DiskManager.recupTabPageLibre();
+		
+		DBParams.DBpath ="../../DB";
+		DBParams.maxPagesPerFile = 4;
+		DBParams.pageSize = 4096;
+
+        System.out.println(getPageTest());
+
+
+    }
 
 }
