@@ -84,17 +84,16 @@ public class BufferManager {
         tant que i=0 est inférieur au nb de buffers et que pageId non trouvé, on incremente i 
         si la taille du bufferpool est inférieur à i ou(/et?) pin count de bufferpool[i]==0
             on décremente le pincount et on modifie flag dirty avec param
-        
+        */
+        int i=0;
 
-        while(int i=0<bufferPool.length && bufferPool[i].getPage(pageId)==false){
+        while(i<bufferPool.length && bufferPool[i].getPage().equals(pageId)==false){
             i++;
         }
-        if(bufferPool.length<i || bufferPool[i].getPinCount==0){
-            
+        if(bufferPool.length<i || bufferPool[i].getPinCount()==0){
+            bufferPool[i].decrementPinCount();
+            bufferPool[i].setFlagDirty(valdirty);
         }
-        ********* */
-        pageId.setPin_Count(0);
-        pageId.setValDirty(false);
     }
 
 
