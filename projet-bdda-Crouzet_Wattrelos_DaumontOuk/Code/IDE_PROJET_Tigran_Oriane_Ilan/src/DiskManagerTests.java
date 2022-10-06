@@ -36,6 +36,7 @@ public class DiskManagerTests {
 		DBParams.DBpath ="../../DB";
 		DBParams.maxPagesPerFile = 4;
 		DBParams.pageSize = 4096;
+		DBParams.frameCount=2;
 		
 		System.out.println(" current alloc page : " + DiskManager.getLeDiskManager().getCurrentAllocPages());
 		//System.out.println("tableau : "+DiskManager.getLeDiskManager().afficherTab());
