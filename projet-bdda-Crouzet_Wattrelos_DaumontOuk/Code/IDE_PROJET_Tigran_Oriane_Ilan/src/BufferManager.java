@@ -7,9 +7,10 @@ public class BufferManager {
     private Frame[] bufferPool; //liste des buffers
 
 
-    public BufferManager(){//private avec singleton?
+    //Constructeur
+    public BufferManager(){ //private avec singleton?
         bufferPool = new Frame[DBParams.frameCount];
-        dManager = DiskManager.getLeDiskManager();
+        dManager = DiskManager.getLeDiskManager();  
         initBufferPool();
     }
 

@@ -40,6 +40,7 @@ public class BufferManagerTest {
 		DBParams.DBpath ="../../DB";
 		DBParams.maxPagesPerFile = 4;
 		DBParams.pageSize = 4096;
+        DBParams.frameCount=2;
 
         System.out.println(getPageTest());
 
