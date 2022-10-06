@@ -6,7 +6,7 @@ public class DiskManager {
 	
 	private static DiskManager LeDiskManager = new DiskManager();
 	private static byte[] buff;
-	public static ArrayList<PageId> tabPageLibre = new ArrayList<PageId>(); //tableau qui stock la liste des pages libres
+	private static ArrayList<PageId> tabPageLibre = new ArrayList<PageId>(); //tableau qui stock la liste des pages libres
 	PageId page;
 
 	public static  DiskManager getLeDiskManager(){
