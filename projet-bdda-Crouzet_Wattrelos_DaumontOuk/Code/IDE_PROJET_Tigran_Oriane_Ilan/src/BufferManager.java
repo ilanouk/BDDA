@@ -82,9 +82,16 @@ public class BufferManager {
         /*********  A FINIR 
        
         tant que i=0 est inférieur au nb de buffers et que pageId non trouvé, on incremente i 
-        si la taille du bufferpool est inférieur à i ou(/et?) pin count dee bufferpool[i]==0
+        si la taille du bufferpool est inférieur à i ou(/et?) pin count de bufferpool[i]==0
             on décremente le pincount et on modifie flag dirty avec param
         
+
+        while(int i=0<bufferPool.length && bufferPool[i].getPage(pageId)==false){
+            i++;
+        }
+        if(bufferPool.length<i || bufferPool[i].getPinCount==0){
+            
+        }
         ********* */
         pageId.setPin_Count(0);
         pageId.setValDirty(false);
@@ -98,7 +105,7 @@ public class BufferManager {
         //Rajouter un appel a la methode, dans la méthode Finish du DBManager
         
         Frame frame=new Frame();
-
+    
         for(int i=0;i<bufferPool.length;i++){ //On parcourt tous les buffers
             if(frame.getFlagDirty()){ //Si frame modifiée, on obtient ses pages du DManager
                 dManager.writePage(frame.getPage(), frame.getBuffer());
