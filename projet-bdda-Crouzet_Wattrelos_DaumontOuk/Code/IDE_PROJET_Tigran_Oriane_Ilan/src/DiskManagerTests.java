@@ -26,7 +26,7 @@ public class DiskManagerTests {
 			DiskManager.getLeDiskManager().readPage(p1, fin);
 
 			String message=new String(fin);
-			System.out.println("Doit afficher coucou : " +message);
+			System.out.println("Doit afficher tata : " +message);
 		}
 			
 	
