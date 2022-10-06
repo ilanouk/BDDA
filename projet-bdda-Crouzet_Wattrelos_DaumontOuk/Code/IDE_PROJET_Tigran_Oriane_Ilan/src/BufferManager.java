@@ -79,12 +79,7 @@ public class BufferManager {
 
     //Décrémente pin_count et actualise flag dirty de la page
     public void freePage(PageId pageId, boolean valdirty) throws IOException{
-        /*********  A FINIR 
        
-        tant que i=0 est inférieur au nb de buffers et que pageId non trouvé, on incremente i 
-        si la taille du bufferpool est inférieur à i ou(/et?) pin count de bufferpool[i]==0
-            on décremente le pincount et on modifie flag dirty avec param
-        */
         int i=0;
 
         while(i<bufferPool.length && bufferPool[i].getPage().equals(pageId)==false){
