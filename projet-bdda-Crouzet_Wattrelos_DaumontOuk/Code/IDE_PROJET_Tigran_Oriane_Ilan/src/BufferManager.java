@@ -1,21 +1,23 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class BufferManager {
     
     private static BufferManager leBufferManager = new BufferManager();
     private DiskManager dManager;
     private Frame[] bufferPool; //liste des buffers
-
+    private ArrayList<Frame> frameNonUtilisee;
 
     //Constructeur
     public BufferManager(){ //private avec singleton?
         bufferPool = new Frame[DBParams.frameCount];
-        dManager = DiskManager.getLeDiskManager();  
+        dManager = DiskManager.getLeDiskManager();
+        this.frameNonUtilisee = new ArrayList<Frame>();  
         initBufferPool();
     }
 
 
-    public void initBufferPool(){ //private?
+    private void initBufferPool(){ //private?
         for(int i=0;i<DBParams.frameCount;i++){
             bufferPool[i]= new Frame();
         }
@@ -52,7 +54,9 @@ public class BufferManager {
         //Buffer = contenu page désignée par pageId
         // recuperer le buffer de diskmanager
         //S'occuper du remplacement (LRU) du contenu d'une frame
-       
+
+        int j=0;
+        int idx=0;
         int num_id=-1; //numéro id de la frame dispo
 
         for(int i=0; i<bufferPool.length;i++){
@@ -70,7 +74,25 @@ public class BufferManager {
             dManager.readPage(pageId, bufferPool[num_id].getBuffer());
         }
         else{
-            //FAIRE LRU
+            //Algo LRU
+            //Ajouter le premier element de Frame
+            frameNonUtilisee.get(0);
+
+            //Verifier que la derniere frame existe bien
+            if(frameNonUtilisee.size()!=0){
+                //PEUT ETRE SAUVé LE CONTENU SI DIRTY=TRUE DANS LE DISK???
+
+                //Chercher l'id de la derniere frame dans le buffer
+                while(idx<bufferPool.length && !bufferPool[j].equals(frameNonUtilisee)){
+                    idx++;
+                    j++;
+                }
+                bufferPool[idx].setPage(pageId);
+                bufferPool[idx].setPinCount(1);
+                bufferPool[idx].setFlagDirty(false);
+                dManager.readPage(pageId, bufferPool[idx].getBuffer());
+                frameNonUtilisee.remove(0);
+            }
         }
         return bufferPool[num_id].getBuffer();
     }
