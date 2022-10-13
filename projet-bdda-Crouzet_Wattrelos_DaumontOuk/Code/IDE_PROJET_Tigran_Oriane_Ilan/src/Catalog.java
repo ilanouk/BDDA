@@ -8,10 +8,10 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;;
 
 public class Catalog {
-    private Catalog leCatalog = new Catalog();
+    private static Catalog leCatalog = new Catalog();
     private ArrayList<RelationInfo> listeRelation = new ArrayList<RelationInfo>();
 
-    public Catalog getLeCatalog() {
+    public static Catalog getLeCatalog() {
         return leCatalog;
     }
 
