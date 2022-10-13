@@ -18,8 +18,12 @@ public class BufferManagerTest {
         PageId pageTest = DiskManager.getLeDiskManager().allocPage();
         System.out.println("tkt ca marche");
         BufferManager bMTest = BufferManager.leBufferManager();
+        System.out.println("pain");
         DiskManager.getLeDiskManager().writePage(pageTest, "TestBuffer".getBytes());
+        System.out.println("steak");
         byte[] buffTest=bMTest.getPage(pageTest);
+        System.out.println("pain");
+        System.out.println("Le sandwich est pret");
         //On affiche le buffer de la page test
         System.out.println(buffTest);
     }
