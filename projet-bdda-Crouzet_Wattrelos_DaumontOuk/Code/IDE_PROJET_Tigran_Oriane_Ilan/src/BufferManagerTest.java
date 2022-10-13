@@ -13,15 +13,12 @@ public class BufferManagerTest {
 
     //Test des fonctions getPage, freePage et flushAll
     public static void getPageTest() throws IOException{
-
-        //Créer les instances
-        DiskManager dMTest = DiskManager.getLeDiskManager();
-        PageId pageTest = dMTest.allocPage();
+        //LA PAGETEST NE FONCTIONNE PAS
+        //DiskManager dMTest = DiskManager.getLeDiskManager();
+        PageId pageTest = DiskManager.getLeDiskManager().allocPage();
         BufferManager bMTest = BufferManager.leBufferManager();
-        byte[] buffTest = bMTest.getPage(pageTest);
-
-        buffTest="TestBuffer".getBytes();
-        DiskManager.getLeDiskManager().writePage(pageTest, buffTest);
+        DiskManager.getLeDiskManager().writePage(pageTest, "TestBuffer".getBytes());
+        byte[] buffTest=bMTest.getPage(pageTest);
         //On affiche le buffer de la page test
         System.out.println(buffTest);
     }
@@ -57,7 +54,6 @@ public class BufferManagerTest {
 
 
     public static void main(String[] args) throws IOException {
-        System.out.println("pitié");
 		DiskManager.recupTabPageLibre();
 		
 		DBParams.DBpath ="../../DB";

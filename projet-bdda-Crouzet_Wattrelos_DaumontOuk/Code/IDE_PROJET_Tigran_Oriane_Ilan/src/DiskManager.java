@@ -25,6 +25,7 @@ public class DiskManager {
 				if (!fichier.exists()){ //On crée 4 pages, et on alloue la 1ère, les autres sont indiquées comme page libres
 					
 					fichier.createNewFile();
+					System.out.println("num fichier actuelle : " +numFichier);
 					for (int i =0;i<DBParams.maxPagesPerFile;i++){
 						tabPageLibre.add( new PageId(numFichier,i));
 					}
@@ -61,10 +62,11 @@ public class DiskManager {
 	
 	//Remplire la page avec l'argument buff
 	public void readPage(PageId pageId, byte[] buff) throws IOException{
-
+		
 		String nomFichier = DBParams.DBpath+"/"+"F"+pageId.getFile()+".bdda"; //Donne le chemin du fichier
 		RandomAccessFile file =  new RandomAccessFile(nomFichier, "r"); //Défini file en lecture r
 		int debutPage = DBParams.pageSize*pageId.getPage();
+		//file.read(buff,debutPage,DBParams.pageSize-1);
 		file.seek(debutPage);
 		file.read(buff); //Le fichier lit le tampon en argument
 		file.close();
