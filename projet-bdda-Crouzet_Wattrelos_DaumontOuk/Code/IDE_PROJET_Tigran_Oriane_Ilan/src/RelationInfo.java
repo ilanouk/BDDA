@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RelationInfo {
+public class RelationInfo implements Serializable{
     // Attributs
     private String nomRelation;
     private int nbrColonne;

@@ -1,13 +1,13 @@
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;;
 
-public class Catalog {
+public class Catalog implements Serializable{
     private static Catalog leCatalog = new Catalog();
     private ArrayList<RelationInfo> listeRelation = new ArrayList<RelationInfo>();
 
@@ -39,9 +39,10 @@ public class Catalog {
 
     public void save() throws IOException { //Sauvegarde le Catalogue dans le fichier Catalog.sv 
         File f = new File(DBParams.DBpath + "/Catalog.sv");
+        f.delete();
         FileOutputStream out = new FileOutputStream(f);
         ObjectOutputStream o = new ObjectOutputStream(out);
-        o.writeObject(leCatalog);
+        o.writeObject(this);
         o.close();
         out.close();
     }
@@ -49,8 +50,8 @@ public class Catalog {
     public void load() throws IOException, ClassNotFoundException { // charge le Catalogue sauvegarder dans le fichier Catalog.sv
                                                                    
         File f = new File(DBParams.DBpath + "/Catalog.sv");
-        if (f.exists()){
-             FileInputStream out = new FileInputStream(f);
+        if (f.exists() && f.length()!=0){
+            FileInputStream out = new FileInputStream(f);
             ObjectInputStream o = new ObjectInputStream(out);
             leCatalog = (Catalog) o.readObject();
             o.close();
