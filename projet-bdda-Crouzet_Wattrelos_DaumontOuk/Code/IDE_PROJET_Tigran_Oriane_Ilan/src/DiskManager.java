@@ -25,7 +25,6 @@ public class DiskManager {
 				if (!fichier.exists()){ //On crée 4 pages, et on alloue la 1ère, les autres sont indiquées comme page libres
 					
 					fichier.createNewFile();
-					System.out.println("num fichier actuelle : " +numFichier);
 					for (int i =0;i<DBParams.maxPagesPerFile;i++){
 						tabPageLibre.add( new PageId(numFichier,i));
 					}

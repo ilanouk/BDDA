@@ -16,6 +16,7 @@ public class BufferManagerTest {
         //LA PAGETEST NE FONCTIONNE PAS
         //DiskManager dMTest = DiskManager.getLeDiskManager();
         PageId pageTest = DiskManager.getLeDiskManager().allocPage();
+        System.out.println("tkt ca marche");
         BufferManager bMTest = BufferManager.leBufferManager();
         DiskManager.getLeDiskManager().writePage(pageTest, "TestBuffer".getBytes());
         byte[] buffTest=bMTest.getPage(pageTest);
