@@ -6,11 +6,12 @@
     "configurations": [
 
 
+
         {
             "type": "java",
-            "name": "Launch BufferManagerTests",
+            "name": "Launch BufferManagerTest",
             "request": "launch",
-            "mainClass": "BufferManagerTests",
+            "mainClass": "BufferManagerTest",
             "projectName": "IDE_PROJET_Tigran_Oriane_Ilan"
         },
         {
