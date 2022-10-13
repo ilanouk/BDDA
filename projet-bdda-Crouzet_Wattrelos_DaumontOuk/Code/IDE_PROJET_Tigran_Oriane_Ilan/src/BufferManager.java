@@ -3,15 +3,15 @@ import java.util.ArrayList;
 
 public class BufferManager {
     
-    private static BufferManager leBufferManager = new BufferManager();
+    private static BufferManager leBufferManager = null;
     private DiskManager dManager;
     private Frame[] bufferPool; //liste des buffers
     private ArrayList<Frame> frameNonUtilisee;
 
     //Constructeur
     public BufferManager(){ //private avec singleton?
-        bufferPool = new Frame[DBParams.frameCount];
-        dManager = DiskManager.getLeDiskManager();
+        this.bufferPool = new Frame[DBParams.frameCount];
+        this.dManager = DiskManager.getLeDiskManager();
         this.frameNonUtilisee = new ArrayList<Frame>();  
         initBufferPool();
     }
@@ -34,6 +34,9 @@ public class BufferManager {
 
     //Instance du buffermanager
     public static BufferManager leBufferManager(){
+        if(leBufferManager==null){
+            leBufferManager = new BufferManager();
+        }
         return leBufferManager;
     }
 
@@ -54,46 +57,47 @@ public class BufferManager {
         // recuperer le buffer de diskmanager
         //S'occuper du remplacement (LRU) du contenu d'une frame
 
-        int j=0;
-        int idx=0;
-        int num_id=-1; //numéro id de la frame dispo
+        int index=-1; //Index de la frame
 
         for(int i=0; i<bufferPool.length;i++){
-            if(bufferPool[i].getPage().equals(pageId)){ //Si la page existe deja
+
+            if(bufferPool[i].getPage().equals(pageId)){ //Si la page existe deja dans bufferpool
+                bufferPool[i].incrementPinCount();
                 return (bufferPool[i].getBuffer()); // On retourne le buffer de la page
             }
-            if(bufferPool[i].isEmpty() && num_id==-1){
-                num_id=i;
+            else if(bufferPool[i].isEmpty() && index==-1){ //S'il y a de la place, on garde l'indice/la position
+                index=i;
             }
         }
-        if(num_id!=-1){ //Si la page n'est pas dans le bufferpool (inexistante)
-            bufferPool[num_id].setPage(pageId);
-            bufferPool[num_id].setPinCount(1);
-            bufferPool[num_id].setFlagDirty(false);
-            dManager.readPage(pageId, bufferPool[num_id].getBuffer());
+
+        if(index!=-1){ //si une frame de vide, on "crée" la page
+            bufferPool[index].setPage(pageId);
+            bufferPool[index].setPinCount(1);
+            bufferPool[index].setFlagDirty(false);
+            dManager.readPage(pageId, bufferPool[index].getBuffer());
         }
         else{
             //Algo LRU
             //Ajouter le premier element de Frame
             Frame f = frameNonUtilisee.get(0);
 
-            //Verifier que la derniere frame existe bien
-            if(frameNonUtilisee.size()!=0){
-                //PEUT ETRE SAUVé LE CONTENU SI DIRTY=TRUE DANS LE DISK???
-
-                //Chercher l'id de la derniere frame dans le buffer
-                while(idx<bufferPool.length && !bufferPool[j].equals(f)){
-                    idx++;
-                    j++;
-                }
-                bufferPool[idx].setPage(pageId);
-                bufferPool[idx].setPinCount(1);
-                bufferPool[idx].setFlagDirty(false);
-                dManager.readPage(pageId, bufferPool[idx].getBuffer());
+            if(f.getFlagDirty()==true){ // Si frame modifiée, on sauvegarde sur disque
+                dManager.writePage(f.getPage(), f.getBuffer());
                 frameNonUtilisee.remove(0);
             }
+
+            index=0;
+            //Chercher l'id de la derniere frame dans le buffer
+            while(index<bufferPool.length && !bufferPool[index].equals(f)){
+                   index++;
+            }                
+            //Remplacement avec la nouvelle frame
+            bufferPool[index].setPage(pageId);
+            bufferPool[index].setPinCount(1);
+            bufferPool[index].setFlagDirty(false);
+            dManager.readPage(pageId, bufferPool[index].getBuffer());
         }
-        return bufferPool[num_id].getBuffer();
+        return bufferPool[index].getBuffer();
     }
 
 

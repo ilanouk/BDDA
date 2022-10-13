@@ -1,4 +1,6 @@
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class BufferManagerTest {
     
@@ -12,9 +14,18 @@ public class BufferManagerTest {
      */
 
     //Test des fonctions getPage, freePage et flushAll
-    public static void getPageTest() throws IOException{
+    public static void getPageTest() throws FileNotFoundException, IOException{
 
-        PageId pageTest = DiskManager.getLeDiskManager().allocPage();
+        BufferManager bm = BufferManager.leBufferManager();
+        DiskManager dm = DiskManager.getLeDiskManager();
+        PageId pageId = dm.allocPage();
+        byte[] buf = bm.getPage(pageId);
+
+        System.out.println("GetPage : ");
+        System.out.println(buf);
+
+
+       /*  PageId pageTest = DiskManager.getLeDiskManager().allocPage();
         BufferManager bMTest = BufferManager.leBufferManager();
         System.out.println("pain");
         DiskManager.getLeDiskManager().writePage(pageTest, "TestBuffer".getBytes());
@@ -25,7 +36,7 @@ public class BufferManagerTest {
         System.out.println("pain");
         System.out.println("Le sandwich est pret");
         //On affiche le buffer de la page test
-        System.out.println(buffTest);
+        System.out.println(buffTest); */
     }
 
     public static void freePageTest() throws IOException{
@@ -58,16 +69,34 @@ public class BufferManagerTest {
     }
 
 
-    public static void main(String[] args) throws IOException {
-		DiskManager.recupTabPageLibre();
-		
+    public static void main(String[] args) {
+		try {
+            DiskManager.recupTabPageLibre();
+        } catch (IOException e1) {
+            System.out.println(e1);
+            e1.printStackTrace();
+        }
+
 		DBParams.DBpath ="../../DB";
 		DBParams.maxPagesPerFile = 4;
 		DBParams.pageSize = 4096;
         DBParams.frameCount=2;
 
-        getPageTest();
-        freePageTest();
-        flushAllTest();
+        try {
+            getPageTest();
+            System.out.println("1");
+            freePageTest();
+            System.out.println("2");
+            flushAllTest();
+            System.out.println("3");
+        } 
+        catch (FileNotFoundException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }  
+        catch (IOException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }
     }
 }
