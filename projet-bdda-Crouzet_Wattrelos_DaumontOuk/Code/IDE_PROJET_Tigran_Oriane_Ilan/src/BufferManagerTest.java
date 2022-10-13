@@ -20,6 +20,8 @@ public class BufferManagerTest {
         BufferManager bMTest = BufferManager.leBufferManager();
         byte[] buffTest = bMTest.getPage(pageTest);
 
+        buffTest="TestBuffer".getBytes();
+        DiskManager.getLeDiskManager().writePage(pageTest, buffTest);
         //On affiche le buffer de la page test
         System.out.println(buffTest);
     }
@@ -49,6 +51,7 @@ public class BufferManagerTest {
          BufferManager bMTest = BufferManager.leBufferManager();
          byte[] buffTest = bMTest.getPage(pageTest);
 
+         byte[] essai = "TEST1".getBytes();
          
     }
 
