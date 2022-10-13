@@ -1,4 +1,6 @@
-public class ColInfo {
+import java.io.Serializable;
+
+public class ColInfo implements Serializable {
     private String nom, type;
 
     public ColInfo(String nom, String type) {

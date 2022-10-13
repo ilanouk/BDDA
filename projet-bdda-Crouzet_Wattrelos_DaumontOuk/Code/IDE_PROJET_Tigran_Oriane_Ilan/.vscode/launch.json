@@ -7,6 +7,7 @@
 
 
 
+
         {
             "type": "java",
             "name": "Launch BufferManagerTest",
@@ -19,6 +20,13 @@
             "name": "Launch DiskManagerTests",
             "request": "launch",
             "mainClass": "DiskManagerTests",
+            "projectName": "IDE_PROJET_Tigran_Oriane_Ilan"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestCatalog",
+            "request": "launch",
+            "mainClass": "TestCatalog",
             "projectName": "IDE_PROJET_Tigran_Oriane_Ilan"
         },
         {
