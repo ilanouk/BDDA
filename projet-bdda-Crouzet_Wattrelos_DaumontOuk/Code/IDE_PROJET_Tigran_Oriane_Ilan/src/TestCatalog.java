@@ -5,7 +5,6 @@ public class TestCatalog {
         Catalog.getLeCatalog().Init();
         RelationInfo r = new RelationInfo("test",4,"nom","Integer");
         Catalog.getLeCatalog().addRelationInfo(r);
-        System.out.println(Catalog.getLeCatalog().getRelationInfo("test"));
         Catalog.getLeCatalog().Finish();
     }
 
