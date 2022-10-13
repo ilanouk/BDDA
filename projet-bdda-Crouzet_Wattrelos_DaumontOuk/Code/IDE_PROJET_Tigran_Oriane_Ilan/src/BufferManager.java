@@ -71,6 +71,7 @@ public class BufferManager {
             bufferPool[num_id].setPinCount(1);
             bufferPool[num_id].setFlagDirty(false);
             dManager.readPage(pageId, bufferPool[num_id].getBuffer());
+            return bufferPool[num_id].getBuffer();
         }
         else{
             //Algo LRU

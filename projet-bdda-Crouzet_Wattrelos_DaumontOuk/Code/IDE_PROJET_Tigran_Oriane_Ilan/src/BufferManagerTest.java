@@ -13,12 +13,13 @@ public class BufferManagerTest {
 
     //Test des fonctions getPage, freePage et flushAll
     public static void getPageTest() throws IOException{
-        //LA PAGETEST NE FONCTIONNE PAS
-        //DiskManager dMTest = DiskManager.getLeDiskManager();
+
         PageId pageTest = DiskManager.getLeDiskManager().allocPage();
-        System.out.println("tkt ca marche");
         BufferManager bMTest = BufferManager.leBufferManager();
         DiskManager.getLeDiskManager().writePage(pageTest, "TestBuffer".getBytes());
+        
+        
+        //PROBLEME ICI
         byte[] buffTest=bMTest.getPage(pageTest);
         //On affiche le buffer de la page test
         System.out.println(buffTest);
