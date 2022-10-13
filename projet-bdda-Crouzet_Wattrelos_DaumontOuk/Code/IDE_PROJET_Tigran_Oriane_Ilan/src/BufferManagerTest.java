@@ -57,6 +57,7 @@ public class BufferManagerTest {
 
 
     public static void main(String[] args) throws IOException {
+        System.out.println("pitié");
 		DiskManager.recupTabPageLibre();
 		
 		DBParams.DBpath ="../../DB";
