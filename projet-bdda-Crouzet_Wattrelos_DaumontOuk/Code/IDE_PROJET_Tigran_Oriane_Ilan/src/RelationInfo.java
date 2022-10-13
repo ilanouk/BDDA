@@ -1,13 +1,24 @@
 import java.util.ArrayList;
 
 public class RelationInfo {
+    // Attributs
     private String nomRelation;
     private int nbrColonne;
-    private ArrayList<ColInfo> Colonnes = new ArrayList<ColInfo>();
-    private String[] typeColonne;
+    private ArrayList<ColInfo> colonnes = new ArrayList<ColInfo>();
 
-    public RelationInfo() {
+    // Constructeurs
+    public RelationInfo(String nomRelation, int nbrColonne, String nom, String type) {
+        this.nomRelation = nomRelation;
+        this.nbrColonne = nbrColonne;
+        ColInfo col = new ColInfo(nom, type);
+        colonnes.add(col);
+    }
 
+    // Méthodes
+    public RelationInfo(String nomRelation, int nbrColonne, ColInfo col) {
+        this.nomRelation = nomRelation;
+        this.nbrColonne = nbrColonne;
+        colonnes.add(col);
     }
 
     public String getNom() {
@@ -19,10 +30,10 @@ public class RelationInfo {
     }
 
     public ArrayList<ColInfo> getColonnes() {
-        return Colonnes;
+        return colonnes;
     }
 
-    public String[] getTypeCollone() {
-        return typeColonne;
+    public String getTypeColonne(int i) {
+        return colonnes.get(i).getType();
     }
 }

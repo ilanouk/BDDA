@@ -16,7 +16,7 @@ public class Record {
     public void writeToBuffer(ByteBuffer buff, int pos) {
         buff.position(pos);
         for (int i = 0; i < values.size(); i++) {
-            String type = relInfo.getTypeColonne()[i].toLowerCase();
+            String type = relInfo.getTypeColonne(i).toLowerCase();
             switch(type){ //On définit trois façons de remplir le buffer selon le type de la colonne
                 case "int" : 
                     int resInt = Integer.valueOf(values.get(i));
@@ -28,8 +28,12 @@ public class Record {
                     break;
                 default : 
                     if(type.startsWith("string")){
-                        len = 
+                        int len = Integer.parseInt(type.substring(6));
+                        for (int j = 0; j<len && j<values.get(i).length()){
+                            buff.putChar(values.get(i).charAt(j));
+                        }
                     }
+                    break;
             }
 
         }
