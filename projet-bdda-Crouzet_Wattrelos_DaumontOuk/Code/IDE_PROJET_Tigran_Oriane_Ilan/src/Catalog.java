@@ -16,7 +16,7 @@ public class Catalog {
     }
 
     public void Init() {
-
+        load();
     }
 
     public void Finish() throws IOException {
@@ -46,13 +46,16 @@ public class Catalog {
         out.close();
     }
 
-    public void load() throws IOException, ClassNotFoundException { // charge le Catalogue sauvegarder dans le fichier
-                                                                    // Catalog.sv
+    public void load() throws IOException, ClassNotFoundException { // charge le Catalogue sauvegarder dans le fichier Catalog.sv
+                                                                   
         File f = new File(DBParams.DBpath + "/Catalog.sv");
-        FileInputStream out = new FileInputStream(f);
-        ObjectInputStream o = new ObjectInputStream(out);
-        leCatalog = (Catalog) o.readObject();
-        o.close();
-        out.close();
+        if (f.exists()){
+             FileInputStream out = new FileInputStream(f);
+            ObjectInputStream o = new ObjectInputStream(out);
+            leCatalog = (Catalog) o.readObject();
+            o.close();
+            out.close();
+        }
+       
     }
 }
