@@ -15,7 +15,7 @@ public class Catalog {
         return leCatalog;
     }
 
-    public void Init() {
+    public void Init() throws ClassNotFoundException, IOException {
         load();
     }
 
