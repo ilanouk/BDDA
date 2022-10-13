@@ -76,14 +76,14 @@ public class BufferManager {
         else{
             //Algo LRU
             //Ajouter le premier element de Frame
-            frameNonUtilisee.get(0);
+            Frame f = frameNonUtilisee.get(0);
 
             //Verifier que la derniere frame existe bien
             if(frameNonUtilisee.size()!=0){
                 //PEUT ETRE SAUVé LE CONTENU SI DIRTY=TRUE DANS LE DISK???
 
                 //Chercher l'id de la derniere frame dans le buffer
-                while(idx<bufferPool.length && !bufferPool[j].equals(frameNonUtilisee)){
+                while(idx<bufferPool.length && !bufferPool[j].equals(f)){
                     idx++;
                     j++;
                 }
