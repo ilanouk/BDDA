@@ -21,7 +21,7 @@ public class BufferManagerTest {
         PageId pageId = dm.allocPage();
         byte[] buf = bm.getPage(pageId);
 
-        System.out.println("GetPage : ");
+        System.out.print("GetPage : ");
         System.out.println(buf);
 
 
@@ -70,18 +70,19 @@ public class BufferManagerTest {
 
 
     public static void main(String[] args) {
-		try {
+    	System.out.println("1");
+    	try {
             DiskManager.recupTabPageLibre();
         } catch (IOException e1) {
             System.out.println(e1);
             e1.printStackTrace();
         }
-
+    
 		DBParams.DBpath ="../../DB";
 		DBParams.maxPagesPerFile = 4;
 		DBParams.pageSize = 4096;
         DBParams.frameCount=2;
-
+        
         try {
             getPageTest();
             System.out.println("1");

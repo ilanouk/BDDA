@@ -9,7 +9,7 @@ public class Frame {
         pageIdx = new PageId(-1, 0);
         pinCount = 0;
         flagDirty = false;
-        //Allouer taille d'une page au buffer
+        buff= new byte[DBParams.pageSize];
     }
 
     //Retourne le pin count
