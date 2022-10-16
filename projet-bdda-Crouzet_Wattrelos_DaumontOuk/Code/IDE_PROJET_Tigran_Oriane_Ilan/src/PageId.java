@@ -30,4 +30,7 @@ public class PageId {
 		this.PageIdx=PageIdx;
 	}
 
+	public String toString() {
+		return "PageId : "+PageIdx;
+	}
 }

@@ -59,6 +59,10 @@ public class Frame {
     public void decrementPinCount(){
         this.pinCount--;
     }
+    
+    public String toString() {
+    	return ""+pageIdx+ " et PinCount : "+pinCount;
+    }
 
     //Savoir si la frame est vide (true)
     public boolean isEmpty()

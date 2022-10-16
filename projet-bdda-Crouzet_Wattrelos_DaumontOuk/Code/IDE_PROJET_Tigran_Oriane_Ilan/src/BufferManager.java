@@ -48,6 +48,7 @@ public class BufferManager {
     public void setDManager(DiskManager dManager){
         this.dManager=dManager;
     }
+    
 
     //****************************** FONCTIONS PRINCIPALES *****************************//
 
