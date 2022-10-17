@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -118,14 +119,13 @@ public class BufferManager {
 
 
     //Ecriture des pages modifiées et remise a 0 des flags/contenus dans buffers
-    public void flushAll() throws IOException{
+    public void flushAll() throws IOException, FileNotFoundException{
         //Ecriture des pages où flag dirty=true sur disque
         //Remise à 0 de tous les flags/infos et contenus des buffers
         //Rajouter un appel a la methode, dans la méthode Finish du DBManager
-        
-        Frame frame=new Frame();
     
-        for(int i=0;i<bufferPool.length;i++){ //On parcourt tous les buffers
+    
+        for(Frame frame : bufferPool){ //On parcourt tous les buffers
             if(frame.getFlagDirty()){ //Si frame modifiée, on obtient ses pages du DManager
                 dManager.writePage(frame.getPage(), frame.getBuffer());
             }

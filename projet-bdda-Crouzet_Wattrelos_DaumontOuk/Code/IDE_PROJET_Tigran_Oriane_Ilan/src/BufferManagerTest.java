@@ -14,13 +14,20 @@ public class BufferManagerTest {
 
         System.out.println("GetPage : "+Arrays.toString(buf));*/
 
-        PageId pageTest = DiskManager.getLeDiskManager().allocPage();
+        PageId pageTest1 = DiskManager.getLeDiskManager().allocPage();
+        PageId pageTest2 = DiskManager.getLeDiskManager().allocPage();
+        PageId pageTest3 = DiskManager.getLeDiskManager().allocPage();
+        
         BufferManager bMTest = BufferManager.leBufferManager();
-        DiskManager.getLeDiskManager().writePage(pageTest, "TestBuffer".getBytes());
+        
+        DiskManager.getLeDiskManager().writePage(pageTest1, "TestBuffer1".getBytes());
+        DiskManager.getLeDiskManager().writePage(pageTest2, "TestBuffer2".getBytes());
+        DiskManager.getLeDiskManager().writePage(pageTest3, "TestBuffer3".getBytes());
 
-        byte[] buffTest=bMTest.getPage(pageTest);
+        byte[] buffTest=bMTest.getPage(pageTest3);
+        System.out.println("testGetPage");
         //On affiche le buffer de la page test
-        System.out.println(Arrays.toString(buffTest)); 
+        System.out.println(Arrays.toString(buffTest));
     }
     
 
@@ -31,6 +38,7 @@ public class BufferManagerTest {
         BufferManager bMTest = BufferManager.leBufferManager();
         PageId pageTest = dMTest.allocPage();
 
+        System.out.println("testFreePage");
         //Créer page dans bufferManager
         bMTest.getPage(pageTest);
 
@@ -48,15 +56,20 @@ public class BufferManagerTest {
          PageId pageTest = dMTest.allocPage();
          BufferManager bMTest = BufferManager.leBufferManager();
          byte[] buffTest = new byte[DBParams.pageSize];
-         byte[] buff;
          
-         buff = bMTest.getPage(pageTest);
+         byte [] buff = bMTest.getPage(pageTest);
          System.out.println("FreePageTest");
          
          byte[] txt = "TEST1".getBytes();
+         buff=txt;
          
+         bMTest.freePage(pageTest, true);
+         dMTest.readPage(pageTest, buffTest);
+         System.out.println("Avant flushAll : "+Arrays.toString(buffTest));
+         bMTest.flushAll();
          
-         
+         dMTest.readPage(pageTest, buffTest);
+         System.out.println("Après flushAll : "+ Arrays.toString(buffTest));
     }
 
 
@@ -76,7 +89,7 @@ public class BufferManagerTest {
         try {
             getPageTest();
             freePageTest();
-            //flushAllTest();
+            //flushAllTest(); //********** BUG ************************
         } 
         catch (FileNotFoundException e) {
             System.out.println(e);
