@@ -117,7 +117,6 @@ public class BufferManager {
         }
     }
 
-
     //Ecriture des pages modifiées et remise a 0 des flags/contenus dans buffers
     public void flushAll() throws IOException, FileNotFoundException{
         //Ecriture des pages où flag dirty=true sur disque
