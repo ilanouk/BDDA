@@ -1,7 +1,7 @@
 import java.io.IOException;
 
 public class TestCatalog {
-    public static void LireEcrire() throws ClassNotFoundException, IOException {
+    public static void addRelationTest() throws ClassNotFoundException, IOException { //Test de l'ajout de relation
         Catalog.getLeCatalog().Init();
         RelationInfo r = new RelationInfo("test",4,"nom","Integer");
         Catalog.getLeCatalog().addRelationInfo(r);
@@ -14,7 +14,7 @@ public class TestCatalog {
 		DBParams.pageSize = 4096;
         DBParams.frameCount=2;
 
-        LireEcrire();
+        addRelationTest();
     
     }
 }
