@@ -17,7 +17,7 @@ public class BufferManager {
         initBufferPool();
     }
 
-    private void initBufferPool(){ 
+    public void initBufferPool(){ 
         for(int i=0;i<DBParams.frameCount;i++){
             bufferPool[i]= new Frame();
         }
