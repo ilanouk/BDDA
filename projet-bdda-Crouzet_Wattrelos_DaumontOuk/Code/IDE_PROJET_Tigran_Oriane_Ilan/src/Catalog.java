@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;;
 
-public class Catalog implements Serializable{
+public class Catalog implements Serializable{  // Classe qui contient toute les inforamtions concernant les relations
     private static Catalog leCatalog = new Catalog();
     private ArrayList<RelationInfo> listeRelation = new ArrayList<RelationInfo>();
 
@@ -23,11 +23,11 @@ public class Catalog implements Serializable{
         save();
     }
 
-    public void addRelationInfo(RelationInfo relation) {
+    public void addRelationInfo(RelationInfo relation) { //ajoute une relation 
         listeRelation.add(relation);
     }
 
-    public RelationInfo getRelationInfo(String nom) {
+    public RelationInfo getRelationInfo(String nom) { //retourne un RelationInfo correspondant au nom donné
         for (int i = 0; i < listeRelation.size(); i++) {
             if (listeRelation.get(i).getNom().equals(nom)) {
                 return listeRelation.get(i);
@@ -53,7 +53,7 @@ public class Catalog implements Serializable{
         if (f.exists() && f.length()!=0){
             FileInputStream out = new FileInputStream(f);
             ObjectInputStream o = new ObjectInputStream(out);
-            leCatalog = (Catalog) o.readObject();
+            leCatalog = (Catalog) o.readObject(); //lit le fichier dans lequel est sauvegarder leCatalog
             o.close();
             out.close();
         }
