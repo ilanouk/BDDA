@@ -37,8 +37,8 @@ public class Record {
                     nextAdresse += 4; // 1 Float = 4 octets
                     break;
                 default:
-                    if (type.startsWith("string")) {
-                        int len = Integer.parseInt(type.substring(6)); // Pourquoi 6 ??? Jsp lol
+                    if (type.startsWith("String")) {
+                        int len = Integer.parseInt(type.substring(0));
                         for (int j = 0; j < len && j < values.get(i).length(); i++) {
                             buff.putChar(values.get(i).charAt(j));
                         }
@@ -70,8 +70,8 @@ public class Record {
                     float resFLoat = buff.getFloat();
                     this.values.add(String.valueOf(resFLoat));
                 default:
-                    if (type.startsWith("string")) {
-                        int len = Integer.parseInt(type.substring(6)); // Pourquoi 6 ??? Jsp lol
+                    if (type.startsWith("String")) {
+                        int len = Integer.parseInt(type.substring(0));
                         int j = 0;
                         char[] chaine = new char[len];
                         for (int k = pos; k < pos + len; k++) {
@@ -86,7 +86,19 @@ public class Record {
         }
     }
 
-    // public int getWrittenSize() {
-
-    // }
+    public int getWrittenSize() {
+        int res = 0;
+        for (int i = 0; i < values.size(); i++) {
+            String type = relInfo.getTypeColonne(i).toLowerCase();
+            switch (type) {
+                case "Integer":
+                case "Float":
+                    res += 8; // Taille d'un int ou d'un float + taille de leur adresse
+                default:
+                    res += values.get(i).length() * 2; // Taille d'un string
+                    res += 4; // Taille de son adresse
+            }
+        }
+        return res;
+    }
 }
