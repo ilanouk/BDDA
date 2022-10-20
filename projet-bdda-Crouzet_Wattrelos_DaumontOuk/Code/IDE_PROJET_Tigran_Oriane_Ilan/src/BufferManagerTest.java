@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class BufferManagerTest {
@@ -7,27 +8,28 @@ public class BufferManagerTest {
 	
     public static void getPageTest() throws FileNotFoundException, IOException{
 
-        /*BufferManager bm = BufferManager.leBufferManager();
-        DiskManager dm = DiskManager.getLeDiskManager();
-        PageId pageId = dm.allocPage();
-        byte[] buf = bm.getPage(pageId);
-
-        System.out.println("GetPage : "+Arrays.toString(buf));*/
-
-        PageId pageTest1 = DiskManager.getLeDiskManager().allocPage();
-        PageId pageTest2 = DiskManager.getLeDiskManager().allocPage();
-        PageId pageTest3 = DiskManager.getLeDiskManager().allocPage();
+        PageId pageTest = DiskManager.getLeDiskManager().allocPage();
         
         BufferManager bMTest = BufferManager.leBufferManager();
         
-        DiskManager.getLeDiskManager().writePage(pageTest1, "TestBuffer1".getBytes());
-        DiskManager.getLeDiskManager().writePage(pageTest2, "TestBuffer2".getBytes());
-        DiskManager.getLeDiskManager().writePage(pageTest3, "TestBuffer3".getBytes());
+        //Allouer la taille exact pour chaque page
+        byte[] toWrite = new byte[DBParams.pageSize];
+        byte[] test1 = "TestBuffer1".getBytes();
+        for (int i = 0; i< test1.length; ++i)
+        	toWrite[i] = test1[i];
+        
+        DiskManager.getLeDiskManager().writePage(pageTest, toWrite);
 
-        byte[] buffTest=bMTest.getPage(pageTest3);
-        System.out.println("testGetPage");
+        byte[] buffTest=bMTest.getPage(pageTest);
+        String str = new String(buffTest);
+        
+        System.out.println("testGetPage :");
         //On affiche le buffer de la page test
-        System.out.println(Arrays.toString(buffTest));
+        
+        /**** ICI PROBLEME D'AFFICHAGE : QUE DES 0 OU CARRéS APRèS LA PAGE INDIQUéE ****/
+        
+        System.out.println(str);
+        System.out.println("************");
     }
     
 
@@ -38,7 +40,7 @@ public class BufferManagerTest {
         BufferManager bMTest = BufferManager.leBufferManager();
         PageId pageTest = dMTest.allocPage();
 
-        System.out.println("testFreePage");
+        System.out.println("testFreePage :");
         //Créer page dans bufferManager
         bMTest.getPage(pageTest);
 
@@ -47,29 +49,13 @@ public class BufferManagerTest {
         
         bMTest.freePage(pageTest, true);
         System.out.println("BufferPool après : "+ Arrays.toString(bMTest.getBufferPool()));
+        System.out.println("************");
     }
 
     public static void flushAllTest() throws IOException{
         // *********** A FINIR ************
          //Créer les instances
-         DiskManager dMTest = DiskManager.getLeDiskManager();
-         PageId pageTest = dMTest.allocPage();
-         BufferManager bMTest = BufferManager.leBufferManager();
-         byte[] buffTest = new byte[DBParams.pageSize];
          
-         byte [] buff = bMTest.getPage(pageTest);
-         System.out.println("FreePageTest");
-         
-         byte[] txt = "TEST1".getBytes();
-         buff=txt;
-         
-         bMTest.freePage(pageTest, true);
-         dMTest.readPage(pageTest, buffTest);
-         System.out.println("Avant flushAll : "+Arrays.toString(buffTest));
-         bMTest.flushAll();
-         
-         dMTest.readPage(pageTest, buffTest);
-         System.out.println("Après flushAll : "+ Arrays.toString(buffTest));
     }
 
 
