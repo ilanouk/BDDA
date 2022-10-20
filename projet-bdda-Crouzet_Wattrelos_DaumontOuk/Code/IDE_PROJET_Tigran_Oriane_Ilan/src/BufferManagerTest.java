@@ -2,14 +2,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.EmptyStackException;
 
 public class BufferManagerTest {
     
 	
     public static void getPageTest() throws FileNotFoundException, IOException{
 
-        PageId pageTest = DiskManager.getLeDiskManager().allocPage();
-        
+        PageId pageTest = DiskManager.getLeDiskManager().allocPage(); 
         BufferManager bMTest = BufferManager.getLeBufferManager();
         
         //Allouer la taille exact pour chaque page
@@ -55,7 +55,22 @@ public class BufferManagerTest {
     public static void flushAllTest() throws IOException{
         // *********** A FINIR ************
          //Créer les instances
-         
+    	System.out.println("testFlushAll :");
+    	PageId pageTest = DiskManager.getLeDiskManager().allocPage(); 
+        BufferManager bMTest = BufferManager.getLeBufferManager();
+        
+        //Allouer la taille exact pour chaque page
+        byte[] toWrite = new byte[DBParams.pageSize];
+        byte[] test1 = "TestBuffer1".getBytes();
+        for (int i = 0; i< test1.length; ++i)
+        	toWrite[i] = test1[i];
+        
+        DiskManager.getLeDiskManager().writePage(pageTest, toWrite);
+        
+        System.out.println("BufferPool avant : "+ Arrays.toString(bMTest.getBufferPool()));
+        bMTest.flushAll();
+        System.out.println("BufferPool après : "+ Arrays.toString(bMTest.getBufferPool()));
+        
     }
 
 
@@ -75,7 +90,7 @@ public class BufferManagerTest {
         try {
             getPageTest();
             freePageTest();
-            //flushAllTest(); //********** BUG ************************
+            flushAllTest(); //********** BUG ************************
         } 
         catch (FileNotFoundException e) {
             System.out.println(e);
@@ -84,6 +99,9 @@ public class BufferManagerTest {
         catch (IOException e) {
             System.out.println(e);
             e.printStackTrace();
+        }
+        catch (EmptyStackException e) {
+            System.out.println("ERREUR : Stack de Frame vide");
         }
     }
 }

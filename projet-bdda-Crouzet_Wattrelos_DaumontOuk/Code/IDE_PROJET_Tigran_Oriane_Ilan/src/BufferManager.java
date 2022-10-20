@@ -1,19 +1,19 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Stack;
 
 public class BufferManager {
     
     private static BufferManager leBufferManager = null;
     private DiskManager dManager;
     private Frame[] bufferPool; //liste des buffers
-    private ArrayList<Frame> frameNonUtilisee;
+    private Stack<Frame> frameNonUtilisee;
 
     //Constructeur
     public BufferManager(){ //private avec singleton?
         this.bufferPool = new Frame[DBParams.frameCount];
         this.dManager = DiskManager.getLeDiskManager();
-        this.frameNonUtilisee = new ArrayList<Frame>();  
+        this.frameNonUtilisee = new Stack<Frame>();  
         initBufferPool();
     }
 
@@ -80,12 +80,11 @@ public class BufferManager {
         }
         else{
             //Algo LRU
-            //Ajouter le premier element de Frame
-            Frame f = frameNonUtilisee.get(0);
+            //Removes the object at the top of this stack and returns thatobject as the value of this function
+            Frame f = frameNonUtilisee.pop();
 
             if(f.getFlagDirty()==true){ // Si frame modifiée, on sauvegarde sur disque
                 dManager.writePage(f.getPage(), f.getBuffer());
-                frameNonUtilisee.remove(0);
             }
 
             index=0;
@@ -119,20 +118,14 @@ public class BufferManager {
 
     //Ecriture des pages modifiées et remise a 0 des flags/contenus dans buffers
     public void flushAll() throws IOException, FileNotFoundException{
-        //Ecriture des pages où flag dirty=true sur disque
-        //Remise à 0 de tous les flags/infos et contenus des buffers
-        //Rajouter un appel a la methode, dans la méthode Finish du DBManager
     
-    
-        for(Frame frame : bufferPool){ //On parcourt tous les buffers
-            if(frame.getFlagDirty()){ //Si frame modifiée, on obtient ses pages du DManager
-                dManager.writePage(frame.getPage(), frame.getBuffer());
-            }
-            //remise à 0 des variables des pages
-            frame.setPage(new PageId(-1, 0));
-            frame.setPinCount(0);
-            frame.setFlagDirty(false);
-        }
+    	for(int i=0; i<bufferPool.length;i++) {
+    		if (bufferPool[i].getFlagDirty()) {
+    			dManager.writePage(bufferPool[i].getPage(), bufferPool[i].getBuffer());
+    		}
+    		bufferPool[i].setPage(new PageId(-1, 0));
+    		bufferPool[i].setPinCount(0);
+    		bufferPool[i].setFlagDirty(false);
+    	}
     }
 }
-
