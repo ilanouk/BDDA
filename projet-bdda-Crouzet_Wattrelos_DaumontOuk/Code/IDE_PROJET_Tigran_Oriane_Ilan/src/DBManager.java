@@ -1,7 +1,5 @@
 import java.io.IOException;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 public class DBManager {
 
     private static DBManager leDBManager;
