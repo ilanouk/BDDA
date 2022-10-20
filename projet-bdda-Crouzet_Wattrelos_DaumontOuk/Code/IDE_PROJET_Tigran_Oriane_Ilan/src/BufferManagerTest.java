@@ -10,7 +10,7 @@ public class BufferManagerTest {
 
         PageId pageTest = DiskManager.getLeDiskManager().allocPage();
         
-        BufferManager bMTest = BufferManager.leBufferManager();
+        BufferManager bMTest = BufferManager.getLeBufferManager();
         
         //Allouer la taille exact pour chaque page
         byte[] toWrite = new byte[DBParams.pageSize];
@@ -21,7 +21,7 @@ public class BufferManagerTest {
         DiskManager.getLeDiskManager().writePage(pageTest, toWrite);
 
         byte[] buffTest=bMTest.getPage(pageTest);
-        String str = new String(buffTest);
+        String str = new String(buffTest, StandardCharsets.UTF_8);
         
         System.out.println("testGetPage :");
         //On affiche le buffer de la page test
@@ -37,7 +37,7 @@ public class BufferManagerTest {
 
         //Créer les instances
         DiskManager dMTest = DiskManager.getLeDiskManager();
-        BufferManager bMTest = BufferManager.leBufferManager();
+        BufferManager bMTest = BufferManager.getLeBufferManager();
         PageId pageTest = dMTest.allocPage();
 
         System.out.println("testFreePage :");

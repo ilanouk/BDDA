@@ -34,7 +34,7 @@ public class BufferManager {
     }
 
     //Instance du buffermanager
-    public static BufferManager leBufferManager(){
+    public static BufferManager getLeBufferManager(){
         if(leBufferManager==null){
             leBufferManager = new BufferManager();
         }
