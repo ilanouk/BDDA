@@ -24,10 +24,6 @@ public class BufferManagerTest {
         String str = new String(buffTest, StandardCharsets.UTF_8);
         
         System.out.println("testGetPage :");
-        //On affiche le buffer de la page test
-        
-        /**** ICI PROBLEME D'AFFICHAGE : QUE DES 0 OU CARRéS APRèS LA PAGE INDIQUéE ****/
-        
         System.out.println(str);
         System.out.println("************");
     }
@@ -53,7 +49,6 @@ public class BufferManagerTest {
     }
 
     public static void flushAllTest() throws IOException{
-        // *********** A FINIR ************
          //Créer les instances
     	System.out.println("testFlushAll :");
     	PageId pageTest = DiskManager.getLeDiskManager().allocPage(); 
@@ -90,7 +85,7 @@ public class BufferManagerTest {
         try {
             getPageTest();
             freePageTest();
-            flushAllTest(); //********** BUG ************************
+            flushAllTest();
         } 
         catch (FileNotFoundException e) {
             System.out.println(e);
