@@ -25,26 +25,23 @@ public class Record {
             buff.position(nextAdresse); // On se déplace à l'adresse de la prochaine valeur
             String type = relInfo.getTypeColonne(i).toLowerCase();
             switch (type) { // On définit trois façons de remplir le buffer selon le type de la colonne
-                case "Integer":
+                case "integer":
                     int resInt = Integer.valueOf(values.get(i));
                     buff.putInt(resInt); // On ajoute la prochaine valeur dans le buffer (à son adresse selon sa
                                          // position relative)
                     nextAdresse += 4; // 1 Integer = 4 octets
                     break;
-                case "Float":
+                case "real":
                     float resFloat = Float.valueOf(values.get(i));
                     buff.putFloat(resFloat);
                     nextAdresse += 4; // 1 Float = 4 octets
                     break;
-                default:
-                    if (type.startsWith("String")) {
-                        int len = Integer.parseInt(type.substring(0));
-                        for (int j = 0; j < len && j < values.get(i).length(); i++) {
-                            buff.putChar(values.get(i).charAt(j));
-                        }
+                default:// Retravailler
+                    int len = Integer.parseInt(type.substring(0));
+                    for (int j = 0; j < len && j < values.get(i).length(); i++) {
+                        buff.putChar(values.get(i).charAt(j));
                     }
                     nextAdresse = values.get(i).length() * 2; // 1 String = octets
-                    break;
             }
 
         }
@@ -63,25 +60,22 @@ public class Record {
         for (int i = pos; i < nbrValeur; i++) {
             String type = relInfo.getTypeColonne(i).toLowerCase();
             switch (type) {
-                case "Integer":
+                case "integer":
                     int resInt = buff.getInt();
                     this.values.add(String.valueOf(resInt));
-                case "Float":
+                case "real":
                     float resFLoat = buff.getFloat();
                     this.values.add(String.valueOf(resFLoat));
-                default:
-                    if (type.startsWith("String")) {
-                        int len = Integer.parseInt(type.substring(0));
-                        int j = 0;
-                        char[] chaine = new char[len];
-                        for (int k = pos; k < pos + len; k++) {
-                            chaine[j] = buff.getChar();
-                            j++;
-                        }
-                        resString = new String(chaine);
-                        this.values.add(resString);
+                default: // Retravailler
+                    int len = Integer.parseInt(type.substring(0));
+                    int j = 0;
+                    char[] chaine = new char[len];
+                    for (int k = pos; k < pos + len; k++) {
+                        chaine[j] = buff.getChar();
+                        j++;
                     }
-                    break;
+                    resString = new String(chaine);
+                    this.values.add(resString);
             }
         }
     }
@@ -91,8 +85,8 @@ public class Record {
         for (int i = 0; i < values.size(); i++) {
             String type = relInfo.getTypeColonne(i).toLowerCase();
             switch (type) {
-                case "Integer":
-                case "Float":
+                case "integer":
+                case "real":
                     res += 8; // Taille d'un int ou d'un float + taille de leur adresse
                 default:
                     res += values.get(i).length() * 2; // Taille d'un string
