@@ -15,13 +15,13 @@ public class RelationInfo implements Serializable{
         colonnes.add(col);
     }
 
-    // Méthodes
     public RelationInfo(String nomRelation, int nbrColonne, ColInfo col) {
         this.nomRelation = nomRelation;
         this.nbrColonne = nbrColonne;
         colonnes.add(col);
     }
 
+    //Getter
     public String getNom() {
         return nomRelation;
     }
