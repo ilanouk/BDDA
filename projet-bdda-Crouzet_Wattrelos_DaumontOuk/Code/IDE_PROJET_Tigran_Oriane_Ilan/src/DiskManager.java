@@ -18,11 +18,11 @@ public class DiskManager {
 	public PageId allocPage() throws IOException {
 		
 		int numFichier=1;
-		if (tabPageLibre.size() == 0) { // si le tableau des page Libre est vide alors on crée un nouveau fichier
+		if (tabPageLibre.size() == 0) { // si le tableau des pages libres est vide alors on crée un nouveau fichier
 			while(true){
 				String nomFichier = "F"+numFichier+".bdda";
 				File fichier = new File("../../DB/"+nomFichier); 
-				if (!fichier.exists()){ //On crée 4 pages, et on alloue la 1ère, les autres sont indiquées comme page libres
+				if (!fichier.exists()){ //On crée 4 pages, et on alloue la 1ère, les autres sont indiquées comme page libre
 					
 					fichier.createNewFile();
 					for (int i =0;i<DBParams.maxPagesPerFile;i++){
@@ -46,7 +46,7 @@ public class DiskManager {
 	}
 
 
-	public String afficherTab(){
+	public String afficherTab(){ //Methode permettant d'afficher le tableau des pages libre afin de faciliter le debuggage
 		String tab="";
 		for (int i=0; i<tabPageLibre.size();i++){
 			tab += (tabPageLibre.get(i).getFile()+" "+ tabPageLibre.get(i).getPage()+"\n");
@@ -78,7 +78,7 @@ public class DiskManager {
 		String nomFichier = DBParams.DBpath+"/"+"F"+pageId.getFile()+".bdda";
 		RandomAccessFile file =  new RandomAccessFile(nomFichier, "rw");
 
-		file.seek(DBParams.pageSize*pageId.getPage());
+		file.seek(DBParams.pageSize*pageId.getPage()); //On va pour écrire à la bonne place
 		file.write(buff);
 		file.close();
 	}
