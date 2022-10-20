@@ -110,7 +110,7 @@ public class BufferManager {
         while(i<bufferPool.length && bufferPool[i].getPage().equals(pageId)==false){
             i++;
         }
-        if(bufferPool.length<i || bufferPool[i].getPinCount()==0){
+        if(bufferPool.length<i || bufferPool[i].getPinCount()!=0){
             bufferPool[i].decrementPinCount();
             bufferPool[i].setFlagDirty(valdirty);
         }
