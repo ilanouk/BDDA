@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+
 public class DBManager {
 
     private static DBManager leDBManager;
@@ -31,13 +32,13 @@ public class DBManager {
 
         StringTokenizer st = new StringTokenizer(commande);
         String mot1 = st.nextToken();
-        String mot2 =st.nextToken(); //Probleme si la commande est par exemple "Dropdb" alors pas de token restant et donc erreur"
+        String mot2 =st.nextToken(); //!!!!!!!!!Probleme si la commande est par exemple "Dropdb" alors pas de token restant et donc erreur"
 
         if (mot1.equals("CREATE")&& mot2.equals("TABLE")){ // on verifie si la commande est "CREATE TABLE"
 
             String nomRelation = st.nextToken(); // On recupere le nom de la table dans la chaine de charactere
 
-            ArrayList <ColInfo> listeColonnes;
+            ArrayList <ColInfo> listeColonnes = new ArrayList<ColInfo>();
 
             // La suite a pour but de recuperer toute les informations entre parenthese de la chaine de caractere;
             String chaineEntreParenthese = st.nextToken(); // on recupere tout ce qu'il y a entre parenthese
@@ -66,7 +67,8 @@ public class DBManager {
 
 
         if(mot1.equals("DROPDB")){
-
+            DropDbCommande drop = new DropDbCommande();
+            drop.execute();
 
         }
 
@@ -81,8 +83,5 @@ public class DBManager {
         }
 
 
-
-
-        }
     }
 }
