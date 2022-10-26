@@ -31,7 +31,7 @@ public class DBManager {
 
         StringTokenizer st = new StringTokenizer(commande);
         String mot1 = st.nextToken();
-        String mot2 =st.nextToken();
+        String mot2 =st.nextToken(); //Probleme si la commande est par exemple "Dropdb" alors pas de token restant et donc erreur"
 
         if (mot1.equals("CREATE")&& mot2.equals("TABLE")){ // on verifie si la commande est "CREATE TABLE"
 
