@@ -21,6 +21,12 @@ public class RelationInfo implements Serializable{
         colonnes.add(col);
     }
 
+    public RelationInfo(String nomRelation, int nbrColonne, ArrayList<ColInfo> colonnes) {
+        this.nomRelation = nomRelation;
+        this.nbrColonne = nbrColonne;
+       this.colonnes=colonnes;
+    }
+
     //Getter
     public String getNom() {
         return nomRelation;
@@ -36,5 +42,9 @@ public class RelationInfo implements Serializable{
 
     public String getTypeColonne(int i) {
         return colonnes.get(i).getType();
+    }
+
+    public void addColonne(ColInfo col){
+        colonnes.add(col);
     }
 }

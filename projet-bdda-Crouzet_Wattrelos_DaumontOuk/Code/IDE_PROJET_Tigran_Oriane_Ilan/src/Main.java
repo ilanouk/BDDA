@@ -1,6 +1,6 @@
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.StringTokenizer;
+
 
 public class Main {
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
@@ -13,7 +13,7 @@ public class Main {
 		DBManager.getleDBManager().Init(); //Initialisation du DBManager
 		
 		Scanner sc = new Scanner(System.in);
-		StringTokenizer strtoken;
+
 
 		while (true){// Boucle de traitement des commandes
 
@@ -24,9 +24,9 @@ public class Main {
 				break;
 			}
 
-			strtoken = new StringTokenizer(commande);
-			if (strtoken.nextToken().equals("Create")&&strtoken.nextToken().equals("Table"));
-
+			else{
+				DBManager.getleDBManager().processCommand(commande);
+			}
 
 
 		}
