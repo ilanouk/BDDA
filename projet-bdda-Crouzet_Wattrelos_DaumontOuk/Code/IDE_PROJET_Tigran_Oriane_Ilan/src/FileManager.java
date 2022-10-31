@@ -5,16 +5,17 @@ public class FileManager {
 	private static FileManager leFileManager=new FileManager();
 	
 	//allocation d’une nouvelle page via AllocPage du DiskManager et écriture dans la page allouée
-	public static PageId CreateNewHeaderPage() throws IOException
-	{
+	public static PageId createNewHeaderPage() throws IOException {
 		//Création des instances
-		PageId pageId = DiskManager.getLeDiskManager().allocPage();
 		DiskManager diskM = DiskManager.getLeDiskManager();
-        BufferManager buffM = BufferManager.getLeBufferManager();
+		BufferManager buffM = BufferManager.getLeBufferManager();
+		PageId pageId = diskM.allocPage();
 		byte[] buffer = buffM.getPage(pageId);
+
+		//ECRIRE pageID dans buffer
 		
 		return pageId;
-		// pas fini
+		// A FINIR !!!
 	}
 	public static PageId addDataPage(RelationInfo relInf) throws IOException {
 		PageId p = DiskManager.getLeDiskManager().allocPage();
