@@ -1,28 +1,55 @@
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 public class FileManager {
 	
 	private static FileManager leFileManager=new FileManager();
+
+	//Méthode permettant d'écrire une pageId dans un buffer
+	/*
+	 * Petite indication sur la conversion bit/octet
+	 * - Pour 4 octets, on utilise UTF-32
+	 * - Pour 1 octet, on utilise UTF-8
+	 */
+	//ERREUR AVEC ENCODAGE 
+	public void ecrirePageIdDansBuffer(PageId pageId, byte[] buff, int octet) throws UnsupportedEncodingException{
+		String pageIdString = pageId.getFile() +""+ pageId.getPage();
+
+		//Si bool==true, alors on écrit sur 0 octet, sinon 8
+		if( octet==4 ){
+			buff = pageIdString.getBytes("UTF-32");
+		}
+		else if( octet==8 ){
+			buff = pageIdString.getBytes("UTF-64");
+		}
+	}
 	
 	//allocation d’une nouvelle page via AllocPage du DiskManager et écriture dans la page allouée
-	public static PageId createNewHeaderPage() throws IOException {
+	public PageId createNewHeaderPage() throws IOException {
 		//Création des instances
 		DiskManager diskM = DiskManager.getLeDiskManager();
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageId = diskM.allocPage();
 		byte[] buffer = buffM.getPage(pageId);
 
-		//ECRIRE pageID dans buffer
+		ecrirePageIdDansBuffer(new PageId(-1, 0), buffer, 0);
+		ecrirePageIdDansBuffer(new PageId(-1, 0), buffer, 4);
 		
+		//Libérer page allouée auprès du Buffer Manager
+		buffM.freePage(pageId,true);
+
 		return pageId;
 		// A FINIR !!!
 	}
-	public static PageId addDataPage(RelationInfo relInf) throws IOException {
-		PageId p = DiskManager.getLeDiskManager().allocPage();
-		int x=0;
-		int y=0;
-		return p;
-		
+
+	public PageId addDataPage(RelationInfo relInf) throws IOException {
+		//Création des instances
+		DiskManager diskM = DiskManager.getLeDiskManager();
+		BufferManager buffM = BufferManager.getLeBufferManager();
+		PageId pageId = diskM.allocPage();
+
+
+		return pageId;
 	}
 
 }
