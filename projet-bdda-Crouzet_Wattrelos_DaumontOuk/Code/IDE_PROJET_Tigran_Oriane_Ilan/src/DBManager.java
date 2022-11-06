@@ -75,16 +75,16 @@ public class DBManager {
 
         }
 
-        if(mot1.equals("SELECT")){
-
-            
-        }
+        
 
         if(mot1.equals("INSERT")){
 
             
         }
+        if(mot1.equals("SELECT")){
 
+            
+        }
 
     }
 }
