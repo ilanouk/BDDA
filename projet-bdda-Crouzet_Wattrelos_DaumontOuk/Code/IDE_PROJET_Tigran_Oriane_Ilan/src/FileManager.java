@@ -15,7 +15,6 @@ public class FileManager {
 	public void ecrirePageIdDansBuffer(PageId pageId, byte[] buff, int octet) throws UnsupportedEncodingException{
 		String pageIdString = pageId.getFile() +""+ pageId.getPage();
 
-		//Si bool==true, alors on écrit sur 0 octet, sinon 8
 		if( octet==4 ){
 			buff = pageIdString.getBytes("UTF-32");
 		}
@@ -39,7 +38,7 @@ public class FileManager {
 		buffM.freePage(pageId,true);
 
 		return pageId;
-		// A FINIR !!!
+		// A TESTER PAS SUR DU FONCTIONNEMENT
 	}
 
 	public PageId addDataPage(RelationInfo relInf) throws IOException {
@@ -47,9 +46,29 @@ public class FileManager {
 		DiskManager diskM = DiskManager.getLeDiskManager();
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageId = diskM.allocPage();
+		// byte[] buffer = buffM.getPage(pageId);
+		byte[] bufferHeaderPage = buffM.getPage(relInf.getHeaderPageId());
 
+		ecrirePageIdDansBuffer(pageId, bufferHeaderPage, 8);
+		ecrirePageIdDansBuffer(relInf.getHeaderPageId(), bufferHeaderPage, 0);
+		// ecrirePageIdDansBuffer(pageId, buffer, 0);
+
+		buffM.freePage(pageId, true);
+		buffM.freePage(relInf.getHeaderPageId(), true);
 
 		return pageId;
 	}
 
+	public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws IOException{
+		BufferManager buffM = BufferManager.getLeBufferManager();
+		PageId pageId = relInfo.getHeaderPageId();
+
+		if(pageId.getFile() < sizeRecord){
+			buffM.freePage(pageId, false);
+			return addDataPage(relInfo);
+		}
+		else{
+			return null;
+		}
+	}
 }
