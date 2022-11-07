@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -15,7 +16,7 @@ public class CreateTableCommand{
         this.nomRelationInfo=nomRelationInfo;
 
     }
-    public void execute(){
+    public void execute() throws IOException{
         PageId pageid = FileManager.createNewHeaderPage();
         RelationInfo relation = new RelationInfo(nomRelationInfo,nbrColonnes,colonnes);
         Catalog.getLeCatalog().addRelationInfo(relation);

@@ -11,11 +11,11 @@ public class RecordId {
     }
 
     //Méthodes
-    public PageId pageId(){
+    public PageId getPageId(){
         return pageId;
     }
 
-    public int slotIdx(){
+    public int getSlotIdx(){
         return slotIdx;
     }
 }
