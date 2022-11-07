@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public class FileManager {
 	
@@ -70,5 +71,22 @@ public class FileManager {
 		else{
 			return null;
 		}
+	}
+	public RecordId writeRecordToDataPage (Record record, PageId pageId) {
+		return null;
+		
+	}
+	public List<Record> getRecordsInDataPage(RelationInfo relInfo, PageId pageId){
+		return null;
+		
+	}
+	public List<PageId> getAllDataPages (RelationInfo relInfo){
+		return null;
+	}
+	public RecordId InsertRecordIntoRelation (Record record) {
+		return null;
+	}
+	public List<Record> GetAllRecords (RelationInfo relInfo){
+		return null;
 	}
 }
