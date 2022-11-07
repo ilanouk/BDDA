@@ -12,7 +12,7 @@ public class FileManager {
 	 * - Pour 1 octet, on utilise UTF-8
 	 */
 	//ERREUR AVEC ENCODAGE 
-	public void ecrirePageIdDansBuffer(PageId pageId, byte[] buff, int octet) throws UnsupportedEncodingException{
+	public static void ecrirePageIdDansBuffer(PageId pageId, byte[] buff, int octet) throws UnsupportedEncodingException{
 		String pageIdString = pageId.getFile() +""+ pageId.getPage();
 
 		if( octet==4 ){
@@ -24,7 +24,7 @@ public class FileManager {
 	}
 	
 	//allocation d’une nouvelle page via AllocPage du DiskManager et écriture dans la page allouée
-	public PageId createNewHeaderPage() throws IOException {
+	public static PageId createNewHeaderPage() throws IOException {
 		//Création des instances
 		DiskManager diskM = DiskManager.getLeDiskManager();
 		BufferManager buffM = BufferManager.getLeBufferManager();

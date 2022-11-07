@@ -9,6 +9,13 @@ public class RelationInfo implements Serializable{
     private PageId headerPageId; // représente l’identifiant de la Header Page de la relation
 
     // Constructeurs
+    public RelationInfo(String nomRelation, int nbrColonne, String nom, String type) {
+        this.nomRelation = nomRelation;
+        this.nbrColonne = nbrColonne;
+        ColInfo col = new ColInfo(nom, type);
+        colonnes.add(col);
+    }
+
     public RelationInfo(String nomRelation, int nbrColonne, PageId headerPageId, String nom, String type) {
         this.nomRelation = nomRelation;
         this.nbrColonne = nbrColonne;
@@ -24,10 +31,9 @@ public class RelationInfo implements Serializable{
         colonnes.add(col);
     }
 
-    public RelationInfo(String nomRelation, int nbrColonne, PageId headerPageId, ArrayList<ColInfo> colonnes) {
+    public RelationInfo(String nomRelation, int nbrColonne, ArrayList<ColInfo> colonnes) {
         this.nomRelation = nomRelation;
         this.nbrColonne = nbrColonne;
-        this.headerPageId=headerPageId;
        this.colonnes=colonnes;
     }
 

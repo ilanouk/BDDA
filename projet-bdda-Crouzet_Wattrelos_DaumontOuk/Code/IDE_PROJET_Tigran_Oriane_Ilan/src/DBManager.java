@@ -27,7 +27,7 @@ public class DBManager {
 
     }
 
-    public void processCommand(String commande){
+    public void processCommand(String commande) throws IOException{
 
 
         StringTokenizer st = new StringTokenizer(commande);
