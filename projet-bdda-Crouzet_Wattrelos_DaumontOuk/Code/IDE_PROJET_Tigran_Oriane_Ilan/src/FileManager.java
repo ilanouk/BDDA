@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.Buffer;
 import java.util.List;
 
 public class FileManager {
@@ -64,7 +65,7 @@ public class FileManager {
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageId = relInfo.getHeaderPageId();
 
-		if(pageId.getFile() < sizeRecord){
+		if(pageId.toString().length() < sizeRecord){ //OUI? NON? PageId.getFile()
 			buffM.freePage(pageId, false);
 			return addDataPage(relInfo);
 		}
@@ -72,21 +73,45 @@ public class FileManager {
 			return null;
 		}
 	}
-	public RecordId writeRecordToDataPage (Record record, PageId pageId) {
-		return null;
+
+	//Utiliser une méthode du TP4 Record pour écrire le record dans le pageId
+	public RecordId writeRecordToDataPage (Record record, PageId pageId) throws IOException{
+		BufferManager buffM = BufferManager.getLeBufferManager();
+		byte[] buffer = buffM.getPage(pageId);
+		RecordId recordId = new RecordId(pageId, 0);
+
+		//Enregistrer record dans pageId
+
+		buffM.freePage(pageId, true);
+		
+		return recordId;
 		
 	}
+
+	// A FINIR !!!
+	//Renvoie la liste des records stockés dans la pageId
 	public List<Record> getRecordsInDataPage(RelationInfo relInfo, PageId pageId){
+		BufferManager buffM = BufferManager.getLeBufferManager();
+
+		//Utiliser une methode du TP4 Record
+
 		return null;
 		
 	}
+
+	// A FINIR !!!
+	//Renvoie les pageId des pages de données, ceux de la HeaderPage
 	public List<PageId> getAllDataPages (RelationInfo relInfo){
 		return null;
 	}
-	public RecordId InsertRecordIntoRelation (Record record) {
-		return null;
+
+	//Insertion d'un record dans une relation
+	public RecordId InsertRecordIntoRelation (Record record) throws IOException {
+		return this.writeRecordToDataPage(record, this.getFreeDataPageId(null, 0));
 	}
-	public List<Record> GetAllRecords (RelationInfo relInfo){
-		return null;
+
+	//Lister tous les records dans une relation
+	public List<Record> GetAllRecords (RelationInfo relInfo) throws IOException{
+		return this.getRecordsInDataPage(relInfo, this.getFreeDataPageId(relInfo, 0));
 	}
 }
