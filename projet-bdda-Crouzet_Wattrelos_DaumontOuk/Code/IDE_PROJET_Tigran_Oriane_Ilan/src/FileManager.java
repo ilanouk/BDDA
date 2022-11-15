@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
+import java.io.DataInputStream;
 
 public class FileManager {
 	
@@ -24,7 +26,15 @@ public class FileManager {
 		}
 	}
 
-	// public static PageId lirePageIdDepuisPageBuffer(byte[] buff, boolean bool)
+	public static PageId lirePageIdDepuisPageBuffer(byte[] buff, boolean prem){
+		int pageIdInt = prem? buff[0] : buff[3]; // ?????
+
+		int fileIdx = pageIdInt/10;
+		int pageIdx = pageIdInt%10;
+		PageId pageId = new PageId(fileIdx, pageIdx);
+		
+		return pageId;
+	}
 	
 	//allocation d’une nouvelle page via AllocPage du DiskManager et écriture dans la page allouée
 	public static PageId createNewHeaderPage() throws IOException {
@@ -51,12 +61,14 @@ public class FileManager {
 		PageId pageId = diskM.allocPage();
 		// byte[] buffer = buffM.getPage(pageId);
 		byte[] bufferHeaderPage = buffM.getPage(relInf.getHeaderPageId());
+		byte[] buff = buffM.getPage(pageId);
+		PageId prochainePageId =  lirePageIdDepuisPageBuffer(bufferHeaderPage, true);
 
 		ecrirePageIdDansBuffer(pageId, bufferHeaderPage, 4);
 		ecrirePageIdDansBuffer(pageId, bufferHeaderPage, 4); // ---------UTILE 2 FOIS ??
 		
-		ecrirePageIdDansBuffer(relInf.getHeaderPageId(), bufferHeaderPage, 0);
-		// ecrirePageIdDansBuffer(pageId, buffer, 0);
+		ecrirePageIdDansBuffer(relInf.getHeaderPageId(), buff, 4);
+		ecrirePageIdDansBuffer(prochainePageId, buff, 0);
 
 		buffM.freePage(pageId, true);
 		buffM.freePage(relInf.getHeaderPageId(), true);
@@ -68,16 +80,15 @@ public class FileManager {
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageIdHeaderPage = relInfo.getHeaderPageId();
 		byte[] bufferHeaderPage = buffM.getPage(pageIdHeaderPage);
-		PageId pageId = ;
+		PageId pageId = lirePageIdDepuisPageBuffer(bufferHeaderPage, true);
 
-		if(pageId.toString().length() <= sizeRecord){ //OUI? NON? PageId.getFile()
-			return this.addDataPage(relInfo);
-		}
-		else if(!(pageId.toString().length() < sizeRecord)){
+		// Si sizeRecord trop grand ou page inexistante, return null
+		if( pageId.toString().length() < sizeRecord || pageId.getFile()==-1 ){
 			return null;
 		}
 
 		buffM.freePage(pageId, false);
+
 		return pageId;
 	}
 
@@ -108,8 +119,14 @@ public class FileManager {
 
 	// A FINIR !!!
 	//Renvoie les pageId des pages de données, ceux de la HeaderPage
-	public List<PageId> getAllDataPages (RelationInfo relInfo){
-		return null;
+	public ArrayList<PageId> getAllDataPages (RelationInfo relInfo){
+		ArrayList<PageId> dataPages = new ArrayList<PageId>();
+
+		/*for(PageId : relInfo.getColonnes()){
+			dataPages.addAll();
+		}*/
+
+		return dataPages;
 	}
 
 	//Insertion d'un record dans une relation
