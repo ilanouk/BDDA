@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.Buffer;
 import java.util.List;
 
 public class FileManager {
@@ -13,17 +12,19 @@ public class FileManager {
 	 * - Pour 4 octets, on utilise UTF-32
 	 * - Pour 1 octet, on utilise UTF-8
 	 */
-	//ERREUR AVEC ENCODAGE 
+	//ERREUR AVEC ENCODAGE ?
 	public static void ecrirePageIdDansBuffer(PageId pageId, byte[] buff, int octet) throws UnsupportedEncodingException{
 		String pageIdString = pageId.getFile() +""+ pageId.getPage();
 
 		if( octet==4 ){
 			buff = pageIdString.getBytes("UTF-32");
 		}
-		else if( octet==8 ){
-			buff = pageIdString.getBytes("UTF-64");
+		else if( octet==0 ){
+			buff = pageIdString.getBytes();
 		}
 	}
+
+	// public static PageId lirePageIdDepuisPageBuffer(byte[] buff, boolean bool)
 	
 	//allocation d’une nouvelle page via AllocPage du DiskManager et écriture dans la page allouée
 	public static PageId createNewHeaderPage() throws IOException {
@@ -51,7 +52,9 @@ public class FileManager {
 		// byte[] buffer = buffM.getPage(pageId);
 		byte[] bufferHeaderPage = buffM.getPage(relInf.getHeaderPageId());
 
-		ecrirePageIdDansBuffer(pageId, bufferHeaderPage, 8);
+		ecrirePageIdDansBuffer(pageId, bufferHeaderPage, 4);
+		ecrirePageIdDansBuffer(pageId, bufferHeaderPage, 4); // ---------UTILE 2 FOIS ??
+		
 		ecrirePageIdDansBuffer(relInf.getHeaderPageId(), bufferHeaderPage, 0);
 		// ecrirePageIdDansBuffer(pageId, buffer, 0);
 
@@ -63,15 +66,19 @@ public class FileManager {
 
 	public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws IOException{
 		BufferManager buffM = BufferManager.getLeBufferManager();
-		PageId pageId = relInfo.getHeaderPageId();
+		PageId pageIdHeaderPage = relInfo.getHeaderPageId();
+		byte[] bufferHeaderPage = buffM.getPage(pageIdHeaderPage);
+		PageId pageId = ;
 
-		if(pageId.toString().length() < sizeRecord){ //OUI? NON? PageId.getFile()
-			buffM.freePage(pageId, false);
-			return addDataPage(relInfo);
+		if(pageId.toString().length() <= sizeRecord){ //OUI? NON? PageId.getFile()
+			return this.addDataPage(relInfo);
 		}
-		else{
+		else if(!(pageId.toString().length() < sizeRecord)){
 			return null;
 		}
+
+		buffM.freePage(pageId, false);
+		return pageId;
 	}
 
 	//Utiliser une méthode du TP4 Record pour écrire le record dans le pageId
