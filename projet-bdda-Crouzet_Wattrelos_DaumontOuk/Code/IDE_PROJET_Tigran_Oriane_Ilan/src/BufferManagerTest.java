@@ -54,10 +54,9 @@ public class BufferManagerTest {
 
         dMTest.readPage(pageTest, buffer);
         
-        System.out.println("BufferPool avant : "+ Arrays.toString(buffer.array()));
+        System.out.println("BufferPool avant : "+ Arrays.toString(bMTest.getBufferPool()));
         bMTest.flushAll();
-        dMTest.readPage(pageTest, buff);
-        System.out.println("BufferPool après : "+ Arrays.toString(buffer.array()));
+        System.out.println("BufferPool après : "+ Arrays.toString(bMTest.getBufferPool()));
         
     }
 
@@ -73,7 +72,7 @@ public class BufferManagerTest {
 		DBParams.DBpath ="../../DB";
 		DBParams.maxPagesPerFile = 4;
 		DBParams.pageSize = 4096;
-        DBParams.frameCount=2;
+        DBParams.frameCount=4;
         
         try {
             getPageTest();
