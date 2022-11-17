@@ -1,15 +1,16 @@
+import java.nio.ByteBuffer;
 
 public class Frame {
     private PageId pageIdx;
     private int pinCount;
     private boolean flagDirty;
-    private byte[] buff;
+    private ByteBuffer buff;
 
     public Frame(){
         pageIdx = new PageId(-1, 0);
         pinCount = 0;
         flagDirty = false;
-        buff= new byte[DBParams.pageSize];
+        buff= ByteBuffer.allocate(DBParams.pageSize);
     }
 
     //Retourne le pin count
@@ -28,7 +29,7 @@ public class Frame {
     }
 
     //Retourne le buffer
-    public byte[] getBuffer(){
+    public ByteBuffer getBuffer(){
         return this.buff;
     }
 
@@ -43,7 +44,7 @@ public class Frame {
     }
 
     //Modifier le buffer
-    public void setBuffer(byte[] buff){
+    public void setBuffer(ByteBuffer buff){
         this.buff = buff;
     }
 

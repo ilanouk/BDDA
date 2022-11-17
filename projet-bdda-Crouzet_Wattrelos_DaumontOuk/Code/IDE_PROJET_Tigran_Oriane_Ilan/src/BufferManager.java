@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Stack;
 
 public class BufferManager {
@@ -54,7 +55,7 @@ public class BufferManager {
     //****************************** FONCTIONS PRINCIPALES *****************************//
 
     //Retourne un des buffers associés à une frame
-    public byte[] getPage(PageId pageId) throws IOException{
+    public ByteBuffer getPage(PageId pageId) throws IOException{
         //Buffer = contenu page désignée par pageId
         // recuperer le buffer de diskmanager
         //S'occuper du remplacement (LRU) du contenu d'une frame
@@ -76,7 +77,7 @@ public class BufferManager {
             bufferPool[index].setPage(pageId);
             bufferPool[index].setPinCount(1);
             bufferPool[index].setFlagDirty(false);
-            dManager.readPage(pageId, bufferPool[index].getBuffer());
+            dManager.readPage(pageId, bufferPool[index].getBuffer()); ;
         }
         else{
             //Algo LRU

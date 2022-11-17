@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.DataInputStream;
@@ -15,7 +16,7 @@ public class FileManager {
 	 * - Pour 1 octet, on utilise UTF-8
 	 */
 	//ERREUR AVEC ENCODAGE ?
-	public static void ecrirePageIdDansBuffer(PageId pageId, byte[] buff, int octet) throws UnsupportedEncodingException{
+	public static void ecrirePageIdDansBuffer(PageId pageId, ByteBuffer buff, int octet) throws UnsupportedEncodingException{
 		String pageIdString = pageId.getFile() +""+ pageId.getPage();
 
 		if( octet==4 ){
@@ -26,8 +27,8 @@ public class FileManager {
 		}
 	}
 
-	public static PageId lirePageIdDepuisPageBuffer(byte[] buff, boolean prem){
-		int pageIdInt = prem? buff[0] : buff[3]; // ?????
+	public static PageId lirePageIdDepuisPageBuffer(ByteBuffer buff, boolean prem){
+		int pageIdInt = prem? buff.getInt(0) : buff.getInt(3); // ajouter 3 entiers (2 pour l'info de la page et 1 pour la taille dispo)
 
 		int fileIdx = pageIdInt/10;
 		int pageIdx = pageIdInt%10;
@@ -42,7 +43,7 @@ public class FileManager {
 		DiskManager diskM = DiskManager.getLeDiskManager();
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageId = diskM.allocPage();
-		byte[] buffer = buffM.getPage(pageId);
+		ByteBuffer buffer = buffM.getPage(pageId);
 
 		ecrirePageIdDansBuffer(new PageId(-1, 0), buffer, 0);
 		ecrirePageIdDansBuffer(new PageId(-1, 0), buffer, 4);
@@ -60,8 +61,8 @@ public class FileManager {
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageId = diskM.allocPage();
 		// byte[] buffer = buffM.getPage(pageId);
-		byte[] bufferHeaderPage = buffM.getPage(relInf.getHeaderPageId());
-		byte[] buff = buffM.getPage(pageId);
+		ByteBuffer bufferHeaderPage = buffM.getPage(relInf.getHeaderPageId());
+		ByteBuffer buff = buffM.getPage(pageId);
 		PageId prochainePageId =  lirePageIdDepuisPageBuffer(bufferHeaderPage, true);
 
 		ecrirePageIdDansBuffer(pageId, bufferHeaderPage, 4);
@@ -79,7 +80,7 @@ public class FileManager {
 	public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws IOException{
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageIdHeaderPage = relInfo.getHeaderPageId();
-		byte[] bufferHeaderPage = buffM.getPage(pageIdHeaderPage);
+		ByteBuffer bufferHeaderPage = buffM.getPage(pageIdHeaderPage);
 		PageId pageId = lirePageIdDepuisPageBuffer(bufferHeaderPage, true);
 
 		// Si sizeRecord trop grand ou page inexistante, return null
@@ -95,7 +96,7 @@ public class FileManager {
 	//Utiliser une méthode du TP4 Record pour écrire le record dans le pageId
 	public RecordId writeRecordToDataPage (Record record, PageId pageId) throws IOException{
 		BufferManager buffM = BufferManager.getLeBufferManager();
-		byte[] buffer = buffM.getPage(pageId);
+		ByteBuffer buffer = buffM.getPage(pageId);
 		RecordId recordId = new RecordId(pageId, 0);
 
 		//Enregistrer record dans pageId

@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -55,25 +56,25 @@ public class DiskManager {
 	}
 
 	// Remplire la page avec l'argument buff
-	public void readPage(PageId pageId, byte[] buff) throws IOException {
+	public void readPage(PageId pageId, ByteBuffer buff) throws IOException {
 
 		String nomFichier = DBParams.DBpath + "/" + "F" + pageId.getFile() + ".bdda"; // Donne le chemin du fichier
 		RandomAccessFile file = new RandomAccessFile(nomFichier, "r"); // Défini file en lecture r
 		int debutPage = DBParams.pageSize * pageId.getPage();
 		// file.read(buff,debutPage,DBParams.pageSize-1);
 		file.seek(debutPage);
-		file.read(buff); // Le fichier lit le tampon en argument
+		file.read(buff.array()); // Le fichier lit le tampon en argument
 		file.close();
 	}
 
 	// Ecrit le contenu de l'argument buff dans le fichier
-	public void writePage(PageId pageId, byte[] buff) throws IOException {
+	public void writePage(PageId pageId, ByteBuffer buff) throws IOException {
 
 		String nomFichier = DBParams.DBpath + "/" + "F" + pageId.getFile() + ".bdda";
 		RandomAccessFile file = new RandomAccessFile(nomFichier, "rw");
 
 		file.seek(DBParams.pageSize * pageId.getPage()); // On va pour écrire à la bonne place
-		file.write(buff);
+		file.write(buff.array());
 		file.close();
 	}
 
