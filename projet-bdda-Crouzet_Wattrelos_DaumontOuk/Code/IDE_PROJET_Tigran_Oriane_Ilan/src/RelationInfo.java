@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -9,32 +10,26 @@ public class RelationInfo implements Serializable{
     private PageId headerPageId; // représente l’identifiant de la Header Page de la relation 
 
     // Constructeurs
-    public RelationInfo(String nomRelation, int nbrColonne, String nom, String type) {
+    public RelationInfo(String nomRelation, int nbrColonne, String nom, String type) throws IOException {
         this.nomRelation = nomRelation;
         this.nbrColonne = nbrColonne;
         ColInfo col = new ColInfo(nom, type);
+        headerPageId = DiskManager.getLeDiskManager().allocPage();
         colonnes.add(col);
     }
 
-    public RelationInfo(String nomRelation, int nbrColonne, PageId headerPageId, String nom, String type) {
+    public RelationInfo(String nomRelation, int nbrColonne, ColInfo col) throws IOException {
         this.nomRelation = nomRelation;
         this.nbrColonne = nbrColonne;
-        this.headerPageId=headerPageId;
-        ColInfo col = new ColInfo(nom, type);
+        headerPageId = DiskManager.getLeDiskManager().allocPage();
         colonnes.add(col);
     }
 
-    public RelationInfo(String nomRelation, PageId headerPageId, int nbrColonne, ColInfo col) {
+    public RelationInfo(String nomRelation, int nbrColonne, ArrayList<ColInfo> colonnes) throws IOException {
         this.nomRelation = nomRelation;
         this.nbrColonne = nbrColonne;
-        this.headerPageId=headerPageId;
-        colonnes.add(col);
-    }
-
-    public RelationInfo(String nomRelation, int nbrColonne, ArrayList<ColInfo> colonnes) {
-        this.nomRelation = nomRelation;
-        this.nbrColonne = nbrColonne;
-       this.colonnes=colonnes;
+        this.colonnes=colonnes;
+        headerPageId = DiskManager.getLeDiskManager().allocPage();
     }
 
     //Getter
