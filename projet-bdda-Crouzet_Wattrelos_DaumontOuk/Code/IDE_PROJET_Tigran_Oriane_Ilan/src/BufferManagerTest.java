@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.EmptyStackException;
@@ -11,20 +12,10 @@ public class BufferManagerTest {
 
         PageId pageTest = DiskManager.getLeDiskManager().allocPage(); 
         BufferManager bMTest = BufferManager.getLeBufferManager();
-        
-        //Allouer la taille exact pour chaque page
-        byte[] toWrite = new byte[DBParams.pageSize];
-        byte[] test1 = "TestBuffer1".getBytes();
-        for (int i = 0; i< test1.length; ++i)
-        	toWrite[i] = test1[i];
-        
-        DiskManager.getLeDiskManager().writePage(pageTest, toWrite);
-
-        byte[] buffTest=bMTest.getPage(pageTest);
-        String str = new String(buffTest, StandardCharsets.UTF_8);
+        ByteBuffer buffTest=bMTest.getPage(pageTest);
         
         System.out.println("testGetPage :");
-        System.out.println(str);
+        System.out.println(Arrays.toString(buffTest.array()));
         System.out.println("************");
     }
     
@@ -53,14 +44,6 @@ public class BufferManagerTest {
     	System.out.println("testFlushAll :");
     	PageId pageTest = DiskManager.getLeDiskManager().allocPage(); 
         BufferManager bMTest = BufferManager.getLeBufferManager();
-        
-        //Allouer la taille exact pour chaque page
-        byte[] toWrite = new byte[DBParams.pageSize];
-        byte[] test1 = "TestBuffer1".getBytes();
-        for (int i = 0; i< test1.length; ++i)
-        	toWrite[i] = test1[i];
-        
-        DiskManager.getLeDiskManager().writePage(pageTest, toWrite);
         
         System.out.println("BufferPool avant : "+ Arrays.toString(bMTest.getBufferPool()));
         bMTest.flushAll();
