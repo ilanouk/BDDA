@@ -1,22 +1,22 @@
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 public class DiskManagerTests {
 
 	public static int allocTest() throws IOException {
 		// Alloue 2 pages et désalloue une page. La fonction doit retourner 1
 		PageId p1 = DiskManager.getLeDiskManager().allocPage();
-		PageId p2 = DiskManager.getLeDiskManager().allocPage();
-		// PageId p3 = DiskManager.getLeDiskManager().allocPage();
+		// PageId p2 = DiskManager.getLeDiskManager().allocPage();
 		DiskManager.getLeDiskManager().deallocPage(p1);
 
 		return (DiskManager.getLeDiskManager().getCurrentAllocPages());
 	}
 
 	public static void TestLireEcrire() throws IOException {
-		byte[] buff, buff1;
-		byte[] fin = new byte[100];
-		buff = "coucou".getBytes();
-		buff1 = "tata".getBytes();
+		ByteBuffer buff, buff1;
+		ByteBuffer fin = ByteBuffer.allocate(100);
+		buff = ByteBuffer.wrap("coucou".getBytes());
+		buff1 = ByteBuffer.wrap("tata".getBytes());
 		PageId p1 = DiskManager.getLeDiskManager().allocPage();
 		PageId p2 = DiskManager.getLeDiskManager().allocPage();
 
@@ -25,7 +25,7 @@ public class DiskManagerTests {
 
 		DiskManager.getLeDiskManager().readPage(p1, fin);
 
-		String message = new String(fin);
+		String message = new String(fin.array());
 		System.out.println("Doit afficher tata : " + message);
 	}
 

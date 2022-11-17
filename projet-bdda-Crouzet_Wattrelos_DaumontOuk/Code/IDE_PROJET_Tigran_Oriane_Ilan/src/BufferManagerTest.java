@@ -1,7 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.EmptyStackException;
 
@@ -40,14 +39,25 @@ public class BufferManagerTest {
     }
 
     public static void flushAllTest() throws IOException{
+
          //Créer les instances
-    	System.out.println("testFlushAll :");
-    	PageId pageTest = DiskManager.getLeDiskManager().allocPage(); 
         BufferManager bMTest = BufferManager.getLeBufferManager();
+        DiskManager dMTest = DiskManager.getLeDiskManager();
+    	PageId pageTest = dMTest.allocPage();
+        ByteBuffer buffer = ByteBuffer.allocate(DBParams.pageSize);
+        ByteBuffer buff = bMTest.getPage(pageTest);
+
+        System.out.println("testFlushAll :");
+        byte[] txt = "testtt".getBytes();
+        buff.put(txt);
+        bMTest.freePage(pageTest, true);
+
+        dMTest.readPage(pageTest, buffer);
         
-        System.out.println("BufferPool avant : "+ Arrays.toString(bMTest.getBufferPool()));
+        System.out.println("BufferPool avant : "+ Arrays.toString(buffer.array()));
         bMTest.flushAll();
-        System.out.println("BufferPool après : "+ Arrays.toString(bMTest.getBufferPool()));
+        dMTest.readPage(pageTest, buff);
+        System.out.println("BufferPool après : "+ Arrays.toString(buffer.array()));
         
     }
 
