@@ -32,9 +32,8 @@ public class FileManager {
 	//allocation d’une nouvelle page via AllocPage du DiskManager et écriture dans la page allouée
 	public static PageId createNewHeaderPage() throws IOException {
 		//Création des instances
-		DiskManager diskM = DiskManager.getLeDiskManager();
 		BufferManager buffM = BufferManager.getLeBufferManager();
-		PageId pageId = diskM.allocPage();
+		PageId pageId = buffM.getDManager().allocPage() ;
 		ByteBuffer buffer = buffM.getPage(pageId);
 
 		ecrirePageIdDansBuffer(new PageId(-1, 0), buffer, true);
@@ -49,9 +48,8 @@ public class FileManager {
 
 	public PageId addDataPage(RelationInfo relInf) throws IOException {
 		//Création des instances
-		DiskManager diskM = DiskManager.getLeDiskManager();
 		BufferManager buffM = BufferManager.getLeBufferManager();
-		PageId pageId = diskM.allocPage();
+		PageId pageId = buffM.getDManager().allocPage();
 		// byte[] buffer = buffM.getPage(pageId);
 		ByteBuffer bufferHeaderPage = buffM.getPage(relInf.getHeaderPageId());
 		ByteBuffer buff = buffM.getPage(pageId);
