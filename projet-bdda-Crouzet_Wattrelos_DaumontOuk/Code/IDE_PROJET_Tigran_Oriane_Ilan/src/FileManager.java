@@ -3,28 +3,20 @@ import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.DataInputStream;
 
 public class FileManager {
 	
 	private static FileManager leFileManager=new FileManager();
 
-	//Méthode permettant d'écrire une pageId dans un buffer
-	/*
-	 * Petite indication sur la conversion bit/octet
-	 * - Pour 4 octets, on utilise UTF-32
-	 * - Pour 1 octet, on utilise UTF-8
-	 */
-	//ERREUR AVEC ENCODAGE ?
-	public static void ecrirePageIdDansBuffer(PageId pageId, ByteBuffer buff, int octet) throws UnsupportedEncodingException{
-		String pageIdString = pageId.getFile() +""+ pageId.getPage();
+	//Méthode permettant d'écrire une pageId dans un buffer, avec prem pour savoir si c'est au debut de la page
+	public static void ecrirePageIdDansBuffer(PageId pageId, ByteBuffer buff, boolean prem) throws UnsupportedEncodingException{
+		String tmp = pageId.getFile()+""+pageId.getPage();
+		int page = Integer.valueOf(tmp);
 
-		if( octet==4 ){
-			buff = pageIdString.getBytes("UTF-32");
+		if(prem){
+			buff.putInt(0, page);
 		}
-		else if( octet==0 ){
-			buff = pageIdString.getBytes();
-		}
+		else{ buff.putInt(8,page); }
 	}
 
 	public static PageId lirePageIdDepuisPageBuffer(ByteBuffer buff, boolean prem){
@@ -45,8 +37,8 @@ public class FileManager {
 		PageId pageId = diskM.allocPage();
 		ByteBuffer buffer = buffM.getPage(pageId);
 
-		ecrirePageIdDansBuffer(new PageId(-1, 0), buffer, 0);
-		ecrirePageIdDansBuffer(new PageId(-1, 0), buffer, 4);
+		ecrirePageIdDansBuffer(new PageId(-1, 0), buffer, true);
+		ecrirePageIdDansBuffer(new PageId(-1, 0), buffer, false);
 		
 		//Libérer page allouée auprès du Buffer Manager
 		buffM.freePage(pageId,true);
@@ -65,11 +57,10 @@ public class FileManager {
 		ByteBuffer buff = buffM.getPage(pageId);
 		PageId prochainePageId =  lirePageIdDepuisPageBuffer(bufferHeaderPage, true);
 
-		ecrirePageIdDansBuffer(pageId, bufferHeaderPage, 4);
-		ecrirePageIdDansBuffer(pageId, bufferHeaderPage, 4); // ---------UTILE 2 FOIS ??
+		ecrirePageIdDansBuffer(pageId, bufferHeaderPage, false);
 		
-		ecrirePageIdDansBuffer(relInf.getHeaderPageId(), buff, 4);
-		ecrirePageIdDansBuffer(prochainePageId, buff, 0);
+		ecrirePageIdDansBuffer(relInf.getHeaderPageId(), buff, false);
+		ecrirePageIdDansBuffer(prochainePageId, buff, true);
 
 		buffM.freePage(pageId, true);
 		buffM.freePage(relInf.getHeaderPageId(), true);
