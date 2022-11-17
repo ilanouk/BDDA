@@ -27,6 +27,7 @@ public class HeaderPage {
         nBuffer.putInt(fileIDX);
         nBuffer.putInt(PageIdx);
         nBuffer.putInt(DBParams.pageSize-2*4);
+        setDatatPageCount();
         BufferManager.getLeBufferManager().freePage(page,true);
     }
     
