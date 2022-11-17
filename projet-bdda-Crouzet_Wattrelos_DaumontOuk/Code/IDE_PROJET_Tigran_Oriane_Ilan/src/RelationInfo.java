@@ -6,7 +6,7 @@ public class RelationInfo implements Serializable{
     private String nomRelation;
     private int nbrColonne;
     private ArrayList<ColInfo> colonnes = new ArrayList<ColInfo>();
-    private PageId headerPageId; // représente l’identifiant de la Header Page de la relation
+    private PageId headerPageId; // représente l’identifiant de la Header Page de la relation 
 
     // Constructeurs
     public RelationInfo(String nomRelation, int nbrColonne, String nom, String type) {
