@@ -34,10 +34,10 @@ public class FileManager {
 		//Création des instances
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageId = buffM.getDManager().allocPage() ;
-		ByteBuffer buffer = buffM.getPage(pageId);
+		HeaderPage hp= new HeaderPage(pageId);
 
-		ecrirePageIdDansBuffer(new PageId(-1, 0), buffer, true);
-		ecrirePageIdDansBuffer(new PageId(-1, 0), buffer, false);
+		ecrirePageIdDansBuffer(new PageId(-1, 0), hp.gByteBuffer(), true);
+		ecrirePageIdDansBuffer(new PageId(-1, 0), hp.gByteBuffer(), false);
 		
 		//Libérer page allouée auprès du Buffer Manager
 		buffM.freePage(pageId,true);
@@ -51,16 +51,15 @@ public class FileManager {
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageId = buffM.getDManager().allocPage();
 		// byte[] buffer = buffM.getPage(pageId);
-		ByteBuffer bufferHeaderPage = buffM.getPage(relInf.getHeaderPageId());
-		ByteBuffer buff = buffM.getPage(pageId);
-		PageId prochainePageId =  lirePageIdDepuisPageBuffer(bufferHeaderPage, true);
+		HeaderPage bufferHeaderPage = new HeaderPage(pageId);
+		//PageId prochainePageId =  lirePageIdDepuisPageBuffer(bufferHeaderPage.gByteBuffer(), true);
 
-		ecrirePageIdDansBuffer(pageId, bufferHeaderPage, false);
+		//ecrirePageIdDansBuffer(pageId, bufferHeaderPage, false);
 		
-		ecrirePageIdDansBuffer(relInf.getHeaderPageId(), buff, false);
-		ecrirePageIdDansBuffer(prochainePageId, buff, true);
+		ecrirePageIdDansBuffer(relInf.getHeaderPageId(), bufferHeaderPage.gByteBuffer(), false);
+		//ecrirePageIdDansBuffer(prochainePageId, buff, true);
 
-		buffM.freePage(pageId, true);
+		
 		buffM.freePage(relInf.getHeaderPageId(), true);
 
 		return pageId;
