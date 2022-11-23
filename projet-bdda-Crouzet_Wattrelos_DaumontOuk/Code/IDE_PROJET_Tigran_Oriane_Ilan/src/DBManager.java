@@ -32,12 +32,8 @@ public class DBManager {
 
         StringTokenizer st = new StringTokenizer(commande);
         String mot1 = st.nextToken();
-        String mot2=null;
-        if (st.hasMoreElements()){
-            mot2 =st.nextToken();
-        }
-
-        if (mot1.equals("CREATE")&& mot2.equals("TABLE")){ // on verifie si la commande est "CREATE TABLE"
+        
+        if (mot1.equals("CREATE")&& st.nextToken().equals("TABLE")){ // on verifie si la commande est "CREATE TABLE"
 
             String nomRelation = st.nextToken(); // On recupere le nom de la table dans la chaine de charactere
 
@@ -46,8 +42,8 @@ public class DBManager {
             // La suite a pour but de recuperer toute les informations entre parenthese de la chaine de caractere;
             String chaineEntreParenthese = st.nextToken(); // on recupere tout ce qu'il y a entre parenthese
 
-            chaineEntreParenthese.replace("(", "");
-            chaineEntreParenthese.replace(")", "");  //On retire les parenthese de la chaine pour pouvoir travailler sur celle ci
+            chaineEntreParenthese = chaineEntreParenthese.replace("(", "");
+            chaineEntreParenthese = chaineEntreParenthese.replace(")", "");  //On retire les parenthese de la chaine pour pouvoir travailler sur celle ci
 
             StringTokenizer stringInfoCol = new StringTokenizer(chaineEntreParenthese,","); //on separe les infos de chaque colonne càd ce quil y a entre les virgules de la commande
            
@@ -69,7 +65,7 @@ public class DBManager {
 
 
 
-        if(mot1.equals("DROPDB")){
+        else if(mot1.equals("DROPDB")){
             DropDbCommande drop = new DropDbCommande();
             drop.execute();
 
@@ -77,11 +73,32 @@ public class DBManager {
 
         
 
-        if(mot1.equals("INSERT")){
+        else if(mot1.equals("INSERT") && st.nextToken().equals("INTO")){
+            ArrayList<String> values = new ArrayList<>();
+            String nomRelInfo = st.nextToken();
+            String stToString = st.toString();
+            /*
+             * En dessous, on va initialiser une arrayList value qui 
+             * va permettre d'initialiser insertCommand. Ce tableau sont les
+             * valeurs du Record, celle qui vont être ajouté à la base de données
+             * 
+             */
+            stToString = stToString.replace("(","" );
+            stToString = stToString.replace("(","" );
 
             
+            StringTokenizer stValues = new StringTokenizer(stToString,",");
+            while (stValues.hasMoreTokens()){
+                values.add(stValues.nextToken());
+            }
+            
+            
+
+            InsertCommand insertCommand = new InsertCommand(null, values);
+            insertCommand.execute();
+            
         }
-        if(mot1.equals("SELECT")){
+        else if(mot1.equals("SELECT")){
 
             
         }

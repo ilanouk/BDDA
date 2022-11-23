@@ -9,7 +9,11 @@ public class Record {
     // Constructeur
     public Record(RelationInfo relInfo) {
         this.relInfo = relInfo;
-        values = new ArrayList<String>();
+        this.values = new ArrayList<String>();
+    }
+    public Record(RelationInfo relInfo,ArrayList<String> values) {
+        this.relInfo = relInfo;
+        this.values = values;
     }
 
     // Méthodes

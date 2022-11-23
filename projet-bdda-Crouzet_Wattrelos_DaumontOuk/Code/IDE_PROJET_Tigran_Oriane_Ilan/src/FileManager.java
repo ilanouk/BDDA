@@ -65,7 +65,7 @@ public class FileManager {
 		return pageId;
 	}
 
-	public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws IOException{
+	private static PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws IOException{
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageIdHeaderPage = relInfo.getHeaderPageId();
 		ByteBuffer bufferHeaderPage = buffM.getPage(pageIdHeaderPage);
@@ -82,7 +82,7 @@ public class FileManager {
 	}
 
 	//Utiliser une méthode du TP4 Record pour écrire le record dans le pageId
-	public RecordId writeRecordToDataPage (Record record, PageId pageId) throws IOException{
+	private static RecordId writeRecordToDataPage (Record record, PageId pageId) throws IOException{
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		ByteBuffer buffer = buffM.getPage(pageId);
 		RecordId recordId = new RecordId(pageId, 0);
@@ -97,7 +97,7 @@ public class FileManager {
 
 	// A FINIR !!!
 	//Renvoie la liste des records stockés dans la pageId
-	public List<Record> getRecordsInDataPage(RelationInfo relInfo, PageId pageId){
+	private static  List<Record> getRecordsInDataPage(RelationInfo relInfo, PageId pageId){
 		BufferManager buffM = BufferManager.getLeBufferManager();
 
 		//Utiliser une methode du TP4 Record
@@ -119,12 +119,16 @@ public class FileManager {
 	}
 
 	//Insertion d'un record dans une relation
-	public RecordId InsertRecordIntoRelation (Record record) throws IOException {
-		return this.writeRecordToDataPage(record, this.getFreeDataPageId(null, 0));
+
+	public static RecordId InsertRecordIntoRelation (Record record) throws IOException {
+		int recSize = record.getWrittenSize();
+		return writeRecordToDataPage(record, getFreeDataPageId(null, recSize));
 	}
 
 	//Lister tous les records dans une relation
-	public List<Record> GetAllRecords (RelationInfo relInfo) throws IOException{
-		return this.getRecordsInDataPage(relInfo, this.getFreeDataPageId(relInfo, 0));
+	public static List<Record> GetAllRecords (RelationInfo relInfo) throws IOException{
+		return getRecordsInDataPage(relInfo, getFreeDataPageId(relInfo, 0));
 	}
+
+
 }
