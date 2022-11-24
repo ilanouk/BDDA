@@ -82,17 +82,16 @@ public class FileManager {
 		HeaderPage hP = new HeaderPage(pageId);
 		Record record = new Record(relInfo);
 		ArrayList<Record> allRecord = new ArrayList<Record>();
-		int idx;
-		int i=0;
+		int idx=0;
 
-		while(allRecord.get(i)!=null){
-			i++;
-		}
+		// while(allRecord.get(idx)!=null){
+		// 	idx++;
+		// }
 
 		record.readFromBuffer(hP.gByteBuffer(), pageId.getPage());
 		allRecord.add(idx, record);
 
-		return record;
+		return allRecord;
 		
 	}
 
