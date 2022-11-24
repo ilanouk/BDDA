@@ -40,9 +40,11 @@ public class Catalog implements Serializable{  // Classe qui contient toute les 
     public void save() throws IOException { //Sauvegarde le Catalogue dans le fichier Catalog.sv 
         File f = new File(DBParams.DBpath + "/Catalog.sv");
         f.delete();//supprime le fichier s'il existe pour pouvoir le mettre àjour
+        f.createNewFile();
         FileOutputStream out = new FileOutputStream(f);
         ObjectOutputStream o = new ObjectOutputStream(out);
         o.writeObject(this); // Ecrit leCatalogue dans le fichier
+        o.flush();
         o.close();
         out.close();
     }
@@ -50,6 +52,7 @@ public class Catalog implements Serializable{  // Classe qui contient toute les 
     public void load() throws IOException, ClassNotFoundException { // charge le Catalogue sauvegarder dans le fichier Catalog.sv
                                                                    
         File f = new File(DBParams.DBpath + "/Catalog.sv");
+        System.out.println(f.exists());
         if (f.exists() && f.length()!=0){
             FileInputStream out = new FileInputStream(f);
             ObjectInputStream o = new ObjectInputStream(out);

@@ -21,7 +21,7 @@ public class DiskManager {
 		if (tabPageLibre.size() == 0) { // si le tableau des pages libres est vide alors on crée un nouveau fichier
 			while (true) {
 				String nomFichier = "F" + numFichier + ".bdda";
-				File fichier = new File("../../DB/" + nomFichier);
+				File fichier = new File(DBParams.DBpath + nomFichier);
 				if (!fichier.exists()) { // On crée 4 pages, et on alloue la 1ère, les autres sont indiquées comme page
 											// libre
 
@@ -92,7 +92,7 @@ public class DiskManager {
 		File fichier;
 		while (exist) {
 			String nomFichier = "F" + numFichier + ".bdda"; // Fourni le numéro du fichier
-			fichier = new File("../../DB/" + nomFichier); // Il faut trouver un moyen de ranger le fichier dans le
+			fichier = new File(DBParams.DBpath +"/"+ nomFichier); // Il faut trouver un moyen de ranger le fichier dans le
 															// dossier DB
 			if (fichier.exists()) {
 				nbPageLibre += 1;
@@ -110,7 +110,7 @@ public class DiskManager {
 	// Sauvegarde le tableau de page libre
 	public static void sauvegardeTabPageLibre() throws IOException {
 
-		File fichierSauvegardePageLibre = new File("../../DB/fichierSauvegardePageLibre.bdda"); // Chemin du fichier à
+		File fichierSauvegardePageLibre = new File(DBParams.DBpath+"/fichierSauvegardePageLibre.bdda"); // Chemin du fichier à
 																								// créer
 
 		if (fichierSauvegardePageLibre.exists()) { // On supprime le fichier pour le mettre a jour en le créant par la
@@ -119,7 +119,7 @@ public class DiskManager {
 		}
 
 		fichierSauvegardePageLibre.createNewFile();
-		RandomAccessFile file = new RandomAccessFile("../../DB/fichierSauvegardePageLibre.bdda", "rw");
+		RandomAccessFile file = new RandomAccessFile(fichierSauvegardePageLibre, "rw");
 
 		for (int i = 0; i < tabPageLibre.size(); i++) { // On écrit les num de fichier et les num de page de sorte ou
 														// l'élement i = num fichier et i+1 = num page où i+=2
@@ -132,11 +132,11 @@ public class DiskManager {
 
 	// Recupere le Tableau de Page libre sauvegarder precedemment
 	public static void recupTabPageLibre() throws IOException {
-		File fichier = new File("../../DB/fichierSauvegardePageLibre.bdda");
+		File fichier = new File(DBParams.DBpath +"/fichierSauvegardePageLibre.bdda");
 
 		if (fichier.exists()) {
 
-			RandomAccessFile file = new RandomAccessFile("../../DB/fichierSauvegardePageLibre.bdda", "r");
+			RandomAccessFile file = new RandomAccessFile(DBParams.DBpath+"/fichierSauvegardePageLibre.bdda", "r");
 			int pageIdx, fileIdx;
 			String strPageIdx, strFileIdx;
 			byte[] b = new byte[1000];

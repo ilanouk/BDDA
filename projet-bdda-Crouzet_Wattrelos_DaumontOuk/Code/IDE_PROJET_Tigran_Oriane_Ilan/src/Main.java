@@ -5,12 +5,12 @@ import java.util.Scanner;
 public class Main {
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 		System.out.println("coucou");
-		DBParams.DBpath = "./DB";
+		DBParams.DBpath = "./projet-bdda-Crouzet_Wattrelos_DaumontOuk/DB";
 		DBParams.maxPagesPerFile = 4;
 		DBParams.pageSize = 4096;
 		DBParams.frameCount = 2;
 
-		DBManager.getleDBManager().Init(); //Initialisation du DBManager
+		//DBManager.getleDBManager().Init(); //Initialisation du DBManager
 		
 		Scanner sc = new Scanner(System.in);
 
