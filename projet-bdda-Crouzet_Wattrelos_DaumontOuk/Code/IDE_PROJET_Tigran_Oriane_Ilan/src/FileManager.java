@@ -38,7 +38,7 @@ public class FileManager {
 		return pageId;
 	}
 
-	//PRESQUE
+	//OK
 	//Ajoute une page de données vide au Heap File correspondant à la relation relInfo
 	public PageId addDataPage(RelationInfo relInf) throws IOException {
 		//Création des instances
@@ -51,27 +51,23 @@ public class FileManager {
 		return pageId;
 	}
 
+	//OK
 	// Pour la relation désignée par relInfo, ca renvoie le pageId où il reste assez de place pour insérer le record
 	private PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws IOException{
 
-		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageIdHeaderPage = relInfo.getHeaderPageId();
+		HeaderPage hP = new HeaderPage(pageIdHeaderPage);
 
-		// Si sizeRecord trop grand ou page inexistante, return null
-		if( pageIdHeaderPage.toString().length() - sizeRecord < 0 || pageIdHeaderPage.getFile()==-1 ){
-			return null;
-		}
-
-		buffM.freePage(pageIdHeaderPage, false);
-
-		return pageIdHeaderPage;
+		return hP.getDPEnoughSpace(sizeRecord);
 	}
 
 	//Utiliser une méthode du TP4 Record pour écrire le record dans le pageId
+	//Ecrit l'enregistrement record dans la data page de pageId & renvoie son recordId
 	private RecordId writeRecordToDataPage (Record record, PageId pageId) throws IOException{
 		BufferManager buffM = BufferManager.getLeBufferManager();
-		ByteBuffer buffer = buffM.getPage(pageId);
+		HeaderPage hP = new HeaderPage(pageId);
 		RecordId recordId = new RecordId(pageId, 0);
+
 
 		//Enregistrer record dans pageId
 

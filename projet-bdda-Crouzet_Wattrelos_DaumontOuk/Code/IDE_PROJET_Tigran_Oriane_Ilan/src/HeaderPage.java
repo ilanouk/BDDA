@@ -30,20 +30,19 @@ public class HeaderPage {
         return nbPage;
     }
 
+    //OK
     //Permet d'obtenir une page du DataPage où il y a assez de place
     public PageId getDPEnoughSpace(int sizeRecord) throws IOException{
+        PageId dataPage = DiskManager.getLeDiskManager().allocPage();
         int nbPage = getDataPageCount();
-        int taille, pageIdx, fileIdx;
+        int taille;
         
         for(int i=12; i<nbPage*8+4;i+=8){
             taille=nBuffer.getInt(i);
             if(taille>sizeRecord){
-                pageIdx = nBuffer.getInt(i-4);
-                fileIdx = nBuffer.getInt(i-8);
-                return new PageId(fileIdx, pageIdx);
+                return null;
             }
         }
-        PageId dataPage = DiskManager.getLeDiskManager().allocPage();
         addNewDataPage(dataPage);
         
         return page;

@@ -21,7 +21,7 @@ public class DiskManager {
 		if (tabPageLibre.size() == 0) { // si le tableau des pages libres est vide alors on crée un nouveau fichier
 			while (true) {
 				String nomFichier = "F" + numFichier + ".bdda";
-				File fichier = new File(DBParams.DBpath + nomFichier);
+				File fichier = new File(DBParams.DBpath +"/" +nomFichier);
 				if (!fichier.exists()) { // On crée 4 pages, et on alloue la 1ère, les autres sont indiquées comme page
 											// libre
 
