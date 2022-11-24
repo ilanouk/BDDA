@@ -12,7 +12,7 @@ public class InsertCommand {
 
     public void execute() throws IOException{
         Record rec = new Record(rel,values);
-        FileManager.InsertRecordIntoRelation(rec);
+        FileManager.getFileManager().InsertRecordIntoRelation(rec);
     
     }
 
