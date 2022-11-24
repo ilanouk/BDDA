@@ -8,12 +8,12 @@ public class FileManager {
 	
 	private static FileManager leFileManager=new FileManager();
 
-	public FileManager getFileManager(){
+	public static FileManager getFileManager(){
 		return leFileManager;
 	}
 
 	//Méthode permettant d'écrire une pageId dans un buffer, avec prem pour savoir si c'est au debut de la page
-	private static void ecrirePageIdDansBuffer(PageId pageId, ByteBuffer buff, boolean prem) throws UnsupportedEncodingException{
+	private void ecrirePageIdDansBuffer(PageId pageId, ByteBuffer buff, boolean prem) throws UnsupportedEncodingException{
 		String tmp = pageId.getFile()+""+pageId.getPage();
 		int page = Integer.valueOf(tmp);
 
