@@ -30,13 +30,33 @@ public class HeaderPage {
         return nbPage;
     }
 
+    //Permet d'obtenir une page du DataPage où il y a assez de place
+    public PageId getDPEnoughSpace(int sizeRecord) throws IOException{
+        int nbPage = getDataPageCount();
+        int taille, pageIdx, fileIdx;
+        
+        for(int i=12; i<nbPage*8+4;i+=8){
+            taille=nBuffer.getInt(i);
+            if(taille>sizeRecord){
+                pageIdx = nBuffer.getInt(i-4);
+                fileIdx = nBuffer.getInt(i-8);
+                return new PageId(fileIdx, pageIdx);
+            }
+        }
+        PageId dataPage = DiskManager.getLeDiskManager().allocPage();
+        addNewDataPage(dataPage);
+        
+        return page;
+    }
+
     public void addNewDataPage(PageId dataPage) throws IOException{
         this.nBuffer = BufferManager.getLeBufferManager().getPage(page);
         int fileIDX = dataPage.getFile();
         int PageIdx = dataPage.getPage();
         nBuffer.putInt(fileIDX);
         nBuffer.putInt(PageIdx);
-        nBuffer.putInt(DBParams.pageSize-2*4);
+        nBuffer.putInt(DBParams.pageSize-2*4,0); //écrire à 4088 octets de la Data Page
+        nBuffer.putInt(DBParams.pageSize-4,0); // jusqu'à 4096
         setDataPageCount();
         BufferManager.getLeBufferManager().freePage(page,true);
     }

@@ -31,8 +31,6 @@ public class FileManager {
 		PageId pageId = buffM.getDManager().allocPage() ;
 		HeaderPage hp= new HeaderPage(pageId);
 		hp.setTailleZero();
-
-		hp.addNewDataPage(pageId);
 		
 		//Libérer page allouée auprès du Buffer Manager
 		buffM.freePage(pageId,true);
@@ -41,32 +39,32 @@ public class FileManager {
 	}
 
 	//PRESQUE
+	//Ajoute une page de données vide au Heap File correspondant à la relation relInfo
 	public PageId addDataPage(RelationInfo relInf) throws IOException {
 		//Création des instances
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageId = buffM.getDManager().allocPage();
-		DataPage dP = new DataPage(pageId);
 		HeaderPage hP = new HeaderPage(relInf.getHeaderPageId());
 		
-		hP.addNewDataPage(pageId);
+		hP.addNewDataPage(pageId); //sauvegarde automatiquement la Data Page & le Heap File
 
 		return pageId;
 	}
 
+	// Pour la relation désignée par relInfo, ca renvoie le pageId où il reste assez de place pour insérer le record
 	private PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws IOException{
+
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageIdHeaderPage = relInfo.getHeaderPageId();
-		ByteBuffer bufferHeaderPage = buffM.getPage(pageIdHeaderPage);
-		PageId pageId = lirePageIdDepuisPageBuffer(bufferHeaderPage, true);
 
 		// Si sizeRecord trop grand ou page inexistante, return null
-		if( pageId.toString().length() < sizeRecord || pageId.getFile()==-1 ){
+		if( pageIdHeaderPage.toString().length() - sizeRecord < 0 || pageIdHeaderPage.getFile()==-1 ){
 			return null;
 		}
 
-		buffM.freePage(pageId, false);
+		buffM.freePage(pageIdHeaderPage, false);
 
-		return pageId;
+		return pageIdHeaderPage;
 	}
 
 	//Utiliser une méthode du TP4 Record pour écrire le record dans le pageId
