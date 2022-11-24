@@ -23,7 +23,7 @@ public class FileManager {
 		else{ buff.putInt(8,page); }
 	}
 
-	private static PageId lirePageIdDepuisPageBuffer(ByteBuffer buff, boolean prem){
+	private PageId lirePageIdDepuisPageBuffer(ByteBuffer buff, boolean prem){
 		int pageIdInt = prem? buff.getInt(0) : buff.getInt(3); // ajouter 3 entiers (2 pour l'info de la page et 1 pour la taille dispo)
 
 		int fileIdx = pageIdInt/10;
@@ -34,7 +34,7 @@ public class FileManager {
 	}
 	
 	//allocation d’une nouvelle page via AllocPage du DiskManager et écriture dans la page allouée
-	public static PageId createNewHeaderPage() throws IOException {
+	public PageId createNewHeaderPage() throws IOException {
 		//Création des instances
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageId = buffM.getDManager().allocPage() ;
@@ -69,7 +69,7 @@ public class FileManager {
 		return pageId;
 	}
 
-	private static PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws IOException{
+	private PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws IOException{
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageIdHeaderPage = relInfo.getHeaderPageId();
 		ByteBuffer bufferHeaderPage = buffM.getPage(pageIdHeaderPage);
@@ -86,7 +86,7 @@ public class FileManager {
 	}
 
 	//Utiliser une méthode du TP4 Record pour écrire le record dans le pageId
-	private static RecordId writeRecordToDataPage (Record record, PageId pageId) throws IOException{
+	private RecordId writeRecordToDataPage (Record record, PageId pageId) throws IOException{
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		ByteBuffer buffer = buffM.getPage(pageId);
 		RecordId recordId = new RecordId(pageId, 0);
@@ -101,7 +101,7 @@ public class FileManager {
 
 	// A FINIR !!!
 	//Renvoie la liste des records stockés dans la pageId
-	private static  List<Record> getRecordsInDataPage(RelationInfo relInfo, PageId pageId){
+	private List<Record> getRecordsInDataPage(RelationInfo relInfo, PageId pageId){
 		BufferManager buffM = BufferManager.getLeBufferManager();
 
 		//Utiliser une methode du TP4 Record
@@ -124,13 +124,13 @@ public class FileManager {
 
 	//Insertion d'un record dans une relation
 
-	public static RecordId InsertRecordIntoRelation (Record record) throws IOException {
+	public RecordId InsertRecordIntoRelation (Record record) throws IOException {
 		int recSize = record.getWrittenSize();
 		return writeRecordToDataPage(record, getFreeDataPageId(null, recSize));
 	}
 
 	//Lister tous les records dans une relation
-	public static List<Record> GetAllRecords (RelationInfo relInfo) throws IOException{
+	public List<Record> GetAllRecords (RelationInfo relInfo) throws IOException{
 		return getRecordsInDataPage(relInfo, getFreeDataPageId(relInfo, 0));
 	}
 
