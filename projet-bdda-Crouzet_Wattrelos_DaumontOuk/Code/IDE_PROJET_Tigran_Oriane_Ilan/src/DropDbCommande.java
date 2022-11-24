@@ -3,9 +3,8 @@ import java.io.*;
 public class DropDbCommande {
     
     public void execute(){
-        int i=0;
-        File f= new File(DBParams.DBpath + "/F0.bdda");
-        System.out.println(f.getAbsolutePath());
+        int i=1;
+        File f= new File(DBParams.DBpath + "/F1.bdda");
         while (f.exists()){
             
             i+=1;
