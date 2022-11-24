@@ -32,7 +32,7 @@ public class DiskManagerTests {
 	public static void main(String[] args) throws IOException {
 		DiskManager.recupTabPageLibre();
 
-		DBParams.DBpath = "../../DB";
+		DBParams.DBpath = "./projet-bdda-Crouzet_Wattrelos_DaumontOuk/DB";
 		DBParams.maxPagesPerFile = 4;
 		DBParams.pageSize = 4096;
 		DBParams.frameCount = 2;

@@ -13,7 +13,7 @@ public class DropDbCommande {
             f= new File(DBParams.DBpath+ "/F" + i + ".bdda");
 
         }
-        File fichierSauvegarde = new File(DBParams.DBpath +"/FichierSauvegardePageLibre.bdda");
+        File fichierSauvegarde = new File(DBParams.DBpath +"/fichierSauvegardePageLibre.bdda");
         File catalogsv = new File(DBParams.DBpath +"/Catalog.sv"); // Doit on supprimer ca
         fichierSauvegarde.delete();
         catalogsv.delete();
