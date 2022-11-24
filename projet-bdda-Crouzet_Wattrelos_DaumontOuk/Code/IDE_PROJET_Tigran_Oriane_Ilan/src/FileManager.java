@@ -61,16 +61,14 @@ public class FileManager {
 		return hP.getDPEnoughSpace(sizeRecord);
 	}
 
-	//Utiliser une méthode du TP4 Record pour écrire le record dans le pageId
+	//PRESQUE
 	//Ecrit l'enregistrement record dans la data page de pageId & renvoie son recordId
 	private RecordId writeRecordToDataPage (Record record, PageId pageId) throws IOException{
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		HeaderPage hP = new HeaderPage(pageId);
 		RecordId recordId = new RecordId(pageId, 0);
 
-
-		//Enregistrer record dans pageId
-
+		record.writeToBuffer(hP.gByteBuffer(), pageId.getPage());
 		buffM.freePage(pageId, true);
 		
 		return recordId;
@@ -79,34 +77,44 @@ public class FileManager {
 
 	// A FINIR !!!
 	//Renvoie la liste des records stockés dans la pageId
-	private List<Record> getRecordsInDataPage(RelationInfo relInfo, PageId pageId){
+	private ArrayList<Record> getRecordsInDataPage(RelationInfo relInfo, PageId pageId) throws IOException{
 		BufferManager buffM = BufferManager.getLeBufferManager();
+		HeaderPage hP = new HeaderPage(pageId);
+		Record record = new Record(relInfo);
+		ArrayList<Record> allRecord = new ArrayList<Record>();
+		int idx;
+		int i=0;
 
-		//Utiliser une methode du TP4 Record
+		while(allRecord.get(i)!=null){
+			i++;
+		}
 
-		return null;
+		record.readFromBuffer(hP.gByteBuffer(), pageId.getPage());
+		allRecord.add(idx, record);
+
+		return record;
 		
 	}
 
 	// A FINIR !!!
 	//Renvoie les pageId des pages de données, ceux de la HeaderPage
+	//Ici relInfo permet d'avoir le type (integer, real)
 	public ArrayList<PageId> getAllDataPages (RelationInfo relInfo){
 		ArrayList<PageId> dataPages = new ArrayList<PageId>();
 
-		/*for(PageId : relInfo.getColonnes()){
-			dataPages.addAll();
-		}*/
+		
 
 		return dataPages;
 	}
 
+	//OK
 	//Insertion d'un record dans une relation
-
 	public RecordId InsertRecordIntoRelation (Record record) throws IOException {
 		int recSize = record.getWrittenSize();
 		return writeRecordToDataPage(record, getFreeDataPageId(null, recSize));
 	}
 
+	//OK
 	//Lister tous les records dans une relation
 	public List<Record> GetAllRecords (RelationInfo relInfo) throws IOException{
 		return getRecordsInDataPage(relInfo, getFreeDataPageId(relInfo, 0));
