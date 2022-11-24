@@ -8,8 +8,12 @@ public class FileManager {
 	
 	private static FileManager leFileManager=new FileManager();
 
+	public FileManager getFileManager(){
+		return leFileManager;
+	}
+
 	//Méthode permettant d'écrire une pageId dans un buffer, avec prem pour savoir si c'est au debut de la page
-	public static void ecrirePageIdDansBuffer(PageId pageId, ByteBuffer buff, boolean prem) throws UnsupportedEncodingException{
+	private static void ecrirePageIdDansBuffer(PageId pageId, ByteBuffer buff, boolean prem) throws UnsupportedEncodingException{
 		String tmp = pageId.getFile()+""+pageId.getPage();
 		int page = Integer.valueOf(tmp);
 
@@ -19,7 +23,7 @@ public class FileManager {
 		else{ buff.putInt(8,page); }
 	}
 
-	public static PageId lirePageIdDepuisPageBuffer(ByteBuffer buff, boolean prem){
+	private static PageId lirePageIdDepuisPageBuffer(ByteBuffer buff, boolean prem){
 		int pageIdInt = prem? buff.getInt(0) : buff.getInt(3); // ajouter 3 entiers (2 pour l'info de la page et 1 pour la taille dispo)
 
 		int fileIdx = pageIdInt/10;
