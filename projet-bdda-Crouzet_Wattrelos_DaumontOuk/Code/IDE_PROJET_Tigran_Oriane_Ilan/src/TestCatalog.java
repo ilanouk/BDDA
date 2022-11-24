@@ -10,7 +10,7 @@ public class TestCatalog {
     }
 
     public static void main(String[]args) throws ClassNotFoundException, IOException {
-        DBParams.DBpath ="./projet-bdda-Crouzet_Wattrelos_DaumontOuk/DB";
+        DBParams.DBpath ="./DB";
 		DBParams.maxPagesPerFile = 4;
 		DBParams.pageSize = 4096;
         DBParams.frameCount=2;

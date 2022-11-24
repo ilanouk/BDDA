@@ -69,7 +69,7 @@ public class BufferManagerTest {
             e1.printStackTrace();
         }
     
-		DBParams.DBpath ="../../DB";
+		DBParams.DBpath ="./DB";
 		DBParams.maxPagesPerFile = 4;
 		DBParams.pageSize = 4096;
         DBParams.frameCount=4;
