@@ -12,17 +12,7 @@ public class FileManager {
 		return leFileManager;
 	}
 
-	//Méthode permettant d'écrire une pageId dans un buffer, avec prem pour savoir si c'est au debut de la page
-	private void ecrirePageIdDansBuffer(PageId pageId, ByteBuffer buff, boolean prem) throws UnsupportedEncodingException{
-		String tmp = pageId.getFile()+""+pageId.getPage();
-		int page = Integer.valueOf(tmp);
-
-		if(prem){
-			buff.putInt(0, page);
-		}
-		else{ buff.putInt(8,page); }
-	}
-
+	//PAS SUR
 	private PageId lirePageIdDepuisPageBuffer(ByteBuffer buff, boolean prem){
 		int pageIdInt = prem? buff.getInt(0) : buff.getInt(3); // ajouter 3 entiers (2 pour l'info de la page et 1 pour la taille dispo)
 
@@ -33,38 +23,32 @@ public class FileManager {
 		return pageId;
 	}
 	
+	//OK
 	//allocation d’une nouvelle page via AllocPage du DiskManager et écriture dans la page allouée
 	public PageId createNewHeaderPage() throws IOException {
 		//Création des instances
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageId = buffM.getDManager().allocPage() ;
 		HeaderPage hp= new HeaderPage(pageId);
+		hp.setTailleZero();
 
-		ecrirePageIdDansBuffer(new PageId(-1, 0), hp.gByteBuffer(), true);
-		ecrirePageIdDansBuffer(new PageId(-1, 0), hp.gByteBuffer(), false);
+		hp.addNewDataPage(pageId);
 		
 		//Libérer page allouée auprès du Buffer Manager
 		buffM.freePage(pageId,true);
 
 		return pageId;
-		// A TESTER PAS SUR DU FONCTIONNEMENT
 	}
 
+	//PRESQUE
 	public PageId addDataPage(RelationInfo relInf) throws IOException {
 		//Création des instances
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		PageId pageId = buffM.getDManager().allocPage();
-		// byte[] buffer = buffM.getPage(pageId);
-		HeaderPage bufferHeaderPage = new HeaderPage(pageId);
-		//PageId prochainePageId =  lirePageIdDepuisPageBuffer(bufferHeaderPage.gByteBuffer(), true);
-
-		//ecrirePageIdDansBuffer(pageId, bufferHeaderPage, false);
+		DataPage dP = new DataPage(pageId);
+		HeaderPage hP = new HeaderPage(relInf.getHeaderPageId());
 		
-		ecrirePageIdDansBuffer(relInf.getHeaderPageId(), bufferHeaderPage.gByteBuffer(), false);
-		//ecrirePageIdDansBuffer(prochainePageId, buff, true);
-
-		
-		buffM.freePage(relInf.getHeaderPageId(), true);
+		hP.addNewDataPage(pageId);
 
 		return pageId;
 	}

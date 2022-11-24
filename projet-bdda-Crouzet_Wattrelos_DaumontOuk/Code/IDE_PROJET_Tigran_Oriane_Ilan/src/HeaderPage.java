@@ -12,7 +12,7 @@ public class HeaderPage {
         this.page=page;
     }
 
-    public void setDatatPageCount() throws IOException{ //Incrémente le compteur du header Page de 1
+    public void setDataPageCount() throws IOException{ //Incrémente le compteur du header Page de 1
         this.nBuffer = BufferManager.getLeBufferManager().getPage(page);
         int intSize = 4;
         int nbPage = nBuffer.getInt(1*intSize);
@@ -20,6 +20,16 @@ public class HeaderPage {
         nBuffer.putInt(1*intSize, nbPage);
         BufferManager.getLeBufferManager().freePage(page,true);
     }
+
+    public int getDataPageCount() throws IOException{
+        this.nBuffer = BufferManager.getLeBufferManager().getPage(page);
+        int nbPage = nBuffer.getInt(0);
+
+        BufferManager.getLeBufferManager().freePage(page, false);
+        
+        return nbPage;
+    }
+
     public void addNewDataPage(PageId dataPage) throws IOException{
         this.nBuffer = BufferManager.getLeBufferManager().getPage(page);
         int fileIDX = dataPage.getFile();
@@ -27,24 +37,29 @@ public class HeaderPage {
         nBuffer.putInt(fileIDX);
         nBuffer.putInt(PageIdx);
         nBuffer.putInt(DBParams.pageSize-2*4);
-        setDatatPageCount();
+        setDataPageCount();
         BufferManager.getLeBufferManager().freePage(page,true);
     }
     
-    public void setTaille(PageId dataPage, int value) throws IOException{ //Set la nouvelle valeur de la place restante d'une PageId dataPage dans le header 
-        boolean condition =true;
+    //OK
+    public void incrementeTaille() throws IOException{ //incrémente la taille du headrer page 
+        
         this.nBuffer = BufferManager.getLeBufferManager().getPage(page);
         int nbPage = nBuffer.getInt(1*4);
-        int fileIDX = dataPage.getFile();
-        int PageIdx = dataPage.getPage();
 
-        for(int i =1;i<nbPage*3*4;i+=4){
-            if (fileIDX == nBuffer.getInt(i) && PageIdx == nBuffer.getInt(i+1)){
-                nBuffer.putInt(i+2, value);
-                condition = false;
-            }
-        }
+        nbPage++;
+        nBuffer.putInt(0, nbPage);
+
+        BufferManager.getLeBufferManager().freePage(page, true);
     }
+
+    //OK
+    public void setTailleZero() throws IOException{
+        this.nBuffer = BufferManager.getLeBufferManager().getPage(page);
+        nBuffer.putInt(0, 0);
+        BufferManager.getLeBufferManager().freePage(page, true);
+    }
+
     public ByteBuffer gByteBuffer(){
         return nBuffer;
     }

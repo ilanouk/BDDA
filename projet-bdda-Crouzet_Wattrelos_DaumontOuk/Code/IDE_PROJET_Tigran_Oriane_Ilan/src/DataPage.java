@@ -5,11 +5,14 @@ public class DataPage {
     ByteBuffer nBuffer;
     int nbEntrees;
     int nextPosition;
+    PageId pageId;
 
     // Constructeur
-    public DataPage() {
+    public DataPage(PageId pageId) {
         nbEntrees = 0;
         nextPosition = 0;
+        this.pageId=pageId;
+
     }
 
     // Méthodes
