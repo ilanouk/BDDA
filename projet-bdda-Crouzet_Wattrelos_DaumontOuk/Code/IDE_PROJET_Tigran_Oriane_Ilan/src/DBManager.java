@@ -102,6 +102,9 @@ public class DBManager {
 
             
         }
+        else{
+            System.out.println("Commande Invalide");
+        }
 
     }
 }
