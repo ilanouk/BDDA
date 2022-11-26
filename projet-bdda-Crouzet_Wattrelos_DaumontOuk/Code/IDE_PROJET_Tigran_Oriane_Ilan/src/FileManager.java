@@ -93,11 +93,11 @@ public class FileManager {
 		return dataPages;
 	}
 
-	//OK
+	//OK     !!!! Pas bon !!!!
 	//Insertion d'un record dans une relation
 	public RecordId InsertRecordIntoRelation (Record record) throws IOException {
 		int recSize = record.getWrittenSize();
-		return writeRecordToDataPage(record, getFreeDataPageId(null, recSize));
+		return writeRecordToDataPage(record, getFreeDataPageId(null, recSize)); //Pas bon relInfo pas egale a null voir avec la prof !!!
 	}
 
 	//OK

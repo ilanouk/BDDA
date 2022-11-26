@@ -47,7 +47,7 @@ public class HeaderPage {
         
         return page;
     }
-
+    // Permet d'ajouter une nouvelle page de données au Heap File 
     public void addNewDataPage(PageId dataPage) throws IOException{
         this.nBuffer = BufferManager.getLeBufferManager().getPage(page);
         int fileIDX = dataPage.getFile();
@@ -61,6 +61,7 @@ public class HeaderPage {
     }
     
     //OK
+    //Permet d'incrémenter le nombre de datapage dans le heapfile
     public void incrementeTaille() throws IOException{ //incrémente la taille du headrer page 
         
         this.nBuffer = BufferManager.getLeBufferManager().getPage(page);
@@ -73,6 +74,8 @@ public class HeaderPage {
     }
 
     //OK
+
+    //Permet de set à zéro le nombre de datapage dans le heapfile
     public void setTailleZero() throws IOException{
         this.nBuffer = BufferManager.getLeBufferManager().getPage(page);
         nBuffer.putInt(0, 0);
