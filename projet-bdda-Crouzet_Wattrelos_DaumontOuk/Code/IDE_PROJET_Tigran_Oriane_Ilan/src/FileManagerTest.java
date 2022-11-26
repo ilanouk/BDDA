@@ -9,6 +9,14 @@ public class FileManagerTest {
         DBParams.frameCount=4;
 
         FileManager fM = new FileManager();
-        fM.createNewHeaderPage();
+        RelationInfo relInfo = new RelationInfo(null, 0, null, null);
+        
+        System.out.println(fM.createNewHeaderPage());
+        System.out.println(fM.createNewHeaderPage());
+        System.out.println(fM.createNewHeaderPage());
+        
+        System.out.println(fM.addDataPage(relInfo));
+        
+        System.out.println(fM.GetAllRecords(relInfo));
     }
 }
