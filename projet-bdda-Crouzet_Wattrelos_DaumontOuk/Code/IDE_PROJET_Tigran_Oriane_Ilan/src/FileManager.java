@@ -1,6 +1,4 @@
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,17 +8,6 @@ public class FileManager {
 
 	public static FileManager getFileManager(){
 		return leFileManager;
-	}
-
-	//PAS SUR
-	private PageId lirePageIdDepuisPageBuffer(ByteBuffer buff, boolean prem){
-		int pageIdInt = prem? buff.getInt(0) : buff.getInt(3); // ajouter 3 entiers (2 pour l'info de la page et 1 pour la taille dispo)
-
-		int fileIdx = pageIdInt/10;
-		int pageIdx = pageIdInt%10;
-		PageId pageId = new PageId(fileIdx, pageIdx);
-		
-		return pageId;
 	}
 	
 	//OK

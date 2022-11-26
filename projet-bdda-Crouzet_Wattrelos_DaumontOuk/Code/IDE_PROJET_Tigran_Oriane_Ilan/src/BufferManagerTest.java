@@ -44,8 +44,9 @@ public class BufferManagerTest {
         BufferManager bMTest = BufferManager.getLeBufferManager();
         DiskManager dMTest = DiskManager.getLeDiskManager();
     	PageId pageTest = dMTest.allocPage();
+    	
         ByteBuffer buffer = ByteBuffer.allocate(DBParams.pageSize);
-        ByteBuffer buff = bMTest.getPage(pageTest);
+        ByteBuffer buff = bMTest.getPage(pageTest); //ICI ERREUR STACK FRAME ? pourtant avec framecount=4, OK
 
         System.out.println("testFlushAll :");
         byte[] txt = "testtt".getBytes();
@@ -69,13 +70,13 @@ public class BufferManagerTest {
             e1.printStackTrace();
         }
     
-		DBParams.DBpath ="./DB";
+		DBParams.DBpath ="../../DB";
 		DBParams.maxPagesPerFile = 4;
 		DBParams.pageSize = 4096;
-        DBParams.frameCount=4;
+        DBParams.frameCount=2;
         
         try {
-            getPageTest();
+            //getPageTest();
             freePageTest();
             flushAllTest();
         } 
