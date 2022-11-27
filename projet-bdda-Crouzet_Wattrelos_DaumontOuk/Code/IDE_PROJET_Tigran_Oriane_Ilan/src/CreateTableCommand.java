@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
 
-
+// Classe qui permet de creer une table
 public class CreateTableCommand{
     private String nomRelationInfo;
     private int nbrColonnes;
