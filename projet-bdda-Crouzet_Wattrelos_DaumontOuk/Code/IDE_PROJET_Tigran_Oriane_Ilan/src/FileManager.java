@@ -40,7 +40,7 @@ public class FileManager {
 
 	//OK
 	// Pour la relation désignée par relInfo, ca renvoie le pageId où il reste assez de place pour insérer le record
-	private PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws IOException{
+	public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws IOException{
 
 		PageId pageIdHeaderPage = relInfo.getHeaderPageId();
 		HeaderPage hP = new HeaderPage(pageIdHeaderPage);
@@ -50,7 +50,7 @@ public class FileManager {
 
 	//PRESQUE
 	//Ecrit l'enregistrement record dans la data page de pageId & renvoie son recordId
-	private RecordId writeRecordToDataPage (Record record, PageId pageId) throws IOException{
+	public RecordId writeRecordToDataPage (Record record, PageId pageId) throws IOException{
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		HeaderPage hP = new HeaderPage(pageId);
 		RecordId recordId = new RecordId(pageId, 0);
@@ -64,7 +64,7 @@ public class FileManager {
 
 	// A FINIR !!!
 	//Renvoie la liste des records stockés dans la pageId
-	private ArrayList<Record> getRecordsInDataPage(RelationInfo relInfo, PageId pageId) throws IOException{
+	public ArrayList<Record> getRecordsInDataPage(RelationInfo relInfo, PageId pageId) throws IOException{
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		HeaderPage hP = new HeaderPage(pageId);
 		Record record = new Record(relInfo);
