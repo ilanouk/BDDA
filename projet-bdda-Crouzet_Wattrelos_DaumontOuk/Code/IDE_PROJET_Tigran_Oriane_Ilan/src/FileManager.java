@@ -102,7 +102,7 @@ public class FileManager {
 
 	//OK
 	//Lister tous les records dans une relation
-	public List<Record> GetAllRecords (RelationInfo relInfo) throws IOException{
+	public ArrayList<Record> GetAllRecords (RelationInfo relInfo) throws IOException{
 		return getRecordsInDataPage(relInfo, getFreeDataPageId(relInfo, 0));
 	}
 
