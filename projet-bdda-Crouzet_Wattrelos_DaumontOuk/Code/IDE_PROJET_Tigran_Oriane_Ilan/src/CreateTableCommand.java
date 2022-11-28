@@ -17,7 +17,6 @@ public class CreateTableCommand{
 
     }
     public void execute() throws IOException{
-        PageId pageid = FileManager.getFileManager().createNewHeaderPage();
         RelationInfo relation = new RelationInfo(nomRelationInfo,nbrColonnes,colonnes);
         Catalog.getLeCatalog().addRelationInfo(relation);
     }
