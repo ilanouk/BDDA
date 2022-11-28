@@ -14,14 +14,14 @@ public class RelationInfo implements Serializable{
         this.nomRelation = nomRelation;
         this.nbrColonne = nbrColonne;
         ColInfo col = new ColInfo(nom, type);
-        headerPageId = DiskManager.getLeDiskManager().allocPage();
+        headerPageId = FileManager.getFileManager().createNewHeaderPage();
         colonnes.add(col);
     }
 
     public RelationInfo(String nomRelation, int nbrColonne, ColInfo col) throws IOException {
         this.nomRelation = nomRelation;
         this.nbrColonne = nbrColonne;
-        headerPageId = DiskManager.getLeDiskManager().allocPage();
+        headerPageId = FileManager.getFileManager().createNewHeaderPage();
         colonnes.add(col);
     }
 
@@ -29,7 +29,7 @@ public class RelationInfo implements Serializable{
         this.nomRelation = nomRelation;
         this.nbrColonne = nbrColonne;
         this.colonnes=colonnes;
-        headerPageId = DiskManager.getLeDiskManager().allocPage();
+        headerPageId = FileManager.getFileManager().createNewHeaderPage();
     }
 
     //Getter
