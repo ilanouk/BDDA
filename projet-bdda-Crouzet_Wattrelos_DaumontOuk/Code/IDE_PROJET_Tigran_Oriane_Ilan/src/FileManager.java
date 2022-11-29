@@ -82,22 +82,40 @@ public class FileManager {
 		
 	}
 
-	// A FINIR !!!
-	//Renvoie les pageId des pages de données, ceux de la HeaderPage
-	//Ici relInfo permet d'avoir le type (integer, real)
-	public ArrayList<PageId> getAllDataPages (RelationInfo relInfo){
-		ArrayList<PageId> dataPages = new ArrayList<PageId>();
+	//A VERIFIER
+	public ArrayList<PageId> getAllPageId(RelationInfo relInfo) throws IOException{
+		HeaderPage hP = new HeaderPage(relInfo.getHeaderPageId());
+		ArrayList<PageId> allPageId = new ArrayList<PageId>();
+		int idx=0;
+
+		allPageId.add(idx, hP.getPageId());
+		idx++;
+
+		for (PageId pageId : hP.getAllDataPageId()) {
+			allPageId.add(idx, pageId);
+			idx++;
+		}
+
+		return allPageId;
+	}
+
+	// // A FINIR !!!
+	// //Renvoie les pageId des pages de données, ceux de la HeaderPage
+	// //Ici relInfo permet d'avoir le type (integer, real)
+	// public ArrayList<PageId> getAllDataPages (RelationInfo relInfo){
+	// 	ArrayList<PageId> dataPages = new ArrayList<PageId>();
 
 		
 
-		return dataPages;
-	}
+	// 	return dataPages;
+	// }
 
-	//OK     !!!! Pas bon !!!!
+	
+	//OK
 	//Insertion d'un record dans une relation
 	public RecordId InsertRecordIntoRelation (Record record) throws IOException {
 		int recSize = record.getWrittenSize();
-		return writeRecordToDataPage(record, getFreeDataPageId(null, recSize)); //Pas bon relInfo pas egale a null voir avec la prof !!!
+		return writeRecordToDataPage(record, getFreeDataPageId(record.getRelInfo(), recSize)); //Pas bon relInfo pas egale a null voir avec la prof !!!
 	}
 
 	//OK
@@ -105,6 +123,4 @@ public class FileManager {
 	public ArrayList<Record> GetAllRecords (RelationInfo relInfo) throws IOException{
 		return getRecordsInDataPage(relInfo, getFreeDataPageId(relInfo, 0));
 	}
-
-
 }

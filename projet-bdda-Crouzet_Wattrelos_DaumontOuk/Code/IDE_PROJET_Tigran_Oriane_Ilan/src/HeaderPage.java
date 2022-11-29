@@ -86,4 +86,24 @@ public class HeaderPage {
         return nBuffer;
     }
 
+    public PageId getPageId() {
+        return page;
+    }
+
+    //A VERIFIER
+    public PageId[] getAllDataPageId() throws IOException{
+        this.nBuffer = BufferManager.getLeBufferManager().getPage(page);
+        int nbPage = nBuffer.getInt(0);
+        PageId[] pageId = new PageId[nbPage];
+        int fileIDX;
+        int PageIdx;
+        for(int i=0; i<nbPage*8+4;i+=8){
+            fileIDX=nBuffer.getInt(i);
+            PageIdx=nBuffer.getInt(i+4);
+            pageId[i/8]=new PageId(fileIDX,PageIdx);
+        }
+        BufferManager.getLeBufferManager().freePage(page, false);
+        return pageId;
+    }
+
 }

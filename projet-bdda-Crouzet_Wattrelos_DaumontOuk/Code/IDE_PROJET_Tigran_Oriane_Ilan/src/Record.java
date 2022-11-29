@@ -17,6 +17,13 @@ public class Record {
     }
 
     // Méthodes
+    //getters
+    public RelationInfo getRelInfo() {
+        return relInfo;
+    }
+    public ArrayList<String> getValues() {
+        return values;
+    }
     public void writeToBuffer(ByteBuffer buff, int pos) {
         // Selon le modèle offset directory
         // On rentre les positions des n colonnes soit n+1 cases à remplir au début
