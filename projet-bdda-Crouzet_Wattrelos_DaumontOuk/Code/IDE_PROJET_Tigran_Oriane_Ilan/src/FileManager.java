@@ -90,7 +90,7 @@ public class FileManager {
 
 		allPageId.add(idx, hP.getPageId());
 		idx++;
-
+		
 		for (PageId pageId : hP.getAllDataPageId()) {
 			allPageId.add(idx, pageId);
 			idx++;
@@ -111,7 +111,7 @@ public class FileManager {
 	// }
 
 	
-	//OK
+	//OK 
 	//Insertion d'un record dans une relation
 	public RecordId InsertRecordIntoRelation (Record record) throws IOException {
 		int recSize = record.getWrittenSize();

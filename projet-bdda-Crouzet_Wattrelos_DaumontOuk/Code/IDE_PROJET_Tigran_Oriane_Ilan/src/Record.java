@@ -17,7 +17,10 @@ public class Record {
     }
 
     // Méthodes
-    //getters
+
+
+
+    // Getters
     public RelationInfo getRelInfo() {
         return relInfo;
     }
@@ -104,6 +107,15 @@ public class Record {
                     res += 4; // Taille de son adresse
             }
         }
+        return res;
+    }
+
+    public String toString() {
+        String res = "";
+        for (int i = 0; i < values.size(); i++) {
+            res += values.get(i) + " ; ";
+        }
+        res += ".";
         return res;
     }
 }

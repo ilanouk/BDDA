@@ -72,7 +72,7 @@ public class DBManager {
 	        else if(mot1.equals("DROPDB")){
 	            DropDbCommande drop = new DropDbCommande();
 	            drop.execute();
-				DiskManager.getLeDiskManager().viderTabPageLibre();
+				
 	
 	        }
 	
@@ -97,9 +97,9 @@ public class DBManager {
 	                values.add(stValues.nextToken());
 	            }
 	            
-	            
+	            RelationInfo relInfo = Catalog.getLeCatalog().getRelationInfo(nomRelInfo);
 	
-	            InsertCommand insertCommand = new InsertCommand(null, values);
+	            InsertCommand insertCommand = new InsertCommand(relInfo, values);
 	            insertCommand.execute();
 	            
 	        }
