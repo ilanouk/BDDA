@@ -1,0 +1,2 @@
+INDEX VERSION 1.131+/users/licence/im08375/Documents/BDDA/projet-bdda-Crouzet_Wattrelos_DaumontOuk/.metadata/.plugins/org.eclipse.jdt.core
+1865797976.index
