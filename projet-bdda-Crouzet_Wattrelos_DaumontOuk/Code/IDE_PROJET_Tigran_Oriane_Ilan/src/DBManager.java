@@ -72,6 +72,7 @@ public class DBManager {
 	        else if(mot1.equals("DROPDB")){
 	            DropDbCommande drop = new DropDbCommande();
 	            drop.execute();
+				DiskManager.getLeDiskManager().viderTabPageLibre();
 	
 	        }
 	

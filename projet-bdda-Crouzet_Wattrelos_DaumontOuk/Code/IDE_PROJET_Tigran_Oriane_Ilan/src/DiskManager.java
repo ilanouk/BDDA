@@ -163,4 +163,9 @@ public class DiskManager {
 		}
 
 	}
+
+	public void viderTabPageLibre() throws IOException {
+		tabPageLibre.clear();
+		sauvegardeTabPageLibre();
+	}
 }
