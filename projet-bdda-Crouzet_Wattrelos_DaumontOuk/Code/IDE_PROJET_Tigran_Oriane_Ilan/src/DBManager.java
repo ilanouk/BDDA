@@ -31,6 +31,7 @@ public class DBManager {
 
 
         StringTokenizer st = new StringTokenizer(commande);
+        System.out.println(commande);
         String mot1 = st.nextToken();
         
         if (mot1.equals("CREATE")&& st.nextToken().equals("TABLE")){ // on verifie si la commande est "CREATE TABLE"
