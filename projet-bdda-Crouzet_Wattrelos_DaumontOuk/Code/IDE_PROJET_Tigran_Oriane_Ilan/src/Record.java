@@ -32,46 +32,50 @@ public class Record {
         // Selon le modèle offset directory
         // On rentre les positions des n colonnes soit n+1 cases à remplir au début
         // Puis on ajoute les valeurs à chacune à leur position relative
-        buff.position(pos);
-        int x = (values.size() + 1) * 4; // n+1 cases * 4 octets
-        int nextAdresse = pos + x; // Première position de la première valeur
+        
+    	int x = (values.size() + 1) * 4; // n+1 cases * 4 octets
+        int posHeaderBuff = pos;
+        int adresseProchaineValeur = pos + x; // Première position de la première valeur
+
         for (int i = 0; i < values.size(); i++) {
-            buff.putInt(nextAdresse); // On ajoute au buffer l'adresse de la prochaine valeur
-            System.out.println("put this " + nextAdresse + " in buff");
-            buff.position(nextAdresse); // On se déplace à l'adresse de la prochaine valeur
-            System.out.println("position du buff avant de rentrer une valeur " + buff.position(nextAdresse));
-            String type = relInfo.getTypeColonne(i).toLowerCase();
+        	buff.position(posHeaderBuff);
+            buff.putInt(adresseProchaineValeur); // On ajoute au buffer l'adresse de la prochaine valeur
+            buff.position(adresseProchaineValeur); // On se déplace à l'adresse de la prochaine valeur
+            
+            String type = relInfo.getTypeColonne(i).toUpperCase();
+            
             switch (type) { // On définit trois façons de remplir le buffer selon le type de la colonne
-                case "integer":
+                case "INTEGER":
                     int resInt = Integer.valueOf(values.get(i));
                     buff.putInt(resInt); // On ajoute la prochaine valeur dans le buffer (à son adresse selon sa
                                          // position relative)
-                    nextAdresse += 4; // 1 Integer = 4 octets
-                    buff.position((i * 4) + pos);
+                    adresseProchaineValeur += 4; // 1 Integer = 4 octets
+                    posHeaderBuff += 4;
                     break;
-                case "real":
+                
+                case "REAL":
                     float resFloat = Float.valueOf(values.get(i));
                     buff.putFloat(resFloat);
-                    nextAdresse += 4; // 1 Float = 4 octets
-                    buff.position((i * 4) + pos);
+                    adresseProchaineValeur += 4; // 1 Float = 4 octets
+                    posHeaderBuff += 4;
                     break;
+                
                 default:
                     int spaceMemory = Integer.valueOf(type.substring(8, type.length() - 1));
                     for (int j = 0; j < spaceMemory; j++) {
                         if (j >= values.get(i).length()) {
                             buff.putChar(' ');
                         } else {
-                            // System.out.println("test testi " + j);
                             buff.putChar(values.get(i).charAt(j));
-                            // System.out.println(values.get(i).charAt(j));
                         }
                     }
-                    nextAdresse += values.get(i).length() * 2;
-                    buff.position(((i * 4) + pos));
+                    adresseProchaineValeur += spaceMemory * 2;
+                    posHeaderBuff += 4;
                     break;
             }
         }
-        buff.putInt(nextAdresse);
+        buff.position(posHeaderBuff);
+        buff.putInt(adresseProchaineValeur);
         buff.position(pos);
     }
 
@@ -82,18 +86,21 @@ public class Record {
         String resString = "";
         this.values.clear();
         buff.position(pos);
-        int nbrValeur = (buff.getInt(pos) - pos) / 4; // Représente le nombre de cases allouées au début du buffer pour
+        int nbrValeur = ((buff.getInt(pos) - pos) / 4) - 1; // Représente le nombre de cases allouées au début du buffer pour
                                                       // stocker toutes les positions relatives
         buff.position(buff.getInt(pos)); // On place le pointeur à l'adresse relative de la première valeur
-        for (int i = pos; i < nbrValeur; i++) {
-            String type = relInfo.getTypeColonne(i).toLowerCase();
+        System.out.println("nb val " + nbrValeur);
+        for (int i = 0; i < nbrValeur; i++) {
+            String type = relInfo.getTypeColonne(i).toUpperCase();
             switch (type) {
-                case "integer":
+                case "INTEGER":
                     int resInt = buff.getInt();
                     this.values.add(String.valueOf(resInt));
-                case "real":
-                    float resFLoat = buff.getFloat();
-                    this.values.add(String.valueOf(resFLoat));
+                    break;
+                case "REAL":
+                    float resFloat = buff.getFloat();
+                    this.values.add(String.valueOf(resFloat));
+                    break;
                 default:
                     int len = Integer.parseInt(type.substring(8, type.length() - 1));
                     char[] chaine = new char[len];
@@ -102,6 +109,7 @@ public class Record {
                     }
                     resString = new String(chaine);
                     this.values.add(resString);
+                    break;
             }
         }
     }
@@ -109,19 +117,18 @@ public class Record {
     public int getWrittenSize() {
         int res = 0;
         for (int i = 0; i < values.size(); i++) {
-            String type = relInfo.getTypeColonne(i).toLowerCase();
+            String type = relInfo.getTypeColonne(i).toUpperCase();
             switch (type) {
-                case "integer":
-                case "real":
+                case "INTEGER":
+                case "REAL":
                     res += 8; // Taille d'un int ou d'un float + taille de leur adresse
                     break;
                 default:
                     res += Integer.parseInt(type.substring(8, type.length() - 1)) * 2; // Taille d'un string
                     res += 4; // Taille de son adresse
-                    System.out.println(i + "=" + res);
             }
         }
-        return res + 4;
+        return res+4;
     }
 
     public void addValue(String valeur) {
