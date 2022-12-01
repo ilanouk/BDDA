@@ -36,6 +36,16 @@ public class Catalog implements Serializable{  // Classe qui contient toute les 
         }
         return null;
     }
+
+    public boolean relationExists(String nom) { //retourne true si la relation existe
+        for (int i = 0; i < listeRelation.size(); i++) {
+            if (listeRelation.get(i).getNom().equals(nom)) {
+                return true;
+            }
+
+        }
+        return false;
+    }
     //Sauvegarde le Catalog
     public void save() throws IOException { //Sauvegarde le Catalogue dans le fichier Catalog.sv 
         File f = new File(DBParams.DBpath + "/Catalog.sv");
