@@ -55,7 +55,7 @@ public class BufferManager {
     //****************************** FONCTIONS PRINCIPALES *****************************//
 
     //Retourne un des buffers associés à une frame
-    public ByteBuffer getPage(PageId pageId) throws IOException{
+    public ByteBuffer getPage(PageId pageId) throws FileNotFoundException ,IOException{
         //Buffer = contenu page désignée par pageId
         // recuperer le buffer de diskmanager
         //S'occuper du remplacement (LRU) du contenu d'une frame
@@ -66,14 +66,17 @@ public class BufferManager {
 
             if(bufferPool[i].getPage().equals(pageId)){ //Si la page existe deja dans bufferpool
                 bufferPool[i].incrementPinCount();
+                
+                frameNonUtilisee.add(bufferPool[i]);
+                
                 return (bufferPool[i].getBuffer()); // On retourne le buffer de la page
             }
             else if(bufferPool[i].isEmpty() && index==-1){ //S'il y a de la place, on garde l'indice/la position
                 index=i;
             }
         }
-
-        if(index!=-1){ //si une frame de vide, on "crée" la page
+        
+        if(index!=-1){ //si une frame de dispo, on "crée" la page
             bufferPool[index].setPage(pageId);
             bufferPool[index].setPinCount(1);
             bufferPool[index].setFlagDirty(false);
@@ -81,23 +84,38 @@ public class BufferManager {
         }
         else{
             //Algo LRU
-            //Removes the object at the top of this stack and returns thatobject as the value of this function
-            Frame f = frameNonUtilisee.pop();
+            //Removes the object at the top of this stack and returns that object as the value of this function
 
-            if(f.getFlagDirty()==true){ // Si frame modifiée, on sauvegarde sur disque
-                dManager.writePage(f.getPage(), f.getBuffer());
+            //Frame f = frameNonUtilisee.firstElement();
+            // if(f.getFlagDirty()==true){ // Si frame modifiée, on sauvegarde sur disque
+            //     dManager.writePage(f.getPage(), f.getBuffer());
+            // }
+
+
+            for(int i=0; i<bufferPool.length;i++){
+                if(bufferPool[i].getPinCount()==0){
+                    if(bufferPool[i].getFlagDirty()){
+                        dManager.writePage(bufferPool[i].getPage(), bufferPool[i].getBuffer());
+                        index=i;
+                    }
+                    bufferPool[i].setPage(pageId);
+                    bufferPool[i].setPinCount(1);
+                    bufferPool[i].setFlagDirty(false);
+                    dManager.readPage(pageId, bufferPool[i].getBuffer());
+                    break;
+                }
             }
 
-            index=0;
+            // index=0;
             //Chercher l'id de la derniere frame dans le buffer
-            while(index<bufferPool.length && !bufferPool[index].equals(f)){
-                   index++;
-            }                
-            //Remplacement avec la nouvelle frame
-            bufferPool[index].setPage(pageId);
-            bufferPool[index].setPinCount(1);
-            bufferPool[index].setFlagDirty(false);
-            dManager.readPage(pageId, bufferPool[index].getBuffer());
+            // while(index<bufferPool.length && !bufferPool[index].equals(f)){
+            //        index++;
+            // }                
+            // //Remplacement avec la nouvelle frame
+            // bufferPool[index].setPage(pageId);
+            // bufferPool[index].setPinCount(1);
+            // bufferPool[index].setFlagDirty(false);
+            // dManager.readPage(pageId, bufferPool[index].getBuffer());
         }
         return bufferPool[index].getBuffer();
     }

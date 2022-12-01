@@ -35,9 +35,5 @@ public class FileManagerTest {
         System.out.println("*******");
         System.out.println("Test getAllRecords:");
         //System.out.println(fM.getAllPageId(relInfo));
-        
-        System.out.println("*******");
-        System.out.println("Test getAllRecords:");
-        //System.out.println(fM.GetAllRecords(relInfo));
     }
 }
