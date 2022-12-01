@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
-		System.out.println("Bienvenue");
+		System.out.println("Bienvenue dans le SGBD");
 		DBParams.DBpath = "./DB";
 		DBParams.maxPagesPerFile = 4;
 		DBParams.pageSize = 4096;

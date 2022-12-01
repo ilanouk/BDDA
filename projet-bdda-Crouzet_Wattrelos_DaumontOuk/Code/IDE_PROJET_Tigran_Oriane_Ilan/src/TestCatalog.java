@@ -7,6 +7,9 @@ public class TestCatalog {
         RelationInfo r = new RelationInfo("test",4,"nom","INTEGER");
         Catalog.getLeCatalog().addRelationInfo(r);
         Catalog.getLeCatalog().Finish();
+        Catalog.getLeCatalog().Init();
+        System.out.println(Catalog.getLeCatalog().getRelationInfo("test").getNom());
+
     }
 
     public static void main(String[]args) throws ClassNotFoundException, IOException {

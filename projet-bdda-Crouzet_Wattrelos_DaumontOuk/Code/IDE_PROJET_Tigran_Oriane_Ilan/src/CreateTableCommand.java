@@ -18,6 +18,13 @@ public class CreateTableCommand{
     }
     public void execute() throws IOException{
         RelationInfo relation = new RelationInfo(nomRelationInfo,nbrColonnes,colonnes);
-        Catalog.getLeCatalog().addRelationInfo(relation);
+
+        if(!Catalog.getLeCatalog().relationExists(nomRelationInfo)){
+
+            Catalog.getLeCatalog().addRelationInfo(relation);
+        }
+        else{
+            System.out.println("La table existe deja");
+        }
     }
 }
