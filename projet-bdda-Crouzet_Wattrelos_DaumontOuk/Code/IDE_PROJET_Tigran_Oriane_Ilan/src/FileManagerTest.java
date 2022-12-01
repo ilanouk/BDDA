@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 public class FileManagerTest {
     public static void main(String[] args) throws IOException {
@@ -9,13 +10,12 @@ public class FileManagerTest {
         DBParams.frameCount=4;
         
         FileManager fM = new FileManager();
+        BufferManager bM = new BufferManager();
         RelationInfo relInfo = new RelationInfo("nomRelation", 3, "nom", "type");
         Record record = new Record(relInfo);
         PageId pageId = DiskManager.getLeDiskManager().allocPage();
         
         System.out.println("Test HeaderPage:");
-        System.out.println(fM.createNewHeaderPage());
-        System.out.println(fM.createNewHeaderPage());
         System.out.println(fM.createNewHeaderPage());
         
         System.out.println("*******");
@@ -30,7 +30,7 @@ public class FileManagerTest {
         
         System.out.println("*******");
         System.out.println("Test writeRecordToDataPage:");
-        System.out.println(fM.writeRecordToDataPage(record, pageId));
+        //System.out.println(fM.writeRecordToDataPage(record, pageId));
 
         System.out.println("*******");
         System.out.println("Test getAllRecords:");

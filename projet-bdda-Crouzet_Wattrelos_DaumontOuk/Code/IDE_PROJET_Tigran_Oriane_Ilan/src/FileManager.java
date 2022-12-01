@@ -37,16 +37,29 @@ public class FileManager {
 
 		return pageId;
 	}
-
-	//OK
-	// Pour la relation désignée par relInfo, ca renvoie le pageId où il reste assez de place pour insérer le record
-	public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws IOException{
-
-		PageId pageIdHeaderPage = relInfo.getHeaderPageId();
-		HeaderPage hP = new HeaderPage(pageIdHeaderPage);
-
-		return hP.getDPEnoughSpace(sizeRecord);
+	//méthode getFreeDataPage, qui prend en paramètre un entier sizeRecord et une relationInfo, retourne pour la relationInfo donnée, la page où il reste assez de place pour insérer un enregistrement de taille sizeRecord
+	public PageId getFreeDataPageId( RelationInfo relInf, int sizeRecord) throws IOException {
+		//Création des instances
+		BufferManager buffM = BufferManager.getLeBufferManager();
+		HeaderPage hP = new HeaderPage(relInf.getHeaderPageId());
+		PageId pageId = hP.getDPEnoughSpace(sizeRecord);
+		
+		//Libérer page allouée auprès du Buffer Manager
+		buffM.freePage(pageId, false);
+		
+		return pageId;
 	}
+	
+
+	//PAS BON
+	// Pour la relation désignée par relInfo, ca renvoie le pageId où il reste assez de place pour insérer le record
+	// public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws IOException{
+
+	// 	PageId pageIdHeaderPage = relInfo.getHeaderPageId();
+	// 	HeaderPage hP = new HeaderPage(pageIdHeaderPage);
+
+	// 	return hP.getDPEnoughSpace(sizeRecord);
+	// }
 
 	//PRESQUE
 	//Ecrit l'enregistrement record dans la data page de pageId & renvoie son recordId
@@ -113,7 +126,7 @@ public class FileManager {
 	//Insertion d'un record dans une relation
 	public RecordId InsertRecordIntoRelation (Record record) throws IOException {
 		int recSize = record.getWrittenSize();
-		return writeRecordToDataPage(record, getFreeDataPageId(record.getRelInfo(), recSize)); //Pas bon relInfo pas egale a null voir avec la prof !!!
+		return writeRecordToDataPage(record, getFreeDataPageId(record.getRelInfo(), recSize)); 
 	}
 
 	//OK
