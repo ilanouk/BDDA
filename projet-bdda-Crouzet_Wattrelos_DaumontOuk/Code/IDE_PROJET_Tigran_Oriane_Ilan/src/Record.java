@@ -18,7 +18,8 @@ public class Record {
     }
 
     // Méthodes
-    // getters
+
+    // Getters
     public RelationInfo getRelInfo() {
         return relInfo;
     }
@@ -125,5 +126,23 @@ public class Record {
 
     public void addValue(String valeur) {
         values.add(valeur);
+    }
+
+    public String toString() {
+        String res = "";
+        for (int i = 0; i < values.size(); i++) {
+            res += values.get(i) + " ; ";
+        }
+        res += ".";
+        return res;
+    }
+
+    public String toString() {
+        String res = "";
+        for (int i = 0; i < values.size(); i++) {
+            res += values.get(i) + " ; ";
+        }
+        res += ".";
+        return res;
     }
 }

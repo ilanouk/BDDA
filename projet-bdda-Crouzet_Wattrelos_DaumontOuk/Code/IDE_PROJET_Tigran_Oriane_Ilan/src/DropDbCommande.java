@@ -2,7 +2,7 @@ import java.io.*;
 
 public class DropDbCommande {
     
-    public void execute(){
+    public void execute() throws IOException{
         int i=1;
         File f= new File(DBParams.DBpath + "/F1.bdda");
         while (f.exists()){
@@ -16,5 +16,7 @@ public class DropDbCommande {
         File catalogsv = new File(DBParams.DBpath +"/Catalog.sv"); // Doit on supprimer ca
         fichierSauvegarde.delete();
         catalogsv.delete();
+        DiskManager.getLeDiskManager().viderTabPageLibre();
+        
     }
 }
