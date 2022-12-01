@@ -86,14 +86,12 @@ public class FileManager {
 	public ArrayList<PageId> getAllPageId(RelationInfo relInfo) throws IOException{
 		HeaderPage hP = new HeaderPage(relInfo.getHeaderPageId());
 		ArrayList<PageId> allPageId = new ArrayList<PageId>();
-		int idx=0;
 
-		allPageId.add(idx, hP.getPageId());
-		idx++;
+		//allPageId.add(idx, hP.getPageId());
+		//idx++;
 		
 		for (PageId pageId : hP.getAllDataPageId()) {
-			allPageId.add(idx, pageId);
-			idx++;
+			allPageId.add(pageId);
 		}
 
 		return allPageId;

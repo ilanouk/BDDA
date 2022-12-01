@@ -71,14 +71,14 @@ public class BufferManagerTest {
         }
     
 		DBParams.DBpath ="../../DB";
-		DBParams.maxPagesPerFile = 4;
+		DBParams.maxPagesPerFile = 16;
 		DBParams.pageSize = 4096;
-        DBParams.frameCount=2;
+        DBParams.frameCount=5;
         
         try {
-            //getPageTest();
+            getPageTest();
             freePageTest();
-            flushAllTest();
+            //flushAllTest();
         } 
         catch (FileNotFoundException e) {
             System.out.println(e);
