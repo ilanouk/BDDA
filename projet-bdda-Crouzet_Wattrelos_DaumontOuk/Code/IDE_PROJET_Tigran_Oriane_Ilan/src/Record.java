@@ -136,13 +136,4 @@ public class Record {
         res += ".";
         return res;
     }
-
-    public String toString() {
-        String res = "";
-        for (int i = 0; i < values.size(); i++) {
-            res += values.get(i) + " ; ";
-        }
-        res += ".";
-        return res;
-    }
 }
