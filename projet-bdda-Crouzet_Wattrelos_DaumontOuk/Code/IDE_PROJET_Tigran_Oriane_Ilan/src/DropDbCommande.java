@@ -17,6 +17,7 @@ public class DropDbCommande {
         fichierSauvegarde.delete();
         catalogsv.delete();
         DiskManager.getLeDiskManager().viderTabPageLibre();
+        Catalog.getLeCatalog().viderListeRelation();
         
     }
 }

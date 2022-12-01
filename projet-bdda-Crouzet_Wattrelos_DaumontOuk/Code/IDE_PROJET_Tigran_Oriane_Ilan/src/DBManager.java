@@ -45,7 +45,6 @@ public class DBManager {
 	            
 	            // La suite a pour but de recuperer toute les informations entre parenthese de la chaine de caractere;
 	            String chaineEntreParenthese = st.nextToken(); // on recupere tout ce qu'il y a entre parenthese
-				System.out.println(chaineEntreParenthese);
 	            chaineEntreParenthese = chaineEntreParenthese.substring(1,chaineEntreParenthese.length()-1);  //On retire les parenthese de la chaine pour pouvoir travailler sur celle ci
 	            StringTokenizer stringInfoCol = new StringTokenizer(chaineEntreParenthese,","); //on separe les infos de chaque colonne càd ce quil y a entre les virgules de la commande
 	           
@@ -55,9 +54,7 @@ public class DBManager {
 	                String typeCol = typeNomSepare.nextToken();
 					if (typeCol.equals("INTEGER") || typeCol.equals("REAL") || typeCol.contains("VARCHAR")){
 	
-	                listeColonnes.add(new ColInfo(nomCol, typeCol));
-					
-					
+	                	listeColonnes.add(new ColInfo(nomCol, typeCol));
 	            	} 
 				
 					else{
@@ -112,8 +109,30 @@ public class DBManager {
 	            
 	        }
 	        else if(mot1.equals("SELECT")){
-	
-	            
+				ArrayList<Condition> conditions = new ArrayList<Condition>();
+				SelectCommand selectCommand = null;
+				st.nextToken();//on saute le *
+				st.nextToken();//on saute le FROM
+				String nomRelInfo = st.nextToken();//on recupere le nom de la table
+				if (!st.hasMoreTokens()){
+					selectCommand = new SelectCommand(nomRelInfo);
+					
+				}
+				else{
+					st.nextToken();//on saute le WHERE
+					while(st.hasMoreTokens()){
+						String nomColonne = st.nextToken();
+						String operateur = st.nextToken(); // Valable que pour les operateurs uniques
+						String valeur = st.nextToken();
+						Condition condition = new Condition(nomColonne, operateur, valeur);
+						conditions.add(condition);
+					}
+					selectCommand = new SelectCommand(nomRelInfo, conditions);
+					
+				}
+				selectCommand.execute();
+				
+				
 	        }
 	        else{
 	            System.out.println("Commande Invalide");

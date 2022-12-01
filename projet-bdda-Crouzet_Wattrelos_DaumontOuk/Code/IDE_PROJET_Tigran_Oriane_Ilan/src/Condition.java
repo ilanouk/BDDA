@@ -1,8 +1,9 @@
 public class Condition { //Represente les conditions de la commande "select"
-    private String nomColonne, valeur;
+    private String nomColonne, valeur,operateur;
 
-    public Condition(String nomColonne, String valeur) {
+    public Condition(String nomColonne, String operateur, String valeur){
         this.nomColonne = nomColonne;
+        this.operateur = operateur;
         this.valeur = valeur;
     }
 
@@ -11,5 +12,8 @@ public class Condition { //Represente les conditions de la commande "select"
     }
     public String getValeur() {
         return valeur;
+    }
+    public String getOperateur() {
+        return operateur;
     }
 }

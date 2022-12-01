@@ -75,5 +75,9 @@ public class Catalog implements Serializable{  // Classe qui contient toute les 
             out.close();
         }
        
+        
+    }
+    public void viderListeRelation() { //vide la liste des relations
+        listeRelation.clear();
     }
 }
