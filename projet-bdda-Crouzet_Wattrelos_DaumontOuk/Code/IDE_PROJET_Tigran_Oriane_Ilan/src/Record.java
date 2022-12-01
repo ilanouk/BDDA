@@ -89,9 +89,9 @@ public class Record {
         int nbrValeur = ((buff.getInt(pos) - pos) / 4) - 1; // Représente le nombre de cases allouées au début du buffer pour
                                                       // stocker toutes les positions relatives
         buff.position(buff.getInt(pos)); // On place le pointeur à l'adresse relative de la première valeur
-        System.out.println("nb val " + nbrValeur);
         for (int i = 0; i < nbrValeur; i++) {
             String type = relInfo.getTypeColonne(i).toUpperCase();
+            
             switch (type) {
                 case "INTEGER":
                     int resInt = buff.getInt();

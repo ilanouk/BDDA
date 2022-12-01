@@ -45,25 +45,33 @@ public class DBManager {
 	            
 	            // La suite a pour but de recuperer toute les informations entre parenthese de la chaine de caractere;
 	            String chaineEntreParenthese = st.nextToken(); // on recupere tout ce qu'il y a entre parenthese
-	
-	            chaineEntreParenthese = chaineEntreParenthese.replace("(", "");
-	            chaineEntreParenthese = chaineEntreParenthese.replace(")", "");  //On retire les parenthese de la chaine pour pouvoir travailler sur celle ci
-	
+				System.out.println(chaineEntreParenthese);
+	            chaineEntreParenthese = chaineEntreParenthese.substring(1,chaineEntreParenthese.length()-1);  //On retire les parenthese de la chaine pour pouvoir travailler sur celle ci
 	            StringTokenizer stringInfoCol = new StringTokenizer(chaineEntreParenthese,","); //on separe les infos de chaque colonne càd ce quil y a entre les virgules de la commande
 	           
 	            while(stringInfoCol.hasMoreTokens()){ //Cette boucle a pour but  de remplir listeColonne qui contient toute les infos sur les colonnes 
 	                StringTokenizer typeNomSepare = new StringTokenizer(stringInfoCol.nextToken(),":");
 	                String nomCol = typeNomSepare.nextToken();
 	                String typeCol = typeNomSepare.nextToken();
+					if (typeCol.equals("INTEGER") || typeCol.equals("REAL") || typeCol.contains("VARCHAR")){
 	
 	                listeColonnes.add(new ColInfo(nomCol, typeCol));
-	            } 
+					
+					
+	            	} 
+				
+					else{
+						System.out.println("Erreur : le type de la colonne n'est pas reconnu");
+						break;
+					}
+					int nbrColonne = listeColonnes.size();
+					CreateTableCommand createTable = new CreateTableCommand(nomRelation,nbrColonne,listeColonnes);
+					createTable.execute();
+				}
 	
 	
 	
-	            int nbrColonne = listeColonnes.size();
-	            CreateTableCommand createTable = new CreateTableCommand(nomRelation,nbrColonne,listeColonnes);
-	            createTable.execute();
+	            
 	        }
 	
 	
@@ -110,7 +118,6 @@ public class DBManager {
 	        else{
 	            System.out.println("Commande Invalide");
 	        }
-	        System.out.println("test");
     	}
     	catch(NoSuchElementException e) {
     		System.out.println("La commande n'est pas bien rédiger");

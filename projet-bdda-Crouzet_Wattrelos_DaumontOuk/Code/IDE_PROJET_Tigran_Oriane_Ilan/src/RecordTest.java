@@ -26,5 +26,6 @@ public class RecordTest {
         }
         
         rec.readFromBuffer(buff, 0);
+        System.out.println(rec.getValues().toString());
     }
 }
