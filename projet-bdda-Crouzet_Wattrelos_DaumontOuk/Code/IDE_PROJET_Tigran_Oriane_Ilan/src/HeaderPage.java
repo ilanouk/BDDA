@@ -40,7 +40,9 @@ public class HeaderPage {
         for(int i=0; i<nbPage*12+4;i+=8){
             taille=nBuffer.getInt(i);
             if(taille>sizeRecord){
-                return new PageId(i, i+4);
+                PageId page = new PageId(nBuffer.getInt(i+4),nBuffer.getInt(i+8));
+                System.out.println("page : " + page);
+                return page;
             }
         }
         addNewDataPage(dataPage);
