@@ -37,10 +37,10 @@ public class HeaderPage {
         int nbPage = getDataPageCount();
         int taille;
         
-        for(int i=12; i<nbPage*8+4;i+=8){
+        for(int i=0; i<nbPage*12+4;i+=8){
             taille=nBuffer.getInt(i);
             if(taille>sizeRecord){
-                return null;
+                return new PageId(i, i+4);
             }
         }
         addNewDataPage(dataPage);
