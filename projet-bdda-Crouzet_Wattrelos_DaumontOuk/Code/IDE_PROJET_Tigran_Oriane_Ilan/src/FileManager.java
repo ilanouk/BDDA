@@ -42,6 +42,7 @@ public class FileManager {
 		//Création des instances
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		HeaderPage hP = new HeaderPage(relInf.getHeaderPageId());
+		System.out.println("test");
 		PageId pageId = hP.getDPEnoughSpace(sizeRecord);
 		
 		//Libérer page allouée auprès du Buffer Manager
@@ -132,6 +133,12 @@ public class FileManager {
 	//OK
 	//Lister tous les records dans une relation
 	public ArrayList<Record> GetAllRecords (RelationInfo relInfo) throws IOException{
-		return getRecordsInDataPage(relInfo, getFreeDataPageId(relInfo, 0));
+		ArrayList<Record> allRecord = new ArrayList<Record>();
+		ArrayList<PageId> allPageId = getAllPageId(relInfo);
+		while (allPageId.size()!=0) {
+			allRecord.addAll(getRecordsInDataPage(relInfo, allPageId.get(0)));
+			allPageId.remove(0);
+		}
+		return allRecord;
 	}
 }

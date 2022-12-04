@@ -32,13 +32,12 @@ public class HeaderPage {
 
     //OK
     //Permet d'obtenir une page du DataPage où il y a assez de place
-    public PageId getDPEnoughSpace(int sizeRecord) throws IOException{
-        PageId dataPage = DiskManager.getLeDiskManager().allocPage();
+    public PageId getDPEnoughSpace(int sizeRecord) throws IOException{  
         int nbPage = getDataPageCount();
         int taille;
         
         for(int i=0; i<nbPage*12+4;i+=8){
-            System.out.println("test");
+            
             taille=nBuffer.getInt(i);
             if(taille>sizeRecord){
                 
@@ -47,7 +46,7 @@ public class HeaderPage {
                 return page;
             }
         }
-        addNewDataPage(dataPage);
+        addNewDataPage(DiskManager.getLeDiskManager().allocPage());
         
         return page;
     }
