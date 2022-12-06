@@ -37,7 +37,7 @@ public class FileManager {
 		return pageId;
 	}
 	//méthode getFreeDataPage, qui prend en paramètre un entier sizeRecord et une relationInfo, retourne pour la relationInfo donnée, la page où il reste assez de place pour insérer un enregistrement de taille sizeRecord
-	public PageId getFreeDataPageId( RelationInfo relInf, int sizeRecord) throws IOException {
+	public PageId getFreeDataPageId( RelationInfo relInf, int sizeRecord) throws Exception {
 		//Création des instances
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		HeaderPage hP = new HeaderPage(relInf.getHeaderPageId());
@@ -97,7 +97,7 @@ public class FileManager {
 	
 	//A VERIFIER 
 	//Insertion d'un record dans une relation
-	public RecordId InsertRecordIntoRelation (Record record) throws IOException {
+	public RecordId InsertRecordIntoRelation (Record record) throws Exception {
 		int recSize = record.getWrittenSize();
 		return this.writeRecordToDataPage(record, getFreeDataPageId(record.getRelInfo(), recSize)); 
 	}

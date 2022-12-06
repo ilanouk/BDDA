@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class FileManagerTest {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         
         DBParams.DBpath ="../../DB";
 		DBParams.maxPagesPerFile = 4;
@@ -25,8 +25,8 @@ public class FileManagerTest {
         
         System.out.println("*******");
         System.out.println("Test freeDataPage:");
-        System.out.println(fM.getFreeDataPageId(relInfo, 30000));
-        System.out.println(fM.getFreeDataPageId(relInfo, 30000));
+        System.out.println(fM.getFreeDataPageId(relInfo, 3000));
+        System.out.println(fM.getFreeDataPageId(relInfo, 3000));
         
         System.out.println("*******");
         System.out.println("Test writeRecordToDataPage:");
@@ -34,6 +34,6 @@ public class FileManagerTest {
 
         System.out.println("*******");
         System.out.println("Test getAllRecords:");
-        //System.out.println(fM.getAllPageId(relInfo));
+        System.out.println(fM.getAllPageId(relInfo));
     }
 }
