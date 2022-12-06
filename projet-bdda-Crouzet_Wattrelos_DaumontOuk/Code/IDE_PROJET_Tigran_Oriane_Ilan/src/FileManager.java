@@ -107,11 +107,10 @@ public class FileManager {
 	public ArrayList<Record> GetAllRecords (RelationInfo relInfo) throws IOException{
 		ArrayList<Record> allRecord = new ArrayList<Record>();
 		ArrayList<PageId> allPageId = getAllPageId(relInfo);
-		int i=0;
 		while (allPageId.size()!=0) {
-			allRecord.addAll(getRecordsInDataPage(relInfo, allPageId.get(i)));
-			allPageId.remove(i);
-			i++;
+			allRecord.addAll(getRecordsInDataPage(relInfo, allPageId.get(0)));
+			allPageId.remove(0);
+	
 		}
 		return allRecord;
 	}

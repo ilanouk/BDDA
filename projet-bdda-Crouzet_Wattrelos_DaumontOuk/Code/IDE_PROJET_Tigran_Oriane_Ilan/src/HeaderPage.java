@@ -33,6 +33,9 @@ public class HeaderPage {
     //OK
     //Permet d'obtenir une page du DataPage où il y a assez de place
     public PageId getDPEnoughSpace(int sizeRecord) throws IOException{  
+        if(sizeRecord>DBParams.pageSize){
+            throw Exception;
+        }
         int nbPage = getDataPageCount();
         int taille;
         
