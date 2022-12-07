@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 public class FileManagerTest {
     public static void main(String[] args) throws Exception {
@@ -11,9 +12,19 @@ public class FileManagerTest {
         
         FileManager fM = new FileManager();
         BufferManager bM = new BufferManager();
-        RelationInfo relInfo = new RelationInfo("nomRelation", 3, "nom", "type");
-        Record record = new Record(relInfo);
-        PageId pageId = DiskManager.getLeDiskManager().allocPage();
+        ArrayList<ColInfo> liste = new ArrayList<ColInfo>();
+        liste.add(new ColInfo("Nom", "VARCHAR(10)"));
+        liste.add(new ColInfo("Prenom", "VARCHAR(10)"));
+        liste.add(new ColInfo("Age", "INTEGER"));
+        liste.add(new ColInfo("Note", "REAL"));
+        PageId id = new PageId(1, 0);
+        RelationInfo relInfo = new RelationInfo("etudiant", liste, id);
+        Record rec = new Record(relInfo);
+
+        rec.addValue("Crouzet");
+        rec.addValue("Oriane");
+        rec.addValue("21");
+        rec.addValue("15.1");
         
         System.out.println("Test HeaderPage:");
         System.out.println(fM.createNewHeaderPage());
@@ -26,11 +37,10 @@ public class FileManagerTest {
         System.out.println("*******");
         System.out.println("Test freeDataPage:");
         System.out.println(fM.getFreeDataPageId(relInfo, 3000));
-        System.out.println(fM.getFreeDataPageId(relInfo, 3000));
         
         System.out.println("*******");
         System.out.println("Test writeRecordToDataPage:");
-        //System.out.println(fM.writeRecordToDataPage(record, pageId));
+        System.out.println(fM.writeRecordToDataPage(rec, id));
 
         System.out.println("*******");
         System.out.println("Test getAllRecords:");
