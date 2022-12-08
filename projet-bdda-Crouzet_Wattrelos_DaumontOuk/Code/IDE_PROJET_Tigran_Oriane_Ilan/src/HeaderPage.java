@@ -10,6 +10,7 @@ public class HeaderPage {
 
     public HeaderPage(PageId page) throws IOException{
         this.page=page;
+        nBuffer = ByteBuffer.allocate(DBParams.pageSize);
     }
 
     public void setDataPageCount() throws IOException{ //Incrémente le compteur du header Page de 1
