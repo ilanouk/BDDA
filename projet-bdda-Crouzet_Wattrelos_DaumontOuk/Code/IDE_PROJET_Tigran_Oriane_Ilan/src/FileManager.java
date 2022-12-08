@@ -41,7 +41,6 @@ public class FileManager {
 		//Création des instances
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		HeaderPage hP = new HeaderPage(relInf.getHeaderPageId());
-		System.out.println("test");
 		PageId pageId = hP.getDPEnoughSpace(sizeRecord);
 		
 		//Libérer page allouée auprès du Buffer Manager
