@@ -123,6 +123,7 @@ public class FileManager {
 	}
 
 	public ArrayList<PageId> getAllPageId(RelationInfo relInfo) throws IOException{
+		System.out.println("relinfo " +relInfo);
 		HeaderPage hP = new HeaderPage(relInfo.getHeaderPageId());
 		ArrayList<PageId> allPageId = new ArrayList<PageId>();
 
