@@ -28,7 +28,7 @@ public class DBManager {
 
     }
 
-    public void processCommand(String commande) throws IOException{
+    public void processCommand(String commande) throws Exception{
 
     	try {
     		

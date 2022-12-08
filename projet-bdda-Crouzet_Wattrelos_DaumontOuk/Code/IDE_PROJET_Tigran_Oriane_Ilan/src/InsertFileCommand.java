@@ -15,7 +15,7 @@ public class InsertFileCommand {
         this.fileName = fileName;
     }
 
-    public void execute() throws IOException{
+    public void execute() throws Exception{
 
         String filePath = ".";
         File file = new File(filePath + "/" + fileName);

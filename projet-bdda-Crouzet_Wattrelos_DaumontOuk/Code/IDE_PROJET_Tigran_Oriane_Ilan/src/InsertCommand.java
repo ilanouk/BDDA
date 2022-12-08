@@ -10,7 +10,7 @@ public class InsertCommand {
         this.values = values;
     }
 
-    public void execute() throws IOException{
+    public void execute() throws Exception{
         Record rec = new Record(rel,values);
         FileManager.getFileManager().InsertRecordIntoRelation(rec);
     
