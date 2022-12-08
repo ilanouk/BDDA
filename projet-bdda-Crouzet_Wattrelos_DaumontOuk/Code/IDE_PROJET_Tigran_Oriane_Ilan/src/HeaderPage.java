@@ -15,10 +15,9 @@ public class HeaderPage {
 
     public void setDataPageCount() throws IOException{ //Incrémente le compteur du header Page de 1
         this.nBuffer = BufferManager.getLeBufferManager().getPage(page);
-        int intSize = 4;
-        int nbPage = nBuffer.getInt(1*intSize);
+        int nbPage = nBuffer.getInt(0);
         nbPage++;
-        nBuffer.putInt(1*intSize, nbPage);
+        nBuffer.putInt(0, nbPage);
         BufferManager.getLeBufferManager().freePage(page,true);
     }
 
@@ -72,7 +71,7 @@ public class HeaderPage {
     public void incrementeTaille() throws IOException{ //incrémente la taille du headrer page 
         
         this.nBuffer = BufferManager.getLeBufferManager().getPage(page);
-        int nbPage = nBuffer.getInt(1*4);
+        int nbPage = nBuffer.getInt(0);
 
         nbPage++;
         nBuffer.putInt(0, nbPage);
@@ -98,16 +97,21 @@ public class HeaderPage {
     }
 
     //A VERIFIER
-    public PageId[] getAllDataPageId() throws IOException{
+    public PageId[] getAllDataPageId() throws IOException, IndexOutOfBoundsException{
+
         this.nBuffer = BufferManager.getLeBufferManager().getPage(page);
         int nbPage = nBuffer.getInt(0);
         PageId[] pageId = new PageId[nbPage];
-        int fileIDX;
-        int PageIdx;
+        int fileIDX=-1;
+        int PageIdx=-1;
+        System.out.println("nbPage : "+nbPage);
         for(int i=0; i<nbPage*8+4;i+=8){
-            fileIDX=nBuffer.getInt(i);
-            PageIdx=nBuffer.getInt(i+4);
-            pageId[i/8]=new PageId(fileIDX,PageIdx);
+            if(fileIDX!=0 && PageIdx!=0){
+                fileIDX=nBuffer.getInt(i);
+                PageIdx=nBuffer.getInt(i+4);
+                System.out.println("File : "+fileIDX + " Page: " +PageIdx);
+                pageId[i/8]=new PageId(fileIDX,PageIdx);
+            }
         }
         BufferManager.getLeBufferManager().freePage(page, false);
         return pageId;
