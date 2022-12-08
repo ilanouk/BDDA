@@ -51,7 +51,7 @@ public class FileManager {
 
 	//PRESQUE
 	//Ecrit l'enregistrement record dans la data page de pageId & renvoie son recordId
-	public RecordId writeRecordToDataPage (Record record, PageId pageId) throws IOException{
+	public RecordId writeRecordToDataPage (Record record, PageId pageId) throws IOException, IndexOutOfBoundsException{
 		BufferManager buffM = BufferManager.getLeBufferManager();
 		HeaderPage hP = new HeaderPage(pageId);
 		RecordId recordId = new RecordId(pageId, 0);
