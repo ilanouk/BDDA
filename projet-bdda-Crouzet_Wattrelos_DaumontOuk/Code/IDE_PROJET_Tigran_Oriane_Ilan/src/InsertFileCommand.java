@@ -1,9 +1,10 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
+
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 public class InsertFileCommand {
@@ -40,6 +41,10 @@ public class InsertFileCommand {
             
         
         catch(NullPointerException n){
+            bf.close();
+            reader.close();
+        }
+        catch(NoSuchElementException e){
             bf.close();
             reader.close();
         }

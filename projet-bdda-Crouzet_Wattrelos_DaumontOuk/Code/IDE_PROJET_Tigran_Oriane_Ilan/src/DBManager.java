@@ -1,4 +1,8 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
@@ -52,6 +56,7 @@ public class DBManager {
 	                StringTokenizer typeNomSepare = new StringTokenizer(stringInfoCol.nextToken(),":");
 	                String nomCol = typeNomSepare.nextToken();
 	                String typeCol = typeNomSepare.nextToken();
+
 					if (typeCol.equals("INTEGER") || typeCol.equals("REAL") || typeCol.contains("VARCHAR")){
 	
 	                	listeColonnes.add(new ColInfo(nomCol, typeCol));
@@ -61,10 +66,12 @@ public class DBManager {
 						System.out.println("Erreur : le type de la colonne n'est pas reconnu");
 						break;
 					}
-					int nbrColonne = listeColonnes.size();
-					CreateTableCommand createTable = new CreateTableCommand(nomRelation,nbrColonne,listeColonnes);
-					createTable.execute();
+					
 				}
+				int nbrColonne = listeColonnes.size();
+
+				CreateTableCommand createTable = new CreateTableCommand(nomRelation,nbrColonne,listeColonnes);
+				createTable.execute();
 	
 	
 	
@@ -86,26 +93,44 @@ public class DBManager {
 	        else if(mot1.equals("INSERT") && st.nextToken().equals("INTO")){
 	            ArrayList<String> values = new ArrayList<>();
 	            String nomRelInfo = st.nextToken();
-	            String stToString = st.toString();
+	            String stToString = st.nextToken();
 	            /*
 	             * En dessous, on va initialiser une arrayList value qui 
 	             * va permettre d'initialiser insertCommand. Ce tableau sont les
 	             * valeurs du Record, celle qui vont être ajouté à la base de données
 	             * 
 	             */
-	            stToString = stToString.replace("(","" );
-	            stToString = stToString.replace("(","" );
-	
+
+				if(stToString.contains("FILECONTENTS")){// Insertion via fichier
+					String nomFichier;
+					String strFichier = st.nextToken();
+					StringTokenizer stFichier = new StringTokenizer(strFichier,"(");
+					stFichier.nextToken();//On supprime 'FILECONTENTS'
+					nomFichier = stFichier.nextToken();
+
+					nomFichier = nomFichier.replace("(","" ); // on enleve le (
+					InsertFileCommand insertF = new InsertFileCommand(nomRelInfo, nomFichier);
+					insertF.execute();
+					
+				
+				}	
+				else{ // Cas où insertion via ligne de commande
+					stToString = st.nextToken(); // On retire values
+					stToString = stToString.replace("(","" );
+					stToString = stToString.replace(")","" );
+		
+					
+					StringTokenizer stValues = new StringTokenizer(stToString,",");
+					while (stValues.hasMoreTokens()){
+						values.add(stValues.nextToken());
+					}
+					
+					RelationInfo relInfo = Catalog.getLeCatalog().getRelationInfo(nomRelInfo);
+		
+					InsertCommand insertCommand = new InsertCommand(relInfo, values);
+					insertCommand.execute();
+				}
 	            
-	            StringTokenizer stValues = new StringTokenizer(stToString,",");
-	            while (stValues.hasMoreTokens()){
-	                values.add(stValues.nextToken());
-	            }
-	            
-	            RelationInfo relInfo = Catalog.getLeCatalog().getRelationInfo(nomRelInfo);
-	
-	            InsertCommand insertCommand = new InsertCommand(relInfo, values);
-	            insertCommand.execute();
 	            
 	        }
 	        else if(mot1.equals("SELECT")){
@@ -121,9 +146,20 @@ public class DBManager {
 				else{
 					st.nextToken();//on saute le WHERE
 					while(st.hasMoreTokens()){
-						String nomColonne = st.nextToken();
-						String operateur = st.nextToken(); // Valable que pour les operateurs uniques
-						String valeur = st.nextToken();
+						String valeur;
+						String condi = st.nextToken();
+						StringTokenizer stCondi = new StringTokenizer(condi, "=<>"); // on separe la condition en 3 parties
+						String nomColonne = stCondi.nextToken();
+						String operateur = stCondi.nextToken(); // Valable que pour les operateurs uniques
+						String opeOuVal=stCondi.nextToken();
+						if(opeOuVal.equals("=")){
+							operateur += opeOuVal;
+							valeur = st.nextToken();
+						}
+						else{
+							valeur = opeOuVal;
+						}
+						
 						Condition condition = new Condition(nomColonne, operateur, valeur);
 						conditions.add(condition);
 					}
