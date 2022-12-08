@@ -18,4 +18,8 @@ public class RecordId {
     public int getSlotIdx(){
         return slotIdx;
     }
+
+    public String toString(){
+        return pageId+" SlotIdx: "+slotIdx;
+    }
 }

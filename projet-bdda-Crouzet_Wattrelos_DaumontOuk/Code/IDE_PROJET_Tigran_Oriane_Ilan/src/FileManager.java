@@ -57,7 +57,7 @@ public class FileManager {
 		HeaderPage hP = new HeaderPage(pageId);
 		RecordId recordId = new RecordId(pageId, 0);
 
-		record.writeToBuffer(hP.gByteBuffer(), pageId.getPage()); // BUFFER A NULL ????
+		record.writeToBuffer(hP.gByteBuffer(), pageId.getPage());
 		buffM.freePage(pageId, true);
 		
 		return recordId;
