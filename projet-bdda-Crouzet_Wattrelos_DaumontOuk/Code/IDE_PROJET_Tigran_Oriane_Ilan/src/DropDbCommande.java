@@ -3,8 +3,8 @@ import java.io.*;
 public class DropDbCommande {
     
     public void execute() throws IOException{
-        int i=1;
-        File f= new File(DBParams.DBpath + "/F1.bdda");
+        int i=0;
+        File f= new File(DBParams.DBpath + "/F0.bdda");
         while (f.exists()){
             
             i+=1;

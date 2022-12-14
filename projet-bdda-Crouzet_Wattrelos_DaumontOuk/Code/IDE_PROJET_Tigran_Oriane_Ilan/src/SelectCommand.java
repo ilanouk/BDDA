@@ -17,24 +17,22 @@ public class SelectCommand {
     }
 
 
-    public void execute() throws IOException{
-        ArrayList<Record> records = FileManager.getFileManager().GetAllRecords(rel);
-        ArrayList<ColInfo> colonnes = rel.getColonnes();
-        for(Record record : records){ //Pour chaque record
-            if(conditions == null){ //Si il n'y a pas de condition alors on affiche toute les conditions
-                System.out.println(record); //Faire un toString pour afficher les valeurs 
+    public void execute() throws Exception{
+        try{
+            ArrayList<Record> records = FileManager.getFileManager().GetAllRecords(rel);
+            ArrayList<ColInfo> colonnes = rel.getColonnes();
+            for(Record record : records){ //Pour chaque record
+                if(conditions == null){ //Si il n'y a pas de condition alors on affiche toute les conditions
+                    System.out.println(record); //Faire un toString pour afficher les valeurs 
+                }
+            
             }
-        //     else{
-        //         for(Condition condition : conditions){
-        //             for(int i=0; i<colonnes.size(); i++){
-        //                 if(condition.getNomColonne().equals(colonnes.get(i).getNom())){
-        //                     record.ge
-        //                 }
-        //             }
-                    
-        //         }
-        //     }
-        //}
+        }
+        catch(ArrayIndexOutOfBoundsException e){
+            
+        }
+        catch(NullPointerException n){
+            
         }
     }
 }

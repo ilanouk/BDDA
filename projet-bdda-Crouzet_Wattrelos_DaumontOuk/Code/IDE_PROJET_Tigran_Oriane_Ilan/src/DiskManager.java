@@ -17,7 +17,7 @@ public class DiskManager {
 	// Allouer une page
 	public PageId allocPage() throws IOException {
 
-		int numFichier = 1;
+		int numFichier = 0;
 		if (tabPageLibre.size() == 0) { // si le tableau des pages libres est vide alors on crée un nouveau fichier
 			while (true) {
 				String nomFichier = "F" + numFichier + ".bdda";
