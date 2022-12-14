@@ -32,7 +32,7 @@ public class SelectCommand {
             
         }
         catch(NullPointerException n){
-            
+
         }
     }
 }
